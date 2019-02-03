@@ -1,0 +1,12 @@
+# npm packages
+
+node_modules/
+
+# Yarn
+
+yarn-error.log
+
+# Output
+
+out/*.csv
+out/*.json

@@ -1,0 +1,22 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+[*]
+end_of_line = CRLF
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+indent_size = 2
+charset = utf-8
+
+[*.md]
+charset = utf-8
+max_line_length = off
+trim_trailing_whitespace = false
+
+[*.json]
+indent_size = 2
