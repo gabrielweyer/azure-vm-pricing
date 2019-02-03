@@ -1,0 +1,4 @@
+Ram,Region,Cpu,Name,OperatingSystem
+8,us-west,4,name-1,windows
+16,us-west-2,8,name-2,linux
+32,us-west,16,name-3,linux

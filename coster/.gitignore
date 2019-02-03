@@ -1,0 +1,14 @@
+# Rider
+
+.idea/
+*.DotSettings.user
+
+# Build detritus
+
+bin/
+obj/
+
+# Pricing
+
+src/AzureVmCoster/pricing/*.json
+src/AzureVmCoster/pricing/*.csv
