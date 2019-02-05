@@ -225,13 +225,26 @@ async function parsePricing(page: puppeteer.Page, region: string): Promise<VmPri
               return undefined;
             }
 
-            const json = JSON.parse(span.getAttribute('data-amount'));
+            const priceText = span.innerText;
 
-            if (json == null) {
-              return undefined;
+            let firstDigitOffset = -1;
+            const firstSlashOffset = priceText.indexOf('/');
+
+            for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
+            {
+              if (priceText[priceTextOffset] >= '0' && priceText[priceTextOffset] <= '9')
+              {
+                firstDigitOffset = priceTextOffset;
+                break;
+              }
             }
 
-            return json.regional[region];
+            if (firstDigitOffset > -1 && firstSlashOffset > firstDigitOffset) {
+              return Number.parseFloat(priceText.substring(firstDigitOffset, firstSlashOffset));
+            }
+            else {
+              return undefined;
+            }
           };
 
           const payAsYouGo = getPrice(tr, '.column-6', selectedRegion);
