@@ -4,7 +4,7 @@ Mass-pricing of `VMs` on `Azure` based on `CPU` cores count and memory. This is 
 
 The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricing].
 
-:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spends you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to take into account **storage** and **egress** costs.
+:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spends you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
 
 This tool is composed of two components:
 
@@ -128,3 +128,5 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 - `Three Year Reverved with Azure Hybrid Benefit`
 
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
+[managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/
+[bandwidth-pricing-details]: https://azure.microsoft.com/en-us/pricing/details/bandwidth/
