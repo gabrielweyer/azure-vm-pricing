@@ -44,11 +44,15 @@ namespace AzureVmCoster.Services
                 var minCpu = vm.Cpu > 0 ? vm.Cpu : medianCpu;
                 var minRam = vm.Ram > 0 ? vm.Ram : medianRam;
 
-                var pricing = orderedPricings.FirstOrDefault(p => p.Ram >= minRam && p.VCpu >= minCpu);
+                var pricing = orderedPricings.FirstOrDefault(p =>
+                    p.Region.Equals(vm.Region, StringComparison.Ordinal) &&
+                    p.OperatingSystem.Equals(vm.OperatingSystem, StringComparison.Ordinal) &&
+                    p.Ram >= minRam &&
+                    p.VCpu >= minCpu);
 
                 if (pricing == null)
                 {
-                    Console.WriteLine($"Could not find a matching pricing for VM '{vm.Name}'");
+                    Console.WriteLine($"Could not find a matching pricing for VM '{vm.Name}' ({vm.Cpu} CPU cores and {vm.Ram} GB of RAM)");
                 }
 
                 pricedVms.Add(new PricedVm(vm, pricing));

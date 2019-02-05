@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using AzureVmCoster.Models;
 using AzureVmCoster.Services;
@@ -27,7 +28,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var actualVms = _target.Parse(@"SampleInputs\input-01.csv");
+            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-01.csv"));
 
             // Assert
 
@@ -40,7 +41,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var actualVms = _target.Parse(@"SampleInputs\input-01.csv");
+            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-01.csv"));
 
             // Assert
 
@@ -53,7 +54,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var actualVms = _target.Parse(@"SampleInputs\input-02.csv");
+            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-02.csv"));
 
             // Assert
 

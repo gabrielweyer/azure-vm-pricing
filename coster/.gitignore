@@ -10,5 +10,9 @@ obj/
 
 # Pricing
 
-src/AzureVmCoster/pricing/*.json
-src/AzureVmCoster/pricing/*.csv
+src/AzureVmCoster/Pricing/*.json
+src/AzureVmCoster/Pricing/*.csv
+
+# Ouptput
+
+src/AzureVmCoster/Out/*.csv

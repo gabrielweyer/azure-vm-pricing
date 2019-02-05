@@ -8,8 +8,8 @@ namespace AzureVmCoster.Models
         public short VCpu { get; set; }
         public decimal Ram { get; set; }
         public decimal PayAsYouGo { get; set; }
-        public decimal OneYearReserved { get; set; }
-        public decimal ThreeYearReserved { get; set; }
-        public decimal ThreeYearReservedWithAzureHybridBenefit { get; set; }
+        public decimal? OneYearReserved { get; set; }
+        public decimal? ThreeYearReserved { get; set; }
+        public decimal? ThreeYearReservedWithAzureHybridBenefit { get; set; }
     }
 }

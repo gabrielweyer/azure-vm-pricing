@@ -10,7 +10,7 @@ namespace AzureVmCoster.Models
 
             if (vmPricing != null)
             {
-                Instance = vmPricing.OperatingSystem;
+                Instance = vmPricing.Instance;
                 VCpu = vmPricing.VCpu;
                 Ram = vmPricing.Ram;
                 PayAsYouGo = vmPricing.PayAsYouGo;
@@ -31,9 +31,9 @@ namespace AzureVmCoster.Models
         public string Instance { get; }
         public short VCpu { get; }
         public decimal Ram { get; }
-        public decimal PayAsYouGo { get; }
-        public decimal OneYearReserved { get; }
-        public decimal ThreeYearReserved { get; }
-        public decimal ThreeYearReservedWithAzureHybridBenefit { get; }
+        public decimal? PayAsYouGo { get; }
+        public decimal? OneYearReserved { get; }
+        public decimal? ThreeYearReserved { get; }
+        public decimal? ThreeYearReservedWithAzureHybridBenefit { get; }
     }
 }

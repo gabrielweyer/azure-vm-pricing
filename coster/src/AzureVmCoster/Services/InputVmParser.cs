@@ -9,11 +9,12 @@ namespace AzureVmCoster.Services
 {
     public class InputVmParser
     {
-        public List<InputVm> Parse(string csvFilePath)
+        public List<InputVm> Parse(FileInfo inputCsv)
         {
-            using (var reader = new StreamReader(csvFilePath))
+            using (var reader = new StreamReader(inputCsv.FullName))
             using (var csv = new CsvReader(reader))
             {
+                csv.Configuration.RegisterClassMap<InputVmMap>();
                 return csv.GetRecords<InputVm>().ToList();
             }
         }
