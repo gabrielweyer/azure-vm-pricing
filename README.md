@@ -46,8 +46,8 @@ In the footer:
 Writes `2` output files in the `out` directory. One is a `CSV`, the other one is `JSON`. Both files contain the same data.
 
 ```text
-.\out\vm-pricing-<region>-<operating-system>.csv
-.\out\vm-pricing-<region>-<operating-system>.json
+.\out\vm-pricing_<region>_<operating-system>.csv
+.\out\vm-pricing_<region>_<operating-system>.json
 ```
 
 Fields:

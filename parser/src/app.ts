@@ -95,7 +95,7 @@ interface VmPricing {
 }());
 
 function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing-${region}-${operatingSystem}.json`;
+  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.json`;
 
   fs.writeFile(outFilename, JSON.stringify(vmPricing, null, 2), function(err) {
     if(err) {
@@ -107,7 +107,7 @@ function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: stri
 }
 
 function writeCsv(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing-${region}-${operatingSystem}.csv`;
+  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
 
   var writer = fs.createWriteStream(outFilename);
   writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,ONE YEAR RESERVED,THREE YEAR RESERVED, THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT\n');
