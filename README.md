@@ -4,12 +4,14 @@ Mass-pricing of `VMs` on `Azure` based on `CPU` cores count and memory. This is 
 
 The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricing].
 
-:rotating_light: this tool will only provide you with an **estimation**. Depending on your `Azure` spends you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to take into account **storage** and **egress** costs.
+:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spends you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to take into account **storage** and **egress** costs.
 
 This tool is composed of two components:
 
 1. A [Parser](#parser) retrieving the pricing from [Virtual Machines Pricing][virtual-machines-pricing]
-2. A [Coster](#coster) using the output from the `Parser`
+2. A [Coster](#coster) using the output from the `Parser` and a list of `VMs` specifications to establish their price
+
+This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
 ## Parser
 
