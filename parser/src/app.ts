@@ -70,11 +70,12 @@ interface VmPricing {
       }
       console[log.type()](log.text())
     });
-    await page.goto(`https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/`);
 
-    await selectCulture(page, config.culture);
+    console.log('Culture:', config.culture);
+    console.log('Operating System:', config.operatingSystem);
+    await page.goto(`https://azure.microsoft.com/${config.culture}/pricing/details/virtual-machines/${config.operatingSystem}/`);
+
     await selectCurrency(page, config.currency);
-    await selectOperatingSystem(page, config.operatingSystem, config.culture);
     await selectRegion(page, config.region);
 
     console.log();
@@ -126,29 +127,12 @@ function writeCsv(vmPricing: VmPricing[], region: string, operatingSystem: strin
   console.log('Saved:', outFilename);
 }
 
-async function selectCulture(page: puppeteer.Page, culture: string): Promise<void> {
-  console.log('Selecting culture:', culture);
-
-  const selector = '#dropdown-cultures select';
-
-  await setSelectWithNavigation(page, selector, culture);
-}
-
 async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
   console.log('Selecting currency:', currency);
 
   const selector = '#dropdown-currency select';
 
   await setSelectWithoutNavigation(page, selector, currency)  ;
-}
-
-async function selectOperatingSystem(page: puppeteer.Page, operatingSystem: string, culture: string): Promise<void> {
-  console.log('Selecting operating system:', operatingSystem);
-
-  const selector = '#vm-type';
-  const value = `/${culture}/pricing/details/virtual-machines/${operatingSystem}/`;
-
-  await setSelectWithNavigation(page, selector, value);
 }
 
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
@@ -266,36 +250,6 @@ async function parsePricing(page: puppeteer.Page, region: string): Promise<VmPri
 
       return pricing;
     }, region);
-}
-
-async function setSelectWithNavigation(page: puppeteer.Page, selector: string, value: string): Promise<void> {
-  await page.waitForSelector(selector, { visible: true });
-
-  const selectedValue = await page
-    .evaluate((s: string) => {
-      var selectElement = <HTMLSelectElement> document.querySelector(s);
-
-      if (selectElement != null) {
-        return selectElement.selectedOptions[0].value;
-      }
-
-      return undefined;
-    }, selector);
-
-  console.log('- Currently selected value is:', selectedValue);
-
-  if (selectedValue === value)
-  {
-    console.log('- The value is selected already');
-    return;
-  }
-
-  await Promise.all([
-    page.waitForNavigation({
-      timeout: 5000
-    }),
-    page.select(selector, value)
-  ]);
 }
 
 async function setSelectWithoutNavigation(page: puppeteer.Page, selector: string, value: string): Promise<void> {
