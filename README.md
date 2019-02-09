@@ -17,6 +17,72 @@ This approach allows to decouple pricing acquisition from its usage and open the
 
 Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **operating system** and **region**.
 
+| Culture | Culture display name | Currency | Currency display name | Support |
+| - | - | - | - | - |
+| `en-us` | `English (US)` | `USD` | `US Dollar ($)` | :white_check_mark: |
+| | | `SAR`[[8]](#closest-currency-8) | `Saudi Riyal (SR)` | :x: |
+| `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
+| `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :x: |
+| `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :x: |
+| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :x: |
+| `en-au` | `English (Australia)` | `AUD` | `Australian Dollar ($)` | :white_check_mark: |
+| `en-ca` | `English (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
+| `en-in` | `English (India)` | `INR` | `Indian Rupee (₹)` | :white_check_mark: |
+| `en-gb` | `English (UK)` | `GBP` | `British Pound (£)` | :white_check_mark: |
+| | | `MYR`[[6]](#closest-culture-6) | `Malaysian Ringgit (RM$)` | :white_check_mark: |
+| | | `ZAR`[[4]](#closest-culture-4) | `South African Rand (R)` | :white_check_mark: |
+| | | `NZD`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
+| | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
+| `es-es` | `Español` | `EUR` | `Euro (€)` | :x: |
+| | | `ARS`[[5]](#closest-culture-5) | `Argentine Peso ($)` | :x: |
+| `es-mx` | `Español (MX)` | `MXN` | `Mexican Peso (MXN$)` | :white_check_mark: |
+| `fr-fr` | `Français` | `EUR` | `Euro (€)` | :x: |
+| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :x: |
+| `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :x: |
+| `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :x: |
+| `th-th` | `ประเทศไทย` | `USD`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
+| `id-id` | `Bahasa Indonesia` | `IDR` | `Indonesian Rupiah (Rp)` | :x: |
+| `it-it` | `Italiano` | `EUR` | `Euro (€)` | :x: |
+| | | `CHF`[[10]](#closest-culture-10) | `Swiss Franc. (chf)` | :x: |
+| `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
+| `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :x: |
+| `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :x: |
+| `pl-pl` | `Polski` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
+| `pt-br` | `Português (Brasil)` | `BRL` | `Brazilian Real (R$)` | :x: |
+| `pt-pt` | `Português` | `EUR` | `Euro (€)` | :x: |
+| `sv-se` | `Svenska` | `SEK` | `Swedish Krona (kr)` | :x: |
+| `tr-tr` | `Türkçe` | `TRY` | `Turkish Lira (TL)` | :x: |
+| `ru-ru` | `Pусский` | `RUB` | `Russian Ruble (руб)` | :x: |
+| `ja-jp` | `日本語` | `JPY` | `Japanese Yen (¥)` | :white_check_mark: |
+| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :x: |
+| `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
+| `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :x: |
+| | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :x: |
+
+<a id="closest-currency-1">1.</a>: Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
+
+<a id="closest-currency-2">2.</a>: Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
+
+<a id="closest-currency-3">3.</a>: USD is used when no other currency could be matched to the country.
+
+<a id="closest-culture-4">4.</a>: English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
+
+<a id="closest-culture-5">5.</a>: Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
+
+<a id="closest-culture-6">6.</a>: English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
+
+<a id="closest-culture-7">7.</a>: English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
+
+<a id="closest-currency-8">8.</a>: USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
+
+<a id="closest-culture-10">10.</a>: German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
+
+<a id="closest-culture-11">11.</a>: English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
+
+:rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
+
+:rotating_light: the parser is not able to retrieve pricing for the regions `us-dod-central` and `us-dod-east` as no virtual machines are listed as publicly available.
+
 ### Parser pre-requisites
 
 - `Node.js 8.12`
@@ -130,3 +196,13 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
 [managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/
 [bandwidth-pricing-details]: https://azure.microsoft.com/en-us/pricing/details/bandwidth/
+[iceland-import-export]: https://atlas.media.mit.edu/en/profile/country/isl/#Destinations
+[south-african-english]: https://en.wikipedia.org/wiki/South_African_English
+[rioplatense-spanish]: https://en.wikipedia.org/wiki/Rioplatense_Spanish
+[malaysian-english]: https://en.wikipedia.org/wiki/Malaysian_English
+[new-zealand-english]: https://en.wikipedia.org/wiki/New_Zealand_English
+[saudi-riyal-fixed-exchange-rate]: https://en.wikipedia.org/wiki/Saudi_riyal#Fixed_exchange_rate
+[european-union]: https://europa.eu/european-union/about-eu/countries_en#tab-0-0
+[swizerland-official-languages]: https://en.wikipedia.org/wiki/Switzerland#Languages
+[azure-china]: https://www.azure.cn/en-us/pricing/details/virtual-machines/
+[hong-kong-traditional-chinese-english]: https://en.wikipedia.org/wiki/Hong_Kong#cite_note-language-status-8
