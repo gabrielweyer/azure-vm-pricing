@@ -1,0 +1,47 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - parser/*
+    - parser.yml
+
+steps:
+
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+  displayName: Install Yarn 1.13.0
+  inputs:
+    versionSpec: 1.13.0
+
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+  displayName: yarn install
+  inputs:
+    Arguments: install
+    ProjectDirectory: parser
+
+- bash: |
+    cd parser
+    yarn test-ci
+  env:
+    MOCHA_FILE: '$(Common.TestResultsDirectory)/test-results.xml'
+  displayName: yarn test
+
+- bash: |
+    cd parser
+    yarn e2e-ci
+  env:
+    MOCHA_FILE: '$(Common.TestResultsDirectory)/e2e-results.xml'
+  displayName: yarn e2e
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '*.xml'
+    testResultsFormat: 'JUnit'
+    searchFolder: $(Common.TestResultsDirectory)
+    publishRunAttachments: true
+  condition: succeededOrFailed()
+  displayName: Publish tests results
