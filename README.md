@@ -24,7 +24,7 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
 | `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :white_check_mark: |
 | `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :white_check_mark: |
+| | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
 | `en-au` | `English (Australia)` | `AUD` | `Australian Dollar ($)` | :white_check_mark: |
 | `en-ca` | `English (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
 | `en-in` | `English (India)` | `INR` | `Indian Rupee (₹)` | :white_check_mark: |
@@ -32,18 +32,18 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | | | `MYR`[[6]](#closest-culture-6) | `Malaysian Ringgit (RM$)` | :white_check_mark: |
 | | | `ZAR`[[4]](#closest-culture-4) | `South African Rand (R)` | :white_check_mark: |
 | | | `NZD`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
-| | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
+| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
 | `es-es` | `Español` | `EUR` | `Euro (€)` | :white_check_mark: |
 | | | `ARS`[[5]](#closest-culture-5) | `Argentine Peso ($)` | :white_check_mark: |
 | `es-mx` | `Español (MX)` | `MXN` | `Mexican Peso (MXN$)` | :white_check_mark: |
 | `fr-fr` | `Français` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :white_check_mark: |
+| | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
 | `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
 | `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :white_check_mark: |
 | `th-th` | `ประเทศไทย` | `USD`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
 | `id-id` | `Bahasa Indonesia` | `IDR` | `Indonesian Rupiah (Rp)` | :white_check_mark: |
 | `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[10]](#closest-culture-10) | `Swiss Franc. (chf)` | :white_check_mark: |
+| | | `CHF`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
 | `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
 | `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :x: |
 | `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :white_check_mark: |
@@ -57,27 +57,27 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark:     |
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
 | `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :x: |
-| | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :x: |
+| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :x: |
 
-<a id="closest-currency-1">1.</a>: Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
+<a id="closest-currency-1">1.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
 
-<a id="closest-currency-2">2.</a>: Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
+<a id="closest-currency-2">2.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
 
-<a id="closest-currency-3">3.</a>: USD is used when no other currency could be matched to the country.
+<a id="closest-currency-3">3.</a> USD is used when no other currency could be matched to the country.
 
-<a id="closest-culture-4">4.</a>: English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
+<a id="closest-culture-4">4.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
 
-<a id="closest-culture-5">5.</a>: Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
+<a id="closest-culture-5">5.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
 
-<a id="closest-culture-6">6.</a>: English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
+<a id="closest-culture-6">6.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
 
-<a id="closest-culture-7">7.</a>: English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
+<a id="closest-culture-7">7.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
 
-<a id="closest-currency-8">8.</a>: USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
+<a id="closest-currency-8">8.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
 
-<a id="closest-culture-10">10.</a>: German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
+<a id="closest-culture-9">9.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
 
-<a id="closest-culture-11">11.</a>: English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
+<a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
 
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
