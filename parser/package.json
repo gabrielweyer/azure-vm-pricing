@@ -1,7 +1,8 @@
 {
   "scripts": {
     "crawl": "ts-node src/app.ts",
-    "test": "mocha src/**/*.spec.ts"
+    "test": "mocha src/**/*.spec.ts",
+    "e2e": "mocha e2e/**/*.spec.ts"
   },
   "devDependencies": {
     "@types/chai": "^4.1.7",
