@@ -175,23 +175,23 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 
 ## Notes and references
 
-<a id="closest-currency-1">1.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
+<a id="closest-currency-1">01.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
 
-<a id="closest-currency-2">2.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
+<a id="closest-currency-2">02.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
 
-<a id="closest-currency-3">3.</a> USD is used when no other currency could be matched to the country.
+<a id="closest-currency-3">03.</a> USD is used when no other currency could be matched to the country.
 
-<a id="closest-culture-4">4.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
+<a id="closest-culture-4">04.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
 
-<a id="closest-culture-5">5.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
+<a id="closest-culture-5">05.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
 
-<a id="closest-culture-6">6.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
+<a id="closest-culture-6">06.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
 
-<a id="closest-culture-7">7.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
+<a id="closest-culture-7">07.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
 
-<a id="closest-currency-8">8.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
+<a id="closest-currency-8">08.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
 
-<a id="closest-culture-9">9.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
+<a id="closest-culture-9">09.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
 
 <a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
 
