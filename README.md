@@ -20,11 +20,11 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | Culture | Culture display name | Currency | Currency display name | Support |
 | - | - | - | - | - |
 | `en-us` | `English (US)` | `USD` | `US Dollar ($)` | :white_check_mark: |
-| | | `SAR`[[8]](#closest-currency-8) | `Saudi Riyal (SR)` | :x: |
-| `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
-| `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :x: |
-| `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :x: |
-| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :x: |
+| | | `SAR`[[8]](#closest-currency-8) | `Saudi Riyal (SR)` | :white_check_mark: |
+| `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
+| `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :white_check_mark: |
+| `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :white_check_mark: |
+| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :white_check_mark: |
 | `en-au` | `English (Australia)` | `AUD` | `Australian Dollar ($)` | :white_check_mark: |
 | `en-ca` | `English (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
 | `en-in` | `English (India)` | `INR` | `Indian Rupee (₹)` | :white_check_mark: |
@@ -33,28 +33,28 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | | | `ZAR`[[4]](#closest-culture-4) | `South African Rand (R)` | :white_check_mark: |
 | | | `NZD`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
 | | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
-| `es-es` | `Español` | `EUR` | `Euro (€)` | :x: |
-| | | `ARS`[[5]](#closest-culture-5) | `Argentine Peso ($)` | :x: |
+| `es-es` | `Español` | `EUR` | `Euro (€)` | :white_check_mark: |
+| | | `ARS`[[5]](#closest-culture-5) | `Argentine Peso ($)` | :white_check_mark: |
 | `es-mx` | `Español (MX)` | `MXN` | `Mexican Peso (MXN$)` | :white_check_mark: |
-| `fr-fr` | `Français` | `EUR` | `Euro (€)` | :x: |
-| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :x: |
-| `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :x: |
-| `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :x: |
+| `fr-fr` | `Français` | `EUR` | `Euro (€)` | :white_check_mark: |
+| | | `CHF`[[10]](#closest-culture-10)  | `Swiss Franc. (chf)` | :white_check_mark: |
+| `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
+| `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :white_check_mark: |
 | `th-th` | `ประเทศไทย` | `USD`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
-| `id-id` | `Bahasa Indonesia` | `IDR` | `Indonesian Rupiah (Rp)` | :x: |
-| `it-it` | `Italiano` | `EUR` | `Euro (€)` | :x: |
-| | | `CHF`[[10]](#closest-culture-10) | `Swiss Franc. (chf)` | :x: |
-| `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
+| `id-id` | `Bahasa Indonesia` | `IDR` | `Indonesian Rupiah (Rp)` | :white_check_mark: |
+| `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
+| | | `CHF`[[10]](#closest-culture-10) | `Swiss Franc. (chf)` | :white_check_mark: |
+| `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
 | `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :x: |
-| `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :x: |
-| `pl-pl` | `Polski` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :x: |
-| `pt-br` | `Português (Brasil)` | `BRL` | `Brazilian Real (R$)` | :x: |
-| `pt-pt` | `Português` | `EUR` | `Euro (€)` | :x: |
-| `sv-se` | `Svenska` | `SEK` | `Swedish Krona (kr)` | :x: |
-| `tr-tr` | `Türkçe` | `TRY` | `Turkish Lira (TL)` | :x: |
-| `ru-ru` | `Pусский` | `RUB` | `Russian Ruble (руб)` | :x: |
+| `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :white_check_mark: |
+| `pl-pl` | `Polski` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
+| `pt-br` | `Português (Brasil)` | `BRL` | `Brazilian Real (R$)` | :white_check_mark: |
+| `pt-pt` | `Português` | `EUR` | `Euro (€)` | :white_check_mark: |
+| `sv-se` | `Svenska` | `SEK` | `Swedish Krona (kr)` | :white_check_mark: |
+| `tr-tr` | `Türkçe` | `TRY` | `Turkish Lira (TL)` | :white_check_mark: |
+| `ru-ru` | `Pусский` | `RUB` | `Russian Ruble (руб)` | :white_check_mark: |
 | `ja-jp` | `日本語` | `JPY` | `Japanese Yen (¥)` | :white_check_mark: |
-| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :x: |
+| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark:     |
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
 | `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :x: |
 | | | `HKD`[[11]](#closest-culture-11) | `Hong Kong Dollar (HK$)` | :x: |

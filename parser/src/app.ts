@@ -19,12 +19,16 @@ interface VmPricing {
 }
 
 (async function() {
-  console.log();
-
   let culture = 'en-au';
   let currency = 'AUD';
   let operatingSystem = 'windows';
   let region = 'australia-southeast'
+
+  if (!process.argv[1].endsWith('app.ts')) {
+    return;
+  }
+
+  console.log();
 
   const args = process.argv.slice(2);
 
@@ -74,18 +78,18 @@ interface VmPricing {
     console.log('Culture:', config.culture);
     console.log('Operating System:', config.operatingSystem);
     await page.goto(`https://azure.microsoft.com/${config.culture}/pricing/details/virtual-machines/${config.operatingSystem}/`);
-
     await selectCurrency(page, config.currency);
     await selectRegion(page, config.region);
 
     console.log();
 
+    await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
     const vmPricing = await parsePricing(page, config.region);
 
     console.log();
 
     writeJson(vmPricing, config.region, config.operatingSystem);
-    writeCsv(vmPricing, config.region, config.operatingSystem);
+    writeCsv(vmPricing, config.culture, config.region, config.operatingSystem);
   }
   finally
   {
@@ -94,6 +98,45 @@ interface VmPricing {
     }
   }
 }());
+
+export function getPrice(tr: HTMLTableRowElement, columnSelector: string): number {
+  const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' > span');
+
+  if (span == null) {
+    return undefined;
+  }
+  const priceText = span.textContent;
+
+  let firstDigitOffset = -1;
+  const firstSlashOffset = priceText.indexOf('/');
+
+  for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
+  {
+    if (priceText[priceTextOffset] >= '0' && priceText[priceTextOffset] <= '9')
+    {
+      firstDigitOffset = priceTextOffset;
+      break;
+    }
+  }
+
+  if (firstDigitOffset > -1 && firstSlashOffset > firstDigitOffset) {
+    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset, firstSlashOffset);
+
+    const lastIndexOfDot = priceWithoutCurrencyAndDuration.lastIndexOf('.');
+    const lastIndexOfComma = priceWithoutCurrencyAndDuration.lastIndexOf(',');
+
+    if (lastIndexOfComma > -1 && lastIndexOfComma > lastIndexOfDot) {
+      priceWithoutCurrencyAndDuration = priceWithoutCurrencyAndDuration.replace('.', '').replace(',', '.');
+    } else if (lastIndexOfComma > -1) {
+      priceWithoutCurrencyAndDuration = priceWithoutCurrencyAndDuration.replace(',', '');
+    }
+
+    return Number.parseFloat(priceWithoutCurrencyAndDuration);
+  }
+  else {
+    return undefined;
+  }
+}
 
 function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
   const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.json`;
@@ -107,7 +150,28 @@ function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: stri
   });
 }
 
-function writeCsv(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
+const commaDecimalPointCountries = [
+  'cs-cz',
+  'da-dk',
+  'de-de',
+  'es-es',
+  'fr-fr',
+  'fr-ca',
+  'is-is',
+  'id-id',
+  'it-it',
+  'hu-hu',
+  'nb-no',
+  'nl-nl',
+  'pl-pl',
+  'pt-br',
+  'pt-pt',
+  'sv-se',
+  'tr-tr',
+  'ru-ru'
+];
+
+function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string): void {
   const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
 
   var writer = fs.createWriteStream(outFilename);
@@ -116,6 +180,10 @@ function writeCsv(vmPricing: VmPricing[], region: string, operatingSystem: strin
   const writePrice = function writePrice(price: number): string {
     if (price === undefined) {
       return 'N/A';
+    }
+
+    if (commaDecimalPointCountries.indexOf(culture) > -1) {
+      return `"${price.toString().replace('.', ',')}"`;
     }
 
     return price.toString();
@@ -130,9 +198,9 @@ function writeCsv(vmPricing: VmPricing[], region: string, operatingSystem: strin
 async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
   console.log('Selecting currency:', currency);
 
-  const selector = '#dropdown-currency select';
+  const selector = '#currency-dropdown';
 
-  await setSelectWithoutNavigation(page, selector, currency)  ;
+  await setSelect(page, selector, currency)  ;
 }
 
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
@@ -140,119 +208,91 @@ async function selectRegion(page: puppeteer.Page, region: string): Promise<void>
 
   const selector = '#region-selector';
 
-  await setSelectWithoutNavigation(page, selector, region);
+  await setSelect(page, selector, region);
+}
+
+function getPricing(): VmPricing[] {
+  const pricing =
+  Array.from(document.querySelectorAll('.sd-table:not(.pricing-unavailable) tbody tr'))
+  .map((tr: HTMLTableRowElement) => {
+    let isActive = tr.querySelector('.column-1 > span.active') !== null;
+
+    const getInstance = function getInstance(tr: Element): string {
+      const instanceIndex = tr.querySelector('.column-1').hasAttribute('style') ? 1 : 2;
+
+      let instance = (<HTMLTableDataCellElement> tr.querySelector('.column-' + instanceIndex)).innerHTML;
+      const indexOfSup = instance.indexOf('<sup>');
+
+      if (indexOfSup > -1) {
+        instance = instance.substring(0, indexOfSup);
+      }
+
+      return instance.trim();
+    }
+
+    const instance = getInstance(tr);
+
+    if (!isActive) {
+      console.log(`Instance '${instance}' is inactive`);
+      return undefined;
+    }
+
+    const getCpu = function getCpu(tr: Element): number {
+      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('.column-3')).innerHTML;
+
+      const indexOfSlash = vCpu.indexOf('/');
+
+      if (indexOfSlash > -1) {
+        vCpu = vCpu.substr(indexOfSlash + 1);
+      }
+
+      return Number.parseInt(vCpu.trim());
+    }
+
+    const vCpu = getCpu(tr);
+
+    const getRam = function getRam(tr: Element): number {
+      let ram = (<HTMLTableDataCellElement> tr.querySelector('.column-4')).innerHTML;
+
+      const indexOfGib = ram.indexOf('GiB');
+
+      if (indexOfGib > -1) {
+        ram = ram.substring(0, indexOfGib);
+      }
+      else {
+        console.log('Missing unit for RAM')
+      }
+
+      return Number.parseFloat(ram.trim());
+    }
+
+    const ram = getRam(tr);
+
+    const payAsYouGo = getPrice(tr, '.column-6');
+    const oneYearReserved = getPrice(tr, '.column-7');
+    const threeYearReserved = getPrice(tr, '.column-8');
+    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, '.column-9');
+
+    return <VmPricing> {
+      instance: instance,
+      vCpu: vCpu,
+      ram: ram,
+      payAsYouGo: payAsYouGo,
+      oneYearReserved: oneYearReserved,
+      threeYearReserved: threeYearReserved,
+      threeYearReservedWithAzureHybridBenefit: threeYearReservedWithAzureHybridBenefit
+    };
+  })
+  .filter(p => p != null);
+
+  return pricing;
 }
 
 async function parsePricing(page: puppeteer.Page, region: string): Promise<VmPricing[]> {
-  return <VmPricing[]> await page
-    .evaluate((selectedRegion: string) => {
-      const pricing =
-        Array.from(document.querySelectorAll('.sd-table:not(.pricing-unavailable) tbody tr'))
-        .map(tr => {
-          let isActive = tr.querySelector('.column-1 > span.active') !== null;
-
-          const getInstance = function getInstance(tr: Element): string {
-            const instanceIndex = tr.querySelector('.column-1').hasAttribute('style') ? 1 : 2;
-
-            let instance = (<HTMLTableDataCellElement> tr.querySelector(`.column-${instanceIndex}`)).innerHTML;
-            const indexOfSup = instance.indexOf('<sup>');
-
-            if (indexOfSup > -1) {
-              instance = instance.substring(0, indexOfSup);
-            }
-
-            return instance.trim();
-          }
-
-          const instance = getInstance(tr);
-
-          if (!isActive) {
-            console.log(`Instance '${instance}' is inactive`);
-            return undefined;
-          }
-
-          const getCpu = function getCpu(tr: Element): number {
-            let vCpu = (<HTMLTableDataCellElement> tr.querySelector('.column-3')).innerHTML;
-
-            const indexOfSlash = vCpu.indexOf('/');
-
-            if (indexOfSlash > -1) {
-              vCpu = vCpu.substr(indexOfSlash + 1);
-            }
-
-            return Number.parseInt(vCpu.trim());
-          }
-
-          const vCpu = getCpu(tr);
-
-          const getRam = function getRam(tr: Element): number {
-            let ram = (<HTMLTableDataCellElement> tr.querySelector('.column-4')).innerHTML;
-
-            const indexOfGib = ram.indexOf('GiB');
-
-            if (indexOfGib > -1) {
-              ram = ram.substring(0, indexOfGib);
-            }
-            else {
-              console.log('Missing unit for RAM')
-            }
-
-            return Number.parseFloat(ram.trim());
-          }
-
-          const ram = getRam(tr);
-
-          const getPrice = function getPrice(tr: Element, columnSelector: string, region: string): number {
-            const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' > span');
-
-            if (span == null) {
-              return undefined;
-            }
-
-            const priceText = span.innerText;
-
-            let firstDigitOffset = -1;
-            const firstSlashOffset = priceText.indexOf('/');
-
-            for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
-            {
-              if (priceText[priceTextOffset] >= '0' && priceText[priceTextOffset] <= '9')
-              {
-                firstDigitOffset = priceTextOffset;
-                break;
-              }
-            }
-
-            if (firstDigitOffset > -1 && firstSlashOffset > firstDigitOffset) {
-              return Number.parseFloat(priceText.substring(firstDigitOffset, firstSlashOffset));
-            }
-            else {
-              return undefined;
-            }
-          };
-
-          const payAsYouGo = getPrice(tr, '.column-6', selectedRegion);
-          const oneYearReserved = getPrice(tr, '.column-7', selectedRegion);
-          const threeYearReserved = getPrice(tr, '.column-8', selectedRegion);
-          const threeYearReservedWithAzureHybridBenefit = getPrice(tr, '.column-9', selectedRegion);
-
-          return <VmPricing> {
-            instance: instance,
-            vCpu: vCpu,
-            ram: ram,
-            payAsYouGo: payAsYouGo,
-            oneYearReserved: oneYearReserved,
-            threeYearReserved: threeYearReserved,
-            threeYearReservedWithAzureHybridBenefit: threeYearReservedWithAzureHybridBenefit
-          };
-        })
-        .filter(p => p != null);
-
-      return pricing;
-    }, region);
+  return <VmPricing[]> await page.evaluate(() => getPricing());
 }
 
-async function setSelectWithoutNavigation(page: puppeteer.Page, selector: string, value: string): Promise<void> {
+async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
   await page.waitForSelector(selector, { visible: true });
-  await page.select(selector, value);
+  await page.select(`select${selector}`, value);
 }

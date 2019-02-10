@@ -1,11 +1,17 @@
 {
   "scripts": {
-    "crawl": "ts-node src\\app.ts"
+    "crawl": "ts-node src/app.ts",
+    "test": "mocha src/**/*.spec.ts"
   },
   "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.21",
-    "@types/puppeteer": "^1.11.3",
-    "puppeteer": "^1.12.0",
+    "@types/puppeteer": "1.12.1",
+    "chai": "^4.2.0",
+    "jsdom": "^13.2.0",
+    "mocha": "^5.2.0",
+    "puppeteer": "1.12.2",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.1"
   },
