@@ -56,8 +56,8 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `ja-jp` | `日本語` | `JPY` | `Japanese Yen (¥)` | :white_check_mark: |
 | `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark: |
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
-| `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :x: |
-| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :x: |
+| `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :white_check_mark: |
+| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
 
 <a id="closest-currency-1">1.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
 

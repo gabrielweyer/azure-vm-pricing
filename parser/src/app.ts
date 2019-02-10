@@ -114,6 +114,14 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
     separatorOffset = priceText.indexOf(' per ');
   }
 
+  if (separatorOffset === -1) {
+    separatorOffset = priceText.indexOf(' (~');
+  }
+
+  if (separatorOffset === - 1) {
+    separatorOffset = priceText.length;
+  }
+
   for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
   {
     if (priceText[priceTextOffset] >= '0' && priceText[priceTextOffset] <= '9')

@@ -58,4 +58,26 @@ describe('Get Price', () => {
       expect(actualPrice).to.equal(0.134);
     });
   });
+
+  describe('Given culture ("zh-tw") puts duration before the price', () => {
+    describe('And given no discount (eg "每小時 NT$0.493")', () => {
+      it('Then parse price', () => {
+        const tr = getMarkup('每小時 NT$0.493');
+
+        const actualPrice = getPrice(tr, '.column-6');
+
+        expect(actualPrice).to.equal(0.493);
+      });
+    });
+
+    describe('And given discount (eg "每小時 NT$0.337 (~32%)")', () => {
+      it('Then parse price', () => {
+        const tr = getMarkup('每小時 NT$0.337 (~32%)');
+
+        const actualPrice = getPrice(tr, '.column-6');
+
+        expect(actualPrice).to.equal(0.337);
+      });
+    });
+  });
 });
