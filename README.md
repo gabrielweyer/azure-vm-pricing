@@ -13,6 +13,8 @@ This tool is composed of two components:
 
 This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
+[![Build Status](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_apis/build/status/Parser?branchName=master&label=Parser)](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_build/latest?definitionId=14&branchName=master)
+
 ## Parser
 
 Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
