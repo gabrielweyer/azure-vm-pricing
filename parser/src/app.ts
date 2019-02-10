@@ -108,7 +108,11 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
   const priceText = span.textContent;
 
   let firstDigitOffset = -1;
-  const firstSlashOffset = priceText.indexOf('/');
+  let separatorOffset = priceText.indexOf('/');
+
+  if (separatorOffset === -1) {
+    separatorOffset = priceText.indexOf(' per ');
+  }
 
   for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
   {
@@ -119,8 +123,8 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
     }
   }
 
-  if (firstDigitOffset > -1 && firstSlashOffset > firstDigitOffset) {
-    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset, firstSlashOffset);
+  if (firstDigitOffset > -1 && separatorOffset > firstDigitOffset) {
+    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset, separatorOffset);
 
     const lastIndexOfDot = priceWithoutCurrencyAndDuration.lastIndexOf('.');
     const lastIndexOfComma = priceWithoutCurrencyAndDuration.lastIndexOf(',');

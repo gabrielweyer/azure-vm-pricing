@@ -48,4 +48,14 @@ describe('Get Price', () => {
       });
     });
   });
+
+  describe('Given culture ("nb-no") does not use "/" as separation before duration (eg "kr0,134 per time")', () => {
+    it('Then parse price', () => {
+      const tr = getMarkup('kr0,134 per time');
+
+      const actualPrice = getPrice(tr, '.column-6');
+
+      expect(actualPrice).to.equal(0.134);
+    });
+  });
 });

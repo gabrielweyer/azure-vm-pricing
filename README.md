@@ -45,7 +45,7 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
 | | | `CHF`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
 | `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :x: |
+| `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :white_check_mark: |
 | `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :white_check_mark: |
 | `pl-pl` | `Polski` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
 | `pt-br` | `Português (Brasil)` | `BRL` | `Brazilian Real (R$)` | :white_check_mark: |
@@ -54,7 +54,7 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `tr-tr` | `Türkçe` | `TRY` | `Turkish Lira (TL)` | :white_check_mark: |
 | `ru-ru` | `Pусский` | `RUB` | `Russian Ruble (руб)` | :white_check_mark: |
 | `ja-jp` | `日本語` | `JPY` | `Japanese Yen (¥)` | :white_check_mark: |
-| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark:     |
+| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark: |
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
 | `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :x: |
 | | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :x: |
