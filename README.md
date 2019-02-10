@@ -9,13 +9,13 @@ The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricin
 This tool is composed of two components:
 
 1. A [Parser](#parser) retrieving the pricing from [Virtual Machines Pricing][virtual-machines-pricing]
-2. A [Coster](#coster) using the output from the `Parser` and a list of `VMs` specifications to establish their price
+2. A [Coster](#coster) using the output from the `Parser` and a list of `VM` specifications to determine their price
 
 This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
 ## Parser
 
-Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **operating system** and **region**.
+Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
 
 | Culture | Culture display name | Currency | Currency display name | Support |
 | - | - | - | - | - |
@@ -58,26 +58,6 @@ Retrieve `VMs` **hourly** pricing for a specific **culture**, **currency**, **op
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
 | `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :white_check_mark: |
 | | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
-
-<a id="closest-currency-1">1.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
-
-<a id="closest-currency-2">2.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
-
-<a id="closest-currency-3">3.</a> USD is used when no other currency could be matched to the country.
-
-<a id="closest-culture-4">4.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
-
-<a id="closest-culture-5">5.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
-
-<a id="closest-culture-6">6.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
-
-<a id="closest-culture-7">7.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
-
-<a id="closest-currency-8">8.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
-
-<a id="closest-culture-9">9.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
-
-<a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
 
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
@@ -192,6 +172,28 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 - `One Year Reserved`
 - `Three Year Reserved`
 - `Three Year Reverved with Azure Hybrid Benefit`
+
+## Notes and references
+
+<a id="closest-currency-1">1.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
+
+<a id="closest-currency-2">2.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
+
+<a id="closest-currency-3">3.</a> USD is used when no other currency could be matched to the country.
+
+<a id="closest-culture-4">4.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
+
+<a id="closest-culture-5">5.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
+
+<a id="closest-culture-6">6.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
+
+<a id="closest-culture-7">7.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
+
+<a id="closest-currency-8">8.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
+
+<a id="closest-culture-9">9.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
+
+<a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
 
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
 [managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/
