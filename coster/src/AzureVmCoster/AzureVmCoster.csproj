@@ -11,7 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Pricing\*.json">
+    <None Update="Pricing/**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Out/**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

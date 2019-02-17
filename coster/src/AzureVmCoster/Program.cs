@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
+using System.Threading;
 using AzureVmCoster.Services;
 
 namespace AzureVmCoster
@@ -10,14 +12,43 @@ namespace AzureVmCoster
 
         static int Main(string[] args)
         {
-            string inputFilePath;
+            string inputFilePath = null;
+            var culture = Thread.CurrentThread.CurrentCulture;
+
 #if DEBUG
             Console.Write("Input file path: ");
             inputFilePath = Console.ReadLine();
 
+            Console.Write("Culture (leave blank for system default): ");
+            var cultureInput = Console.ReadLine();
+
+            if (!string.IsNullOrWhiteSpace(cultureInput))
+            {
+                culture = new CultureInfo(cultureInput);
+            }
+#else
+            for (var offset = 0; offset < args.Length; offset += 2)
+            {
+                switch (args[offset])
+                {
+                    case "-l":
+                    case "--culture":
+                        culture = new CultureInfo(args[offset + 1]);
+                        break;
+                    case "-i":
+                    case "--input":
+                        inputFilePath = args[offset + 1];
+                        break;
+                    default:
+                        Console.WriteLine($"'{args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input'");
+                        break;
+                }
+            }
+#endif
+
             if (string.IsNullOrWhiteSpace(inputFilePath))
             {
-                Console.WriteLine("The input file path is required");
+                Console.WriteLine("The input file path is required: -i <file-path>");
                 return -1;
             }
 
@@ -25,15 +56,6 @@ namespace AzureVmCoster
             {
                 inputFilePath = inputFilePath.Replace("\"", "");
             }
-#else
-            if (args.Length != 1)
-            {
-                Console.WriteLine("You should provide the input file path as the single argument");
-                return -1;
-            }
-
-            inputFilePath = args[0];
-#endif
 
             var inputFile = new FileInfo(inputFilePath);
 
@@ -49,7 +71,7 @@ namespace AzureVmCoster
                 return -1;
             }
 
-            var inputVms = new InputVmParser().Parse(inputFile);
+            var inputVms = new InputVmParser().Parse(inputFile, culture);
 
             var pricer = new Pricer(PricingDirectory);
             pricer.EnsurePricingExists(inputVms);
@@ -57,7 +79,7 @@ namespace AzureVmCoster
             var pricings = new VmPricingParser(PricingDirectory).Parse();
 
             var pricedVms = pricer.Price(inputVms, pricings);
-            new PricedVmWriter().Write(inputFile.Name, pricedVms);
+            new PricedVmWriter().Write(inputFile.Name, pricedVms, culture);
 
             return 0;
         }

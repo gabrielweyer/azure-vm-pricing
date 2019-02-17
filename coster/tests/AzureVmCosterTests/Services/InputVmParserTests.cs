@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using AzureVmCoster.Models;
@@ -15,7 +16,7 @@ namespace AzureVmCosterTests.Services
         {
             new InputVm {Name = "name-1", Region = "us-west", Cpu = 4, Ram = 8, OperatingSystem = "windows"},
             new InputVm {Name = "name-2", Region = "us-west-2", Cpu = 8, Ram = 16, OperatingSystem = "linux"},
-            new InputVm {Name = "name-3", Region = "us-west", Cpu = 16, Ram = 32, OperatingSystem = "linux"}
+            new InputVm {Name = "name-3", Region = "us-west", Cpu = 16, Ram = 32.5m, OperatingSystem = "linux"}
         };
 
         public InputVmParserTests()
@@ -24,11 +25,13 @@ namespace AzureVmCosterTests.Services
         }
 
         [Fact]
-        public void GivenExactMatchInput_WhenParse_ThenPreserveOrder()
+        public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenPreserveOrder()
         {
             // Act
 
-            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-01.csv"));
+            var file = new FileInfo(@"SampleInputs\input-en-au.csv");
+            var culture = new CultureInfo("en-au");
+            var actualVms = _target.Parse(file, culture);
 
             // Assert
 
@@ -37,11 +40,13 @@ namespace AzureVmCosterTests.Services
         }
 
         [Fact]
-        public void GivenExactMatchInput_WhenParse_ThenParseAllFields()
+        public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenParseAllFields()
         {
             // Act
 
-            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-01.csv"));
+            var file = new FileInfo(@"SampleInputs\input-en-au.csv");
+            var culture = new CultureInfo("en-au");
+            var actualVms = _target.Parse(file, culture);
 
             // Assert
 
@@ -50,11 +55,28 @@ namespace AzureVmCosterTests.Services
         }
 
         [Fact]
-        public void GivenInputWithUnknownFields_WhenParse_ThenIgnoreUnknownFields()
+        public void GivenInputWithUnknownFieldsAndCultureWithPeriodDecimalPoint_WhenParse_ThenIgnoreUnknownFields()
         {
             // Act
 
-            var actualVms = _target.Parse(new FileInfo(@"SampleInputs\input-02.csv"));
+            var fileInfo = new FileInfo(@"SampleInputs\input-en-au-extra-fields.csv");
+            var culture = new CultureInfo("en-au");
+            var actualVms = _target.Parse(fileInfo, culture);
+
+            // Assert
+
+            Assert.NotNull(actualVms);
+            actualVms.Should().BeEquivalentTo(_expected);
+        }
+
+        [Fact]
+        public void GivenExactMatchInputAndCultureWithCommaDecimalPoint_WhenParse_ThenParseAllFields()
+        {
+            // Act
+
+            var file = new FileInfo(@"SampleInputs\input-fr-fr.csv");
+            var culture = new CultureInfo("fr-fr");
+            var actualVms = _target.Parse(file, culture);
 
             // Assert
 
