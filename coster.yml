@@ -1,0 +1,33 @@
+pool:
+  vmImage: 'Ubuntu-16.04'
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - coster/*
+    - coster.yml
+
+steps:
+
+- task: DotNetCoreInstaller@0
+  displayName: Install .NET Core SDK 1.13.0
+  inputs:
+    packageType: 'sdk'
+    version: '2.2.104'
+
+- bash: |
+    dotnet test --logger trx --results-directory $(Common.TestResultsDirectory) --output $(Build.StagingDirectory)
+  workingDirectory: coster
+  displayName: dotnet test
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '*.trx'
+    testResultsFormat: 'VSTest'
+    searchFolder: $(Common.TestResultsDirectory)
+    publishRunAttachments: true
+  condition: succeededOrFailed()
+  displayName: Publish tests results
