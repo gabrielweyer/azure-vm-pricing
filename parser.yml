@@ -24,17 +24,17 @@ steps:
     ProjectDirectory: parser
 
 - bash: |
-    cd parser
     yarn test-ci
   env:
     MOCHA_FILE: '$(Common.TestResultsDirectory)/test-results.xml'
+  workingDirectory: parser
   displayName: yarn test
 
 - bash: |
-    cd parser
     yarn e2e-ci
   env:
     MOCHA_FILE: '$(Common.TestResultsDirectory)/e2e-results.xml'
+  workingDirectory: parser
   displayName: yarn e2e
 
 - task: PublishTestResults@2
