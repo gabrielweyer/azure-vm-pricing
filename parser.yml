@@ -13,9 +13,9 @@ trigger:
 steps:
 
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
-  displayName: Install Yarn 1.13.0
+  displayName: Install Yarn 1.16.0
   inputs:
-    versionSpec: 1.13.0
+    versionSpec: 1.16.0
 
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
   displayName: yarn install

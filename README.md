@@ -68,7 +68,7 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 ### Parser pre-requisites
 
 - `Node.js 8.12`
-- `Yarn 1.13.0`
+- `Yarn 1.16.0`
 
 ```posh
 λ  cd .\parser\
