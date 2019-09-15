@@ -13,10 +13,10 @@ trigger:
 steps:
 
 - task: DotNetCoreInstaller@0
-  displayName: Install .NET Core SDK 1.13.0
+  displayName: Install .NET Core SDK 2.2.402
   inputs:
     packageType: 'sdk'
-    version: '2.2.104'
+    version: '2.2.402'
 
 - bash: |
     dotnet test --logger trx --results-directory $(Common.TestResultsDirectory) --output $(Build.StagingDirectory)
