@@ -210,7 +210,7 @@ function writeCsv(vmPricing: VmPricing[], culture: string, region: string, opera
 async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
   console.log('Selecting currency:', currency);
 
-  const selector = '#currency-dropdown';
+  const selector = '#currency-dropdown-footer';
 
   await setSelect(page, selector, currency)  ;
 }
