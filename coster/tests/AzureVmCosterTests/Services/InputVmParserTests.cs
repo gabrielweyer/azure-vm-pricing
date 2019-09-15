@@ -29,7 +29,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var file = new FileInfo(@"SampleInputs\input-en-au.csv");
+            var file = new FileInfo(@"SampleInputs/input-en-au.csv");
             var culture = new CultureInfo("en-au");
             var actualVms = _target.Parse(file, culture);
 
@@ -44,7 +44,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var file = new FileInfo(@"SampleInputs\input-en-au.csv");
+            var file = new FileInfo(@"SampleInputs/input-en-au.csv");
             var culture = new CultureInfo("en-au");
             var actualVms = _target.Parse(file, culture);
 
@@ -59,7 +59,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var fileInfo = new FileInfo(@"SampleInputs\input-en-au-extra-fields.csv");
+            var fileInfo = new FileInfo(@"SampleInputs/input-en-au-extra-fields.csv");
             var culture = new CultureInfo("en-au");
             var actualVms = _target.Parse(fileInfo, culture);
 
@@ -74,7 +74,7 @@ namespace AzureVmCosterTests.Services
         {
             // Act
 
-            var file = new FileInfo(@"SampleInputs\input-fr-fr.csv");
+            var file = new FileInfo(@"SampleInputs/input-fr-fr.csv");
             var culture = new CultureInfo("fr-fr");
             var actualVms = _target.Parse(file, culture);
 

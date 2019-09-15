@@ -13,7 +13,7 @@ namespace AzureVmCosterTests.Services
 
         public PricerTests()
         {
-            _target = new Pricer(@"SamplePricing\");
+            _target = new Pricer(@"SamplePricing/");
         }
 
         [Fact]
