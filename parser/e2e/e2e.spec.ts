@@ -100,7 +100,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     });
 
     it('ARS - Argentine Peso ($)', (done) => {
-      assert(done, culture, 'ARS', 'B1S,1,1,"0,7741","0,5282","0,4097","0,2209"');
+      assert(done, culture, 'ARS', 'B1S,1,1,"1,0075","0,6875","0,5333","0,2875"');
     });
   });
 
