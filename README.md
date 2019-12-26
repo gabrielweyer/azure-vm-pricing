@@ -70,7 +70,7 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 ### Parser pre-requisites
 
 - `Node.js 12.13.0`
-- `Yarn 1.17.3`
+- `Yarn 1.21.1`
 
 ```powershell
 > cd .\parser\

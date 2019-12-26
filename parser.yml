@@ -12,16 +12,16 @@ trigger:
 
 steps:
 
-- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
-  displayName: Install Yarn 1.17.3
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
+  displayName: Install Yarn 1.21.1
   inputs:
-    versionSpec: 1.17.3
+    versionSpec: 1.21.1
 
-- task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+- task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
   displayName: yarn install
   inputs:
-    Arguments: install
-    ProjectDirectory: parser
+    arguments: install
+    projectDirectory: parser
 
 - bash: |
     yarn test-ci
