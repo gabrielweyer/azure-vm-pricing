@@ -25,6 +25,7 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 | - | - | - | - | - |
 | `en-us` | `English (US)` | `USD` | `US Dollar ($)` | :white_check_mark: |
 | | | `SAR`[[8]](#closest-currency-8) | `Saudi Riyal (SR)` | :white_check_mark: |
+| | | `IDR`[[11]](#closest-culture-11) | `Indonesian Rupiah (Rp)` | :white_check_mark: |
 | `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
 | `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :white_check_mark: |
 | `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :white_check_mark: |
@@ -44,8 +45,6 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 | | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
 | `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
 | `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :white_check_mark: |
-| `th-th` | `ประเทศไทย` | `USD`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
-| `id-id` | `Bahasa Indonesia` | `IDR` | `Indonesian Rupiah (Rp)` | :white_check_mark: |
 | `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
 | | | `CHF`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
 | `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
@@ -115,13 +114,17 @@ Writes `2` output files in the `out\` directory. One is a `CSV`, the other one i
 
 Fields:
 
-- `Instance`
-- `vCPU`
-- `RAM`
-- `Pay as You Go`
-- `One Year Reserved`
-- `Three Year Reserved`
-- `Three Year Reserved With Azure Hybrid Benefit`
+- _Instance_
+- _vCPU_
+- _RAM_
+- _Pay as You Go_
+- _Pay as You Go With Azure Hybrid Benefit_
+- _One Year Reserved_
+- _One Year Reserved With Azure Hybrid Benefit_
+- _Three Year Reserved_
+- _Three Year Reserved With Azure Hybrid Benefit_
+- _Spot_
+- _Spot With Azure Hybrid Benefit_
 
 ### Parser tests
 
@@ -132,7 +135,7 @@ The parser has unit tests focusing on edge cases of price formatting:
 > yarn test
 ```
 
-The end-to-end tests attempt to compare known prices for the `windows` instance `B1S` in `us-west` using permutations of supported `culture` and `currency`:
+The end-to-end tests attempt to compare known prices for the `windows` instance `D2 v3` in `us-west` using permutations of supported `culture` and `currency`:
 
 ```powershell
 > cd .\parser\
@@ -219,6 +222,8 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 <a id="closest-culture-9">09.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
 
 <a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
+
+<a id="closest-culture-11">11.</a> English (US) has been selected because it is the default language.
 
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
 [managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/

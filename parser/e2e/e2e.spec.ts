@@ -2,17 +2,22 @@ import { expect } from 'chai';
 import child_process = require('child_process');
 import fs = require('fs');
 import readline = require('readline');
+import { fail } from 'assert';
 
 describe('End-to-end tests for supported cultures and currencies', () => {
   describe('en-us - English (US)', () => {
     const culture = 'en-us';
 
     it('USD - US Dollar ($)', (done) => {
-      assert(done, culture, 'USD', 'B1S,1,1,0.0164,0.0112,0.0087,0.0047');
+      assert(done, culture, 'USD', 'D2 v3,2,8,0.209,0.117,0.1714,0.0794,0.1428,0.0508,0.0836,0.023');
     });
 
     it('SAR - Saudi Riyal (SR)', (done) => {
-      assert(done, culture, 'SAR', 'B1S,1,1,0.0615,0.042,0.0326,0.0176');
+      assert(done, culture, 'SAR', 'D2 v3,2,8,0.7838,0.4388,0.6426,0.2976,0.5354,0.1904,0.3135,0.0863');
+    });
+
+    it('IDR - Indonesian Rupiah (Rp)', (done) => {
+      assert(done, culture, 'IDR', 'D2 v3,2,8,3268.76,1829.88,2679.7576,1240.8776,2232.7664,793.8864,1307.504,359.72');
     });
   });
 
@@ -20,7 +25,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'cs-cz';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -28,7 +33,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'da-dk';
 
     it('DKK - Danish Krone (kr)', (done) => {
-      assert(done, culture, 'DKK', 'B1S,1,1,"0,1033","0,0705","0,0547","0,0295"');
+      assert(done, culture, 'DKK', 'D2 v3,2,8,"1,3154","0,7364","1,0784","0,4994","0,8985","0,3195","0,5679","0,1563"');
     });
   });
 
@@ -36,11 +41,11 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'de-de';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
 
     it('CHF - Swiss Franc. (chf)', (done) => {
-      assert(done, culture, 'CHF', 'B1S,1,1,"0,0162","0,0111","0,0086","0,0047"');
+      assert(done, culture, 'CHF', 'D2 v3,2,8,"0,2057","0,1152","0,1687","0,0781","0,1405","0,05","0,0836","0,023"');
     });
   });
 
@@ -48,7 +53,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'en-au';
 
     it('AUD - Australian Dollar ($)', (done) => {
-      assert(done, culture, 'AUD', 'B1S,1,1,0.0226,0.0154,0.012,0.0065');
+      assert(done, culture, 'AUD', 'D2 v3,2,8,0.287,0.1607,0.2353,0.109,0.1961,0.0697,0.1233,0.034');
     });
   });
 
@@ -56,7 +61,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'en-ca';
 
     it('CAD - Canadian Dollar ($)', (done) => {
-      assert(done, culture, 'CAD', 'B1S,1,1,0.021,0.0144,0.0112,0.006');
+      assert(done, culture, 'CAD', 'D2 v3,2,8,0.2676,0.1498,0.2194,0.1016,0.1828,0.065,0.1111,0.0306');
     });
   });
 
@@ -64,7 +69,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'en-in';
 
     it('INR - Indian Rupee (₹)', (done) => {
-      assert(done, culture, 'INR', 'B1S,1,1,1.084,0.7397,0.5738,0.3094');
+      assert(done, culture, 'INR', 'D2 v3,2,8,13.8142,7.7333,11.325,5.2441,9.436,3.3551,5.9654,1.6412');
     });
   });
 
@@ -72,23 +77,23 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'en-gb';
 
     it('GBP - British Pound (£)', (done) => {
-      assert(done, culture, 'GBP', 'B1S,1,1,0.0123,0.0084,0.0065,0.0035');
+      assert(done, culture, 'GBP', 'D2 v3,2,8,0.1558,0.0873,0.1278,0.0592,0.1065,0.0379,0.065,0.0179');
     });
 
     it('MYR - Malaysian Ringgit (RM$)', (done) => {
-      assert(done, culture, 'MYR', 'B1S,1,1,0.0689,0.047,0.0365,0.0197');
+      assert(done, culture, 'MYR', 'D2 v3,2,8,0.8778,0.4914,0.7197,0.3333,0.5996,0.2132,0.3512,0.0966');
     });
 
     it('ZAR - South African Rand (R)', (done) => {
-      assert(done, culture, 'ZAR', 'B1S,1,1,0.2493,0.1701,0.132,0.0712');
+      assert(done, culture, 'ZAR', 'D2 v3,2,8,3.1768,1.7784,2.6044,1.206,2.17,0.7716,1.2708,0.3496');
     });
 
     it('NZD - New Zealand Dollar ($)', (done) => {
-      assert(done, culture, 'NZD', 'B1S,1,1,0.0248,0.017,0.0132,0.0071');
+      assert(done, culture, 'NZD', 'D2 v3,2,8,0.316,0.1769,0.2591,0.12,0.2159,0.0768,0.1302,0.0359');
     });
 
     it('HKD - Hong Kong Dollar (HK$)', (done) => {
-      assert(done, culture, 'HKD', 'B1S,1,1,0.1273,0.0869,0.0674,0.0364');
+      assert(done, culture, 'HKD', 'D2 v3,2,8,1.6219,0.908,1.3296,0.6157,1.1079,0.3939,0.6488,0.1785');
     });
   });
 
@@ -96,11 +101,11 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'es-es';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
 
     it('ARS - Argentine Peso ($)', (done) => {
-      assert(done, culture, 'ARS', 'B1S,1,1,"1,0075","0,6875","0,5333","0,2875"');
+      assert(done, culture, 'ARS', 'D2 v3,2,8,"12,8389","7,1874","10,5255","4,8739","8,7698","3,1182","5,1356","1,4129"');
     });
   });
 
@@ -108,7 +113,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'es-mx';
 
     it('MXN - Mexican Peso (MXN$)', (done) => {
-      assert(done, culture, 'MXN', 'B1S,1,1,0.3166,0.216,0.1676,0.0904');
+      assert(done, culture, 'MXN', 'D2 v3,2,8,4.0337,2.2581,3.3069,1.5313,2.7553,0.9797,1.6135,0.4439');
     });
   });
 
@@ -116,11 +121,11 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'fr-fr';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
 
     it('CHF - Swiss Franc. (chf)', (done) => {
-      assert(done, culture, 'CHF', 'B1S,1,1,"0,0162","0,0111","0,0086","0,0047"');
+      assert(done, culture, 'CHF', 'D2 v3,2,8,"0,2057","0,1152","0,1687","0,0781","0,1405","0,05","0,0836","0,023"');
     });
   });
 
@@ -128,7 +133,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'fr-ca';
 
     it('CAD - Canadian Dollar ($)', (done) => {
-      assert(done, culture, 'CAD', 'B1S,1,1,"0,021","0,0144","0,0112","0,006"');
+      assert(done, culture, 'CAD', 'D2 v3,2,8,"0,2676","0,1498","0,2194","0,1016","0,1828","0,065","0,1111","0,0306"');
     });
   });
 
@@ -136,23 +141,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'is-is';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
-    });
-  });
-
-  describe('th-th - ประเทศไทย', () => {
-    const culture = 'th-th';
-
-    it('USD - US Dollar ($)', (done) => {
-      assert(done, culture, 'USD', 'B1S,1,1,0.0164,0.0112,0.0087,0.0047');
-    });
-  });
-
-  describe('id-id - Bahasa Indonesia', () => {
-    const culture = 'id-id';
-
-    it('IDR - Indonesian Rupiah (Rp)', (done) => {
-      assert(done, culture, 'IDR', 'B1S,1,1,"256,496","175,0116","135,7552","73,1952"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -160,11 +149,11 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'it-it';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
 
     it('CHF - Swiss Franc. (chf)', (done) => {
-      assert(done, culture, 'CHF', 'B1S,1,1,"0,0162","0,0111","0,0086","0,0047"');
+      assert(done, culture, 'CHF', 'D2 v3,2,8,"0,2057","0,1152","0,1687","0,0781","0,1405","0,05","0,0836","0,023"');
     });
   });
 
@@ -172,7 +161,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'hu-hu';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -180,7 +169,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'nb-no';
 
     it('NOK - Norwegian Krone (kr)', (done) => {
-      assert(done, culture, 'NOK', 'B1S,1,1,"0,1331","0,0908","0,0705","0,038"');
+      assert(done, culture, 'NOK', 'D2 v3,2,8,"1,6959","0,9494","1,3903","0,6438","1,1584","0,4119","0,7672","0,2111"');
     });
   });
 
@@ -188,7 +177,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'nl-nl';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -196,7 +185,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'pl-pl';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -204,7 +193,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'pt-br';
 
     it('BRL - Brazilian Real (R$)', (done) => {
-      assert(done, culture, 'BRL', 'B1S,1,1,"0,061","0,0416","0,0323","0,0174"');
+      assert(done, culture, 'BRL', 'D2 v3,2,8,"0,7764","0,4347","0,6365","0,2948","0,5304","0,1886","0,3106","0,0855"');
     });
   });
 
@@ -212,7 +201,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'pt-pt';
 
     it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'B1S,1,1,"0,0139","0,0095","0,0074","0,004"');
+      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,0761","0,021"');
     });
   });
 
@@ -220,7 +209,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'sv-se';
 
     it('SEK - Swedish Krona (kr)', (done) => {
-      assert(done, culture, 'SEK', 'B1S,1,1,"0,1433","0,0978","0,0759","0,0409"');
+      assert(done, culture, 'SEK', 'D2 v3,2,8,"1,8261","1,0223","1,4971","0,6932","1,2473","0,4435","0,8015","0,2205"');
     });
   });
 
@@ -228,7 +217,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'tr-tr';
 
     it('TRY - Turkish Lira (TL)', (done) => {
-      assert(done, culture, 'TRY', 'B1S,1,1,"0,092","0,0628","0,0487","0,0263"');
+      assert(done, culture, 'TRY', 'D2 v3,2,8,"1,1712","0,6557","0,9602","0,4447","0,8","0,2845","0,4685","0,1289"');
     });
   });
 
@@ -236,7 +225,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'ru-ru';
 
     it('RUB - Russian Ruble (руб)', (done) => {
-      assert(done, culture, 'RUB', 'B1S,1,1,"1,025","0,6994","0,5425","0,2925"');
+      assert(done, culture, 'RUB', 'D2 v3,2,8,"13,0625","7,3125","10,7088","4,9588","8,9225","3,1725","5,3555","1,4734"');
     });
   });
 
@@ -244,7 +233,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'ja-jp';
 
     it('JPY - Japanese Yen (¥)', (done) => {
-      assert(done, culture, 'JPY', 'B1S,1,1,1.8368,1.2533,0.9722,0.5242');
+      assert(done, culture, 'JPY', 'D2 v3,2,8,23.408,13.104,19.1901,8.8861,15.9892,5.6852,9.1442,2.5158');
     });
   });
 
@@ -252,7 +241,7 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'ko-kr';
 
     it('KRW - Korean Won (₩)', (done) => {
-      assert(done, culture, 'KRW', 'B1S,1,1,18.4443,12.5849,9.762,5.2634');
+      assert(done, culture, 'KRW', 'D2 v3,2,8,235.0519,131.5841,192.6976,89.2298,160.5551,57.0873,98.4182,27.0768');
     });
   });
 
@@ -260,11 +249,11 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     const culture = 'zh-tw';
 
     it('TWD - Taiwanese Dollar (NT$)', (done) => {
-      assert(done, culture, 'TWD', 'B1S,1,1,0.4929,0.3364,0.2609,0.1407');
+      assert(done, culture, 'TWD', 'D2 v3,2,8,6.2814,3.5164,5.1495,2.3846,4.2906,1.5256,2.5503,0.7017');
     });
 
     it('HKD - Hong Kong Dollar (HK$)', (done) => {
-      assert(done, culture, 'HKD', 'B1S,1,1,0.1273,0.0869,0.0674,0.0364');
+      assert(done, culture, 'HKD', 'D2 v3,2,8,1.6219,0.908,1.3296,0.6157,1.1079,0.3939,0.6488,0.1785');
     });
   });
 });
@@ -291,12 +280,17 @@ function assert(done: Mocha.Done, culture: string, currency: string, expectedCsv
       crlfDelay: Infinity
     });
 
-    let lineCount = 0;
+    let foundExpectedVirtualMachine = false;
+
+    rl.on('close', () => {
+      if (!foundExpectedVirtualMachine) {
+        fail('Did not find "D2 v3" virtual machine.');
+      }
+    });
 
     rl.on('line', (line) => {
-      lineCount++;
-
-      if (lineCount === 2) {
+      if (line.startsWith('D2 v3,')) {
+        foundExpectedVirtualMachine = true;
         rl.close();
         expect(line).to.equal(expectedCsvFirstVm);
         done();

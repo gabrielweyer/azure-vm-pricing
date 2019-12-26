@@ -13,9 +13,13 @@ interface VmPricing {
   vCpu: number;
   ram: number;
   payAsYouGo: number;
+  payAsYouGoWithAzureHybridBenefit: number;
   oneYearReserved: number;
+  oneYearReservedWithAzureHybridBenefit: number;
   threeYearReserved: number;
   threeYearReservedWithAzureHybridBenefit: number;
+  spot: number;
+  spotWithAzureHybridBenefit: number;
 }
 
 (async function() {
@@ -78,6 +82,13 @@ interface VmPricing {
     console.log('Culture:', config.culture);
     console.log('Operating System:', config.operatingSystem);
     await page.goto(`https://azure.microsoft.com/${config.culture}/pricing/details/virtual-machines/${config.operatingSystem}/`);
+
+    const actualCulture = page.url().substring(28, 33);
+
+    if (actualCulture !== config.culture) {
+      throw `The culture "${config.culture}" is not supported.`;
+    }
+
     await selectCurrency(page, config.currency);
     await selectRegion(page, config.region);
 
@@ -187,7 +198,7 @@ function writeCsv(vmPricing: VmPricing[], culture: string, region: string, opera
   const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
 
   var writer = fs.createWriteStream(outFilename);
-  writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,ONE YEAR RESERVED,THREE YEAR RESERVED, THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT\n');
+  writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,PAY AS YOU GO WITH AZURE HYBRID BENEFIT,ONE YEAR RESERVED,ONE YEAR RESERVED WITH AZURE HYBRID BENEFIT,THREE YEAR RESERVED,THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT,SPOT,SPOT WITH AZURE HYBRID BENEFIT\n');
 
   const writePrice = function writePrice(price: number): string {
     if (price === undefined) {
@@ -201,7 +212,7 @@ function writeCsv(vmPricing: VmPricing[], culture: string, region: string, opera
     return price.toString();
   }
 
-  vmPricing.forEach(vm => writer.write(`${vm.instance},${vm.vCpu},${vm.ram},${writePrice(vm.payAsYouGo)},${writePrice(vm.oneYearReserved)},${writePrice(vm.threeYearReserved)},${writePrice(vm.threeYearReservedWithAzureHybridBenefit)}\n`));
+  vmPricing.forEach(vm => writer.write(`${vm.instance},${vm.vCpu},${vm.ram},${writePrice(vm.payAsYouGo)},${writePrice(vm.payAsYouGoWithAzureHybridBenefit)},${writePrice(vm.oneYearReserved)},${writePrice(vm.oneYearReservedWithAzureHybridBenefit)},${writePrice(vm.threeYearReserved)},${writePrice(vm.threeYearReservedWithAzureHybridBenefit)},${writePrice(vm.spot)},${writePrice(vm.spotWithAzureHybridBenefit)}\n`));
 
   writer.end();
   console.log('Saved:', outFilename);
@@ -281,18 +292,26 @@ function getPricing(): VmPricing[] {
     const ram = getRam(tr);
 
     const payAsYouGo = getPrice(tr, 'td:nth-child(6)');
+    const payAsYouGoWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(7)');
     const oneYearReserved = getPrice(tr, 'td:nth-child(8)');
+    const oneYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(9)');
     const threeYearReserved = getPrice(tr, 'td:nth-child(10)');
     const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(11)');
+    const spot = getPrice(tr, 'td:nth-child(12)');
+    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(13)');
 
     return <VmPricing> {
       instance: instance,
       vCpu: vCpu,
       ram: ram,
       payAsYouGo: payAsYouGo,
+      payAsYouGoWithAzureHybridBenefit: payAsYouGoWithAzureHybridBenefit,
       oneYearReserved: oneYearReserved,
+      oneYearReservedWithAzureHybridBenefit: oneYearReservedWithAzureHybridBenefit,
       threeYearReserved: threeYearReserved,
-      threeYearReservedWithAzureHybridBenefit: threeYearReservedWithAzureHybridBenefit
+      threeYearReservedWithAzureHybridBenefit: threeYearReservedWithAzureHybridBenefit,
+      spot: spot,
+      spotWithAzureHybridBenefit: spotWithAzureHybridBenefit
     };
   })
   .filter(p => p != null);
