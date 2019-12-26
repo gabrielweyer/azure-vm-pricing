@@ -7,17 +7,17 @@
     "e2e-ci": "mocha --reporter mocha-junit-reporter e2e/**/*.spec.ts"
   },
   "devDependencies": {
-    "@types/chai": "4.2.4",
+    "@types/chai": "4.2.7",
     "@types/mocha": "5.2.7",
-    "@types/node": "12.12.7",
-    "@types/puppeteer": "1.20.2",
+    "@types/node": "13.1.0",
+    "@types/puppeteer": "2.0.0",
     "chai": "^4.2.0",
     "jsdom": "15.2.1",
     "mocha": "6.2.2",
     "mocha-junit-reporter": "^1.23.1",
     "puppeteer": "2.0.0",
-    "ts-node": "^8.4.1",
-    "typescript": "^3.7.2"
+    "ts-node": "8.5.4",
+    "typescript": "3.7.4"
   },
   "private": true
 }
