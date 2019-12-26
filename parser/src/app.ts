@@ -224,15 +224,15 @@ async function selectRegion(page: puppeteer.Page, region: string): Promise<void>
 }
 
 function getPricing(): VmPricing[] {
+  const pricingRowSelector = '.data-table__table:not([style="visibility: hidden;"]) tbody tr';
+
   const pricing =
-  Array.from(document.querySelectorAll('.sd-table:not(.pricing-unavailable) tbody tr'))
+  Array.from(document.querySelectorAll(pricingRowSelector))
   .map((tr: HTMLTableRowElement) => {
-    let isActive = tr.querySelector('.column-1 > span.active') !== null;
+    let isActive = tr.querySelector('td:nth-child(1) > span.active') !== null;
 
     const getInstance = function getInstance(tr: Element): string {
-      const instanceIndex = tr.querySelector('.column-1').hasAttribute('style') ? 1 : 2;
-
-      let instance = (<HTMLTableDataCellElement> tr.querySelector('.column-' + instanceIndex)).innerHTML;
+      let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
       const indexOfSup = instance.indexOf('<sup>');
 
       if (indexOfSup > -1) {
@@ -250,7 +250,7 @@ function getPricing(): VmPricing[] {
     }
 
     const getCpu = function getCpu(tr: Element): number {
-      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('.column-3')).innerHTML;
+      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
 
       const indexOfSlash = vCpu.indexOf('/');
 
@@ -264,7 +264,7 @@ function getPricing(): VmPricing[] {
     const vCpu = getCpu(tr);
 
     const getRam = function getRam(tr: Element): number {
-      let ram = (<HTMLTableDataCellElement> tr.querySelector('.column-4')).innerHTML;
+      let ram = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(4)')).innerHTML;
 
       const indexOfGib = ram.indexOf('GiB');
 
@@ -280,10 +280,10 @@ function getPricing(): VmPricing[] {
 
     const ram = getRam(tr);
 
-    const payAsYouGo = getPrice(tr, '.column-6');
-    const oneYearReserved = getPrice(tr, '.column-7');
-    const threeYearReserved = getPrice(tr, '.column-8');
-    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, '.column-9');
+    const payAsYouGo = getPrice(tr, 'td:nth-child(6)');
+    const oneYearReserved = getPrice(tr, 'td:nth-child(8)');
+    const threeYearReserved = getPrice(tr, 'td:nth-child(10)');
+    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(11)');
 
     return <VmPricing> {
       instance: instance,
@@ -296,6 +296,10 @@ function getPricing(): VmPricing[] {
     };
   })
   .filter(p => p != null);
+
+  if (pricing.length === 0) {
+    throw `Did not find any pricing rows, is the selector "${pricingRowSelector}" still valid?`;
+  }
 
   return pricing;
 }
