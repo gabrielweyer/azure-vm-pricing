@@ -10,6 +10,14 @@ trigger:
     - parser/*
     - parser.yml
 
+schedules:
+- cron: "20 0 * * *"
+  displayName: Daily
+  branches:
+    include:
+    - master
+  always: true
+
 steps:
 
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
