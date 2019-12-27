@@ -14,9 +14,13 @@ namespace AzureVmCoster.Models
                 VCpu = vmPricing.VCpu;
                 Ram = vmPricing.Ram;
                 PayAsYouGo = vmPricing.PayAsYouGo;
+                PayAsYouGoWithAzureHybridBenefit = vmPricing.PayAsYouGoWithAzureHybridBenefit;
                 OneYearReserved = vmPricing.OneYearReserved;
+                OneYearReservedWithAzureHybridBenefit = vmPricing.OneYearReservedWithAzureHybridBenefit;
                 ThreeYearReserved = vmPricing.ThreeYearReserved;
                 ThreeYearReservedWithAzureHybridBenefit = vmPricing.ThreeYearReservedWithAzureHybridBenefit;
+                Spot = vmPricing.Spot;
+                SpotWithAzureHybridBenefit = vmPricing.SpotWithAzureHybridBenefit;
             }
             else
             {
@@ -32,8 +36,12 @@ namespace AzureVmCoster.Models
         public short VCpu { get; }
         public decimal Ram { get; }
         public decimal? PayAsYouGo { get; }
+        public decimal? PayAsYouGoWithAzureHybridBenefit { get; }
         public decimal? OneYearReserved { get; }
+        public decimal? OneYearReservedWithAzureHybridBenefit { get; }
         public decimal? ThreeYearReserved { get; }
         public decimal? ThreeYearReservedWithAzureHybridBenefit { get; }
+        public decimal? Spot { get; }
+        public decimal? SpotWithAzureHybridBenefit { get; }
     }
 }

@@ -178,11 +178,11 @@ You'll need to provide the `<input-path>` when prompted, the `culture` is option
 
 `<input-path>` should point to a `CSV` file with the following fields:
 
-- `Region`
-- `Name`
-- `CPU` (`short`)
-- `RAM` (in `GB`, a `decimal`)
-- `Operating System`
+- _Region_
+- _Name_
+- _CPU_ (a `short`)
+- _RAM_ (in `GB`, a `decimal`)
+- _Operating System_
 
 The columns can be in any order and the `CSV` file can contain extra-columns. The `Region` and `Operating System` fields must match existing regions and supported operating systems in `Azure`.
 
@@ -190,16 +190,20 @@ The columns can be in any order and the `CSV` file can contain extra-columns. Th
 
 The `Coster` will generate a `CSV` file in the `Out\` directory with the following fields:
 
-- `Region`
-- `Name`
-- `Operating System`
-- `Instance`
-- `CPU`
-- `RAM`
-- `Pay as You Go`
-- `One Year Reserved`
-- `Three Year Reserved`
-- `Three Year Reverved with Azure Hybrid Benefit`
+- _Region_
+- _Name_
+- _Operating System_
+- _Instance_
+- _CPU_
+- _RAM_
+- _Pay as You Go_
+- _Pay as You Go With Azure Hybrid Benefit_
+- _One Year Reserved_
+- _One Year Reserved With Azure Hybrid Benefit_
+- _Three Year Reserved_
+- _Three Year Reserved With Azure Hybrid Benefit_
+- _Spot_
+- _Spot With Azure Hybrid Benefit_
 
 ## Notes and references
 
