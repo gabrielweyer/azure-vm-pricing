@@ -21,9 +21,9 @@ schedules:
 steps:
 
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@3
-  displayName: Install Yarn 1.21.1
+  displayName: Install Yarn 1.22.4
   inputs:
-    versionSpec: 1.21.1
+    versionSpec: 1.22.4
 
 - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@3
   displayName: yarn install
