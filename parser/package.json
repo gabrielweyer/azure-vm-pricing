@@ -6,6 +6,11 @@
     "e2e": "mocha e2e/**/*.spec.ts",
     "e2e-ci": "mocha --reporter mocha-junit-reporter e2e/**/*.spec.ts"
   },
+  "mocha": {
+    "require": "ts-node/register",
+    "timeout": 30000,
+    "slow": 20000
+  },
   "devDependencies": {
     "@types/chai": "4.2.7",
     "@types/mocha": "5.2.7",
