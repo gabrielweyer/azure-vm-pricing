@@ -13,7 +13,7 @@ namespace AzureVmCoster.Services
         public List<InputVm> Parse(FileInfo inputCsv, CultureInfo culture)
         {
             using (var reader = new StreamReader(inputCsv.FullName))
-            using (var csv = new CsvReader(reader))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
                 csv.Configuration.RegisterClassMap<InputVmMap>();
                 csv.Configuration.CultureInfo = culture;

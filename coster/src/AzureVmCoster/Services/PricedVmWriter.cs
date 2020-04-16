@@ -12,7 +12,7 @@ namespace AzureVmCoster.Services
         public void Write(string filename, List<PricedVm> pricedVms, CultureInfo culture)
         {
             using (var writer = new StreamWriter($@"Out\{filename}"))
-            using (var csv = new CsvWriter(writer))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
             {
                 csv.Configuration.RegisterClassMap<PricedVmMap>();
                 csv.Configuration.CultureInfo = culture;
