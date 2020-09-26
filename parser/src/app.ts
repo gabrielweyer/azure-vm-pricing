@@ -180,7 +180,6 @@ const commaDecimalPointCountries = [
   'es-es',
   'fr-fr',
   'fr-ca',
-  'is-is',
   'id-id',
   'it-it',
   'hu-hu',

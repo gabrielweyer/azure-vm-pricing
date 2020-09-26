@@ -137,14 +137,6 @@ describe('End-to-end tests for supported cultures and currencies', () => {
     });
   });
 
-  describe('is-is - Íslensku', () => {
-    const culture = 'is-is';
-
-    it('EUR - Euro (€)', (done) => {
-      assert(done, culture, 'EUR', 'D2 v3,2,8,"0,1763","0,0987","0,1445","0,067","0,1204","0,0429","0,06","0,024"');
-    });
-  });
-
   describe('it-it - Italiano', () => {
     const culture = 'it-it';
 

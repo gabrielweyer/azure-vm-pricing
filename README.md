@@ -44,7 +44,6 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 | `fr-fr` | `Français` | `EUR` | `Euro (€)` | :white_check_mark: |
 | | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
 | `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
-| `is-is` | `Íslensku` | `EUR`[[2]](#closest-currency-2) | `Euro (€)` | :white_check_mark: |
 | `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
 | | | `CHF`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
 | `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
@@ -208,8 +207,6 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 ## Notes and references
 
 <a id="closest-currency-1">01.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
-
-<a id="closest-currency-2">02.</a> Euro is used for Iceland because its [biggest trading partners][iceland-import-export] are using it.
 
 <a id="closest-currency-3">03.</a> USD is used when no other currency could be matched to the country.
 
