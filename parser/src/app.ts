@@ -6,6 +6,9 @@ interface AzureVmPricingConfig {
   currency: string;
   operatingSystem: string;
   region: string;
+  outputFilename: string;
+  outputCsv: boolean;
+  outputJson: boolean;
 }
 
 interface VmPricing {
@@ -27,6 +30,8 @@ interface VmPricing {
   let currency = 'AUD';
   let operatingSystem = 'windows';
   let region = 'australia-southeast'
+  let outputCsv = true
+  let outputJson = true
 
   if (!process.argv[1].endsWith('app.ts')) {
     return;
@@ -35,8 +40,9 @@ interface VmPricing {
   console.log();
 
   const args = process.argv.slice(2);
+  let filename = '';
 
-  for (let offset = 0; offset < args.length - 1; offset += 2) {
+  for (let offset = 0; offset < args.length; offset += 2) {
     switch (args[offset]) {
       case '-l':
       case '--culture':
@@ -54,17 +60,39 @@ interface VmPricing {
       case '--region':
         region = args[offset + 1];
         break;
+      case '-O':
+      case '--output-filename':
+        filename = args[offset + 1];
+        break;
+      case '-C':
+      case '--output-csv-only':
+        outputJson = false;
+        offset--;
+        break;
+      case '-J':
+      case '--output-json-only':
+        outputCsv = false;
+        offset--;
+        break;
       default:
-        console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region'`)
+        console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region', '-C', '--output-csv-only', '-J', '--output-json-only', '-O', '--output-filename'`)
         break;
     }
+  }
+
+  if (!outputCsv && !outputJson) {
+    console.log('Wrong arguments: Both JSON and CSV output are disabled.');
+    return;
   }
 
   const config: AzureVmPricingConfig = {
     culture: culture,
     currency: currency,
     operatingSystem: operatingSystem,
-    region: region
+    region: region,
+    outputCsv: outputCsv,
+    outputJson: outputJson,
+    outputFilename: filename !== '' ? filename: `./out/vm-pricing_${region}_${operatingSystem}`
   }
 
   const browser = await puppeteer.launch({headless: true});
@@ -99,8 +127,8 @@ interface VmPricing {
 
     console.log();
 
-    writeJson(vmPricing, config.region, config.operatingSystem);
-    writeCsv(vmPricing, config.culture, config.region, config.operatingSystem);
+    if (config.outputJson) writeJson(vmPricing, config.outputFilename);
+    if (config.outputCsv) writeCsv(vmPricing, config.culture, config.outputFilename);
   }
   finally
   {
@@ -161,8 +189,8 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
   }
 }
 
-function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.json`;
+function writeJson(vmPricing: VmPricing[], outputFilename: string): void {
+  const outFilename = `${outputFilename}.json`;
 
   fs.writeFile(outFilename, JSON.stringify(vmPricing, null, 2), function(err) {
     if(err) {
@@ -193,8 +221,8 @@ const commaDecimalPointCountries = [
   'ru-ru'
 ];
 
-function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
+function writeCsv(vmPricing: VmPricing[], culture: string, outputFilename: string): void {
+  const outFilename = `${outputFilename}.csv`;
 
   var writer = fs.createWriteStream(outFilename);
   writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,PAY AS YOU GO WITH AZURE HYBRID BENEFIT,ONE YEAR RESERVED,ONE YEAR RESERVED WITH AZURE HYBRID BENEFIT,THREE YEAR RESERVED,THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT,SPOT,SPOT WITH AZURE HYBRID BENEFIT\n');
