@@ -18,7 +18,7 @@ describe('Get Price', () => {
       expect(actualPrice).to.equal(0.014);
     });
 
-    describe('And give price is over a thousand (e.g. uses both "." and "," such as "3.346,96")', () => {
+    describe('And given price is over a thousand (e.g. uses both "." and "," such as "3.346,96")', () => {
       it('Then parse price', () => {
         const tr = getMarkup('Rp3.346,96/hour');
 
@@ -38,7 +38,7 @@ describe('Get Price', () => {
       expect(actualPrice).to.equal(0.017);
     });
 
-    describe('And give price is over a thousand (e.g. uses both "," and "." such as "3,346.96")', () => {
+    describe('And given price is over a thousand (e.g. uses both "," and "." such as "3,346.96")', () => {
       it('Then parse price', () => {
         const tr = getMarkup('$3,346.96/hour');
 
