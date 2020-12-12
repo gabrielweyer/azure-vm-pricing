@@ -10,3 +10,7 @@ yarn-error.log
 
 out/*.csv
 out/*.json
+
+# Jest
+
+junit.xml

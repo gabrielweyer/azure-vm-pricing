@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import fs = require('fs');
+const fs = require('fs');
 
 interface AzureVmPricingConfig {
   culture: string;

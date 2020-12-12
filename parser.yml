@@ -34,7 +34,8 @@ steps:
 - bash: |
     yarn test-ci
   env:
-    MOCHA_FILE: '$(Common.TestResultsDirectory)/test-results.xml'
+    JEST_JUNIT_OUTPUT_DIR: '$(Common.TestResultsDirectory)'
+    JEST_JUNIT_OUTPUT_NAME: unit.xml
   workingDirectory: parser
   displayName: yarn test
 
@@ -46,7 +47,8 @@ steps:
 - bash: |
     yarn e2e-ci
   env:
-    MOCHA_FILE: '$(Common.TestResultsDirectory)/e2e-results.xml'
+    JEST_JUNIT_OUTPUT_DIR: '$(Common.TestResultsDirectory)'
+    JEST_JUNIT_OUTPUT_NAME: e2e.xml
   workingDirectory: parser
   displayName: yarn e2e
 
@@ -55,6 +57,5 @@ steps:
     testResultsFiles: '*.xml'
     testResultsFormat: 'JUnit'
     searchFolder: $(Common.TestResultsDirectory)
-    publishRunAttachments: true
   condition: succeededOrFailed()
   displayName: Publish tests results
