@@ -4,7 +4,7 @@ pool:
 trigger:
   branches:
     include:
-    - master
+    - main
   paths:
     include:
     - parser/*
@@ -15,7 +15,7 @@ schedules:
   displayName: Daily
   branches:
     include:
-    - master
+    - main
   always: true
 
 steps:
