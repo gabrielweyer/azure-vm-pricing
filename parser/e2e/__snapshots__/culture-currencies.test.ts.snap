@@ -52,13 +52,13 @@ exports[`End-to-end tests for supported cultures and currencies ja-jp - 日本�
 
 exports[`End-to-end tests for supported cultures and currencies ko-kr - 한국어 KRW - Korean Won (₩) 1`] = `"D2 v3,2,8,235.0519,131.5841,192.6976,89.2298,160.5551,57.0873,68.3765,27.3437"`;
 
-exports[`End-to-end tests for supported cultures and currencies nb-no - Norsk NOK - Norwegian Krone (kr) 1`] = `"D2 v3,2,8,\\"1,6959\\",\\"0,9494\\",\\"1,3903\\",\\"0,6438\\",\\"1,1584\\",\\"0,4119\\",\\"0,4934\\",\\"0,1973\\""`;
+exports[`End-to-end tests for supported cultures and currencies nb-no - Norsk NOK - Norwegian Krone (kr) 1`] = `"D2 v3,2,8,\\"1,8424\\",\\"1,0314\\",\\"1,5105\\",\\"0,6995\\",\\"1,2585\\",\\"0,4475\\",\\"0,536\\",\\"0,2144\\""`;
 
 exports[`End-to-end tests for supported cultures and currencies nl-nl - Nederlands EUR - Euro (€) 1`] = `"D2 v3,2,8,\\"0,1763\\",\\"0,0987\\",\\"0,1445\\",\\"0,067\\",\\"0,1204\\",\\"0,0429\\",\\"0,0513\\",\\"0,0206\\""`;
 
 exports[`End-to-end tests for supported cultures and currencies pl-pl - Polski EUR - Euro (€) 1`] = `"D2 v3,2,8,\\"0,1763\\",\\"0,0987\\",\\"0,1445\\",\\"0,067\\",\\"0,1204\\",\\"0,0429\\",\\"0,0513\\",\\"0,0206\\""`;
 
-exports[`End-to-end tests for supported cultures and currencies pt-br - Português (Brasil) BRL - Brazilian Real (R$) 1`] = `"D2 v3,2,8,\\"0,8463\\",\\"0,4738\\",\\"0,6938\\",\\"0,3213\\",\\"0,5781\\",\\"0,2056\\",\\"0,2462\\",\\"0,0985\\""`;
+exports[`End-to-end tests for supported cultures and currencies pt-br - Português (Brasil) BRL - Brazilian Real (R$) 1`] = `"D2 v3,2,8,\\"1,0239\\",\\"0,5732\\",\\"0,8394\\",\\"0,3887\\",\\"0,6994\\",\\"0,2487\\",\\"0,2979\\",\\"0,1192\\""`;
 
 exports[`End-to-end tests for supported cultures and currencies pt-pt - Português EUR - Euro (€) 1`] = `"D2 v3,2,8,\\"0,1763\\",\\"0,0987\\",\\"0,1445\\",\\"0,067\\",\\"0,1204\\",\\"0,0429\\",\\"0,0513\\",\\"0,0206\\""`;
 
