@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer';
 const fs = require('fs');
+const { performance } = require('perf_hooks');
 
 interface AzureVmPricingConfig {
   culture: string;
@@ -22,7 +23,22 @@ interface VmPricing {
   spotWithAzureHybridBenefit: number;
 }
 
+let recordTiming = false;
+let previousPerformanceNow = 0;
+
+function timeEvent(eventName: string): void {
+  if (!recordTiming) return;
+
+  const happenedAt = Math.round(performance.now());
+  console.log(eventName, happenedAt, 'Elapsed', happenedAt - previousPerformanceNow);
+  previousPerformanceNow = happenedAt;
+}
+
 (async function() {
+  recordTiming = false;
+  const runHeadless = true;
+  timeEvent('crawlerStartedAt');
+
   let culture = 'en-au';
   let currency = 'AUD';
   let operatingSystem = 'windows';
@@ -67,11 +83,16 @@ interface VmPricing {
     region: region
   }
 
-  const browser = await puppeteer.launch({headless: true});
+  timeEvent('chromeStartedAt');
+  const browser = await puppeteer.launch({headless: runHeadless});
+  timeEvent('chromeLaunchedAt');
 
   try
   {
+    timeEvent('pageStartedAt');
     const page = await browser.newPage();
+    timeEvent('pageStartedAt');
+
     page.on('console', (log) => {
       if (log.type() === 'warning' || log.type() === 'error') {
         return;
@@ -81,7 +102,10 @@ interface VmPricing {
 
     console.log('Culture:', config.culture);
     console.log('Operating System:', config.operatingSystem);
+
+    timeEvent('pageLoadStartedAt');
     await page.goto(`https://azure.microsoft.com/${config.culture}/pricing/details/virtual-machines/${config.operatingSystem}/`);
+    timeEvent('pageLoadCompletedAt');
 
     const actualCulture = page.url().substring(28, 33);
 
@@ -89,13 +113,20 @@ interface VmPricing {
       throw `The culture "${config.culture}" is not supported.`;
     }
 
+    timeEvent('currencySelectionStartedAt');
     await selectCurrency(page, config.currency);
+    timeEvent('currencySelectionCompletedAt');
+
+    timeEvent('regionSelectionStartedAt');
     await selectRegion(page, config.region);
+    timeEvent('regionSelectionCompletedAt');
 
     console.log();
 
+    timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
     const vmPricing = await parsePricing(page, config.region);
+    timeEvent('parsePricingCompletedAt');
 
     console.log();
 
@@ -107,6 +138,8 @@ interface VmPricing {
     if (browser) {
       await browser.close();
     }
+
+    timeEvent('crawlerCompletedAt');
   }
 }());
 
