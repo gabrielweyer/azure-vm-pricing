@@ -272,7 +272,11 @@ function getPricing(): VmPricing[] {
   const pricing =
   Array.from(document.querySelectorAll(pricingRowSelector))
   .map((tr: HTMLTableRowElement) => {
-    let isActive = tr.querySelector('td:nth-child(1) > span.active') !== null;
+    let isInstanceRow = tr.querySelector('td:nth-child(1) > span.wa-conditionalDisplay') !== null;
+
+    if (!isInstanceRow) {
+      return undefined;
+    }
 
     const getInstance = function getInstance(tr: Element): string {
       let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
@@ -286,6 +290,7 @@ function getPricing(): VmPricing[] {
     }
 
     const instance = getInstance(tr);
+    let isActive = tr.querySelector('td:nth-child(1) > span.active') !== null;
 
     if (!isActive) {
       console.log(`Instance '${instance}' is inactive`);
