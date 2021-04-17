@@ -131,7 +131,7 @@ export default {
   // setupFilesAfterEnv: [],
 
   // Timeout of a test in milliseconds.
-  testTimeout: 30000,
+  testTimeout: 35000,
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
   slowTestThreshold: 20,
