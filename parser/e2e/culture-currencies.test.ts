@@ -344,12 +344,18 @@ function assert(
     { shell: true }
   );
 
+  let crawlerErrors = [];
+
   crawler.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
+    crawlerErrors.push(data);
   });
 
   crawler.on('close', (code) => {
     expect(code).toBe(0);
+
+    if (crawlerErrors.length > 0) {
+      done.fail(`Errors: ${crawlerErrors}`);
+    }
 
     const fileStream = fs.createReadStream(
       `./out/vm-pricing_${region}_${operatingSystem}.csv`
