@@ -366,5 +366,9 @@ async function parsePricing(page: puppeteer.Page, region: string): Promise<VmPri
 
 async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
   await page.waitForSelector(selector, { visible: true });
-  await page.select(`select${selector}`, value);
+  const selectedValue = await page.select(`select${selector}`, value);
+
+  if (selectedValue.length != 1 || selectedValue[0] !== value) {
+    throw `Failed to select '${value}' for selector '${selector}', instead selected '${selectedValue}'`
+  }
 }
