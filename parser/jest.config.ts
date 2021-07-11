@@ -131,10 +131,10 @@ export default {
   // setupFilesAfterEnv: [],
 
   // Timeout of a test in milliseconds.
-  testTimeout: 40000,
+  testTimeout: 60000,
 
   // The number of seconds after which a test is considered as slow and reported as such in the results.
-  slowTestThreshold: 20,
+  slowTestThreshold: 30,
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   // snapshotSerializers: [],
