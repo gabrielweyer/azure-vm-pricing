@@ -91,6 +91,7 @@ function timeEvent(eventName: string): void {
   {
     timeEvent('pageStartedAt');
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000);
     timeEvent('pageStartedAt');
 
     page.on('console', (log) => {
