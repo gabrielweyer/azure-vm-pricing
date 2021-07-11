@@ -3,8 +3,10 @@
     "crawl": "ts-node src/app.ts",
     "test": "jest src",
     "test-ci": "jest src --ci --reporters=default --reporters=jest-junit",
-    "e2e": "jest e2e",
-    "e2e-ci": "jest e2e --ci --reporters=default --reporters=jest-junit"
+    "e2e-us": "jest e2e -t \"End-to-end tests for supported cultures and currencies en-us - English \\(US\\) USD - US Dollar \\(\\$\\)\"",
+    "e2e-us-ci": "jest e2e --ci --reporters=default --reporters=jest-junit -t \"End-to-end tests for supported cultures and currencies en-us - English \\(US\\) USD - US Dollar \\(\\$\\)\"",
+    "e2e-all": "jest e2e",
+    "e2e-all-ci": "jest e2e --ci --reporters=default --reporters=jest-junit"
   },
   "prettier": {
     "singleQuote": true,
