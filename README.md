@@ -96,11 +96,11 @@ Arguments:
 - `operating-system` any of the `option` `value` in the **OS/Software** `select`
 - `region` any of the `option` `value` in the **Region** `select`
 
-![OS and Region select](docs/assets/os-region.png)
+![OS, Region amd Currency select](docs/assets/os-region-currency.png)
 
 In the footer:
 
-![Culture and Currency select](docs/assets/culture-currency.png)
+![Culture select](docs/assets/culture.png)
 
 ### Parser output
 
@@ -138,7 +138,7 @@ The end-to-end tests attempt to compare known prices for the `windows` instance 
 
 ```powershell
 > cd .\parser\
-> yarn e2e
+> yarn e2e-all
 ```
 
 ## Coster
