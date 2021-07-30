@@ -273,14 +273,14 @@ function getPricing(): VmPricing[] {
   const pricing =
   Array.from(document.querySelectorAll(pricingRowSelector))
   .map((tr: HTMLTableRowElement) => {
-    let isInstanceRow = tr.querySelector('td:nth-child(1) > span.wa-conditionalDisplay') !== null;
+    let isInstanceRow = tr.querySelector('td:nth-last-child(1) > span.wa-conditionalDisplay') !== null;
 
     if (!isInstanceRow) {
       return undefined;
     }
 
     const getInstance = function getInstance(tr: Element): string {
-      let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
+      let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
       const indexOfSup = instance.indexOf('<sup>');
 
       if (indexOfSup > -1) {
@@ -291,7 +291,7 @@ function getPricing(): VmPricing[] {
     }
 
     const instance = getInstance(tr);
-    let isActive = tr.querySelector('td:nth-child(1) > span.active') !== null;
+    let isActive = tr.querySelector('td:nth-last-child(1) > span.active') !== null;
 
     if (!isActive) {
       console.log(`Instance '${instance}' is inactive`);
@@ -299,7 +299,7 @@ function getPricing(): VmPricing[] {
     }
 
     const getCpu = function getCpu(tr: Element): number {
-      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
+      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
 
       const indexOfSlash = vCpu.indexOf('/');
 
@@ -313,7 +313,7 @@ function getPricing(): VmPricing[] {
     const vCpu = getCpu(tr);
 
     const getRam = function getRam(tr: Element): number {
-      let ram = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(4)')).innerHTML;
+      let ram = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
 
       const indexOfGib = ram.indexOf('GiB');
 
@@ -329,14 +329,14 @@ function getPricing(): VmPricing[] {
 
     const ram = getRam(tr);
 
-    const payAsYouGo = getPrice(tr, 'td:nth-child(6)');
-    const payAsYouGoWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(7)');
-    const oneYearReserved = getPrice(tr, 'td:nth-child(8)');
-    const oneYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(9)');
-    const threeYearReserved = getPrice(tr, 'td:nth-child(10)');
-    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(11)');
-    const spot = getPrice(tr, 'td:nth-child(12)');
-    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(13)');
+    const payAsYouGo = getPrice(tr, 'td:nth-child(5)');
+    const payAsYouGoWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(6)');
+    const oneYearReserved = getPrice(tr, 'td:nth-child(7)');
+    const oneYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(8)');
+    const threeYearReserved = getPrice(tr, 'td:nth-child(9)');
+    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(10)');
+    const spot = getPrice(tr, 'td:nth-child(11)');
+    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(12)');
 
     return <VmPricing> {
       instance: instance,
