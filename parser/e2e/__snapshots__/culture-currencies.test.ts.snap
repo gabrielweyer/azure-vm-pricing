@@ -30,7 +30,7 @@ exports[`End-to-end tests for supported cultures and currencies en-us - English 
 
 exports[`End-to-end tests for supported cultures and currencies en-us - English (US) USD - US Dollar ($) 1`] = `"D2 v3,2,8,0.209,0.117,0.1714,0.0794,0.1428,0.0508,0.085,0.034"`;
 
-exports[`End-to-end tests for supported cultures and currencies es-es - Español ARS - Argentine Peso ($) 1`] = `"D2 v3,2,8,\\"17,4578\\",\\"9,7731\\",\\"14,3121\\",\\"6,6273\\",\\"11,9248\\",\\"4,24\\",\\"7,1001\\",\\"2,8391\\""`;
+exports[`End-to-end tests for supported cultures and currencies es-es - Español ARS - Argentine Peso ($) 1`] = `"D2 v3,2,8,\\"21,0367\\",\\"11,7765\\",\\"17,2461\\",\\"7,9859\\",\\"14,3694\\",\\"5,1092\\",\\"9,4119\\",\\"3,7638\\""`;
 
 exports[`End-to-end tests for supported cultures and currencies es-es - Español EUR - Euro (€) 1`] = `"D2 v3,2,8,\\"0,1763\\",\\"0,0987\\",\\"0,1445\\",\\"0,067\\",\\"0,1204\\",\\"0,0429\\",\\"0,0717\\",\\"0,0287\\""`;
 
