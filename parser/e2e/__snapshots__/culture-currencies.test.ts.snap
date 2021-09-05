@@ -20,7 +20,7 @@ exports[`End-to-end tests for supported cultures and currencies en-gb - English 
 
 exports[`End-to-end tests for supported cultures and currencies en-gb - English (UK) NZD - New Zealand Dollar ($) 1`] = `"D2 v3,2,8,0.316,0.1769,0.2591,0.12,0.2159,0.0768,0.1414,0.0566"`;
 
-exports[`End-to-end tests for supported cultures and currencies en-gb - English (UK) ZAR - South African Rand (R) 1`] = `"D2 v3,2,8,3.831,2.1447,3.1407,1.4544,2.6168,0.9305,1.714,0.6855"`;
+exports[`End-to-end tests for supported cultures and currencies en-gb - English (UK) ZAR - South African Rand (R) 1`] = `"D2 v3,2,8,3.2228,1.8042,2.6421,1.2235,2.2014,0.7828,1.5138,0.6055"`;
 
 exports[`End-to-end tests for supported cultures and currencies en-in - English (India) INR - Indian Rupee (₹) 1`] = `"D2 v3,2,8,15.0575,8.4293,12.3443,5.7161,10.2852,3.6571,6.7368,2.694"`;
 
