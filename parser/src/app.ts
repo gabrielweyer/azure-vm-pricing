@@ -335,8 +335,8 @@ function getPricing(): VmPricing[] {
     const oneYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(8)');
     const threeYearReserved = getPrice(tr, 'td:nth-child(9)');
     const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(10)');
-    const spot = getPrice(tr, 'td:nth-child(11)');
-    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(12)');
+    const spot = getPrice(tr, 'td:nth-child(11) span:nth-child(1)');
+    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(11) span:nth-child(2)');
 
     return <VmPricing> {
       instance: instance,
