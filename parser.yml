@@ -45,12 +45,12 @@ steps:
   displayName: Install libgbm1 (required by Puppeteer 3)
 
 - bash: |
-    yarn e2e-us-ci
+    yarn e2e-all-ci
   env:
     JEST_JUNIT_OUTPUT_DIR: '$(Common.TestResultsDirectory)'
-    JEST_JUNIT_OUTPUT_NAME: e2e-us.xml
+    JEST_JUNIT_OUTPUT_NAME: e2e-all.xml
   workingDirectory: parser
-  displayName: yarn e2e en-us USD
+  displayName: yarn e2e
 
 - task: PublishTestResults@2
   inputs:
