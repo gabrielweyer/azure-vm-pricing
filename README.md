@@ -23,43 +23,36 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 
 | Culture | Culture display name | Currency | Currency display name | Support |
 | - | - | - | - | - |
-| `en-us` | `English (US)` | `USD` | `US Dollar ($)` | :white_check_mark: |
-| | | `SAR`[[8]](#closest-currency-8) | `Saudi Riyal (SR)` | :white_check_mark: |
-| | | `IDR`[[11]](#closest-culture-11) | `Indonesian Rupiah (Rp)` | :white_check_mark: |
-| `cs-cz` | `Čeština` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `da-dk` | `Dansk` | `DKK` | `Danish Krone (kr)` | :white_check_mark: |
-| `de-de` | `Deutsch` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
-| `en-au` | `English (Australia)` | `AUD` | `Australian Dollar ($)` | :white_check_mark: |
-| `en-ca` | `English (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
-| `en-in` | `English (India)` | `INR` | `Indian Rupee (₹)` | :white_check_mark: |
-| `en-gb` | `English (UK)` | `GBP` | `British Pound (£)` | :white_check_mark: |
-| | | `MYR`[[6]](#closest-culture-6) | `Malaysian Ringgit (RM$)` | :white_check_mark: |
-| | | `ZAR`[[4]](#closest-culture-4) | `South African Rand (R)` | :white_check_mark: |
-| | | `NZD`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
-| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
-| `es-es` | `Español` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `ARS`[[5]](#closest-culture-5) | `Argentine Peso ($)` | :white_check_mark: |
-| `es-mx` | `Español (MX)` | `MXN` | `Mexican Peso (MXN$)` | :white_check_mark: |
-| `fr-fr` | `Français` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
-| `fr-ca` | `Français (Canada)` | `CAD` | `Canadian Dollar ($)` | :white_check_mark: |
-| `it-it` | `Italiano` | `EUR` | `Euro (€)` | :white_check_mark: |
-| | | `CHF`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
-| `hu-hu` | `Magyar` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `nb-no` | `Norsk` | `NOK` | `Norwegian Krone (kr)` | :white_check_mark: |
-| `nl-nl` | `Nederlands` | `EUR` | `Euro (€)` | :white_check_mark: |
-| `pl-pl` | `Polski` | `EUR`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `pt-br` | `Português (Brasil)` | `BRL` | `Brazilian Real (R$)` | :white_check_mark: |
-| `pt-pt` | `Português` | `EUR` | `Euro (€)` | :white_check_mark: |
-| `sv-se` | `Svenska` | `SEK` | `Swedish Krona (kr)` | :white_check_mark: |
-| `tr-tr` | `Türkçe` | `TRY` | `Turkish Lira (TL)` | :white_check_mark: |
-| `ru-ru` | `Pусский` | `RUB` | `Russian Ruble (руб)` | :white_check_mark: |
-| `ja-jp` | `日本語` | `JPY` | `Japanese Yen (¥)` | :white_check_mark: |
-| `ko-kr` | `한국어` | `KRW` | `Korean Won (₩)` | :white_check_mark: |
+| `en-us` | `English (US)` | `usd` | `US Dollar ($)` | :white_check_mark: |
+| `cs-cz` | `Čeština` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
+| `da-dk` | `Dansk` | `dkk` | `Danish Krone (kr)` | :white_check_mark: |
+| `de-de` | `Deutsch` | `eur` | `Euro (€)` | :white_check_mark: |
+| | | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
+| `en-au` | `English (Australia)` | `aud` | `Australian Dollar ($)` | :white_check_mark: |
+| `en-ca` | `English (Canada)` | `cad` | `Canadian Dollar ($)` | :white_check_mark: |
+| `en-in` | `English (India)` | `inr` | `Indian Rupee (₹)` | :white_check_mark: |
+| `en-gb` | `English (UK)` | `gpb` | `British Pound (£)` | :white_check_mark: |
+| | | `nzd`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
+| `es-es` | `Español` | `eur` | `Euro (€)` | :white_check_mark: |
+| `es-mx` | `Español (MX)` | `usd`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
+| `fr-fr` | `Français` | `eur` | `Euro (€)` | :white_check_mark: |
+| | | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
+| `fr-ca` | `Français (Canada)` | `cad` | `Canadian Dollar ($)` | :white_check_mark: |
+| `it-it` | `Italiano` | `eur` | `Euro (€)` | :white_check_mark: |
+| | | `chf`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
+| `hu-hu` | `Magyar` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
+| `nb-no` | `Norsk` | `nk` | `Norwegian Krone (kr)` | :white_check_mark: |
+| `nl-nl` | `Nederlands` | `eur` | `Euro (€)` | :white_check_mark: |
+| `pl-pl` | `Polski` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
+| `pt-br` | `Português (Brasil)` | `brl` | `Brazilian Real (R$)` | :white_check_mark: |
+| `pt-pt` | `Português` | `eur` | `Euro (€)` | :white_check_mark: |
+| `sv-se` | `Svenska` | `sek` | `Swedish Krona (kr)` | :white_check_mark: |
+| `tr-tr` | `Türkçe` | `usd`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
+| `ru-ru` | `Pусский` | `rub` | `Russian Ruble (руб)` | :white_check_mark: |
+| `ja-jp` | `日本語` | `jpy` | `Japanese Yen (¥)` | :white_check_mark: |
+| `ko-kr` | `한국어` | `krw` | `Korean Won (₩)` | :white_check_mark: |
 | `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
-| `zh-tw` | `中文(繁體)` | `TWD` | `Taiwanese Dollar (NT$)` | :white_check_mark: |
-| | | `HKD`[[10]](#closest-culture-10) | `Hong Kong Dollar (HK$)` | :white_check_mark: |
+| `zh-tw` | `中文(繁體)` | `twd` | `Taiwanese Dollar (NT$)` | :white_check_mark: |
 
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
@@ -79,13 +72,13 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 
 ```powershell
 > cd .\parser\
-> yarn crawl --culture en-us --currency USD --operating-system linux --region us-west
+> yarn crawl --culture en-us --currency usd --operating-system linux --region us-west
 ```
 
 You can also use short names:
 
 ```powershell
-> yarn crawl -l en-us -c USD -o linux -r us-west
+> yarn crawl -l en-us -c usd -o linux -r us-west
 ```
 
 Arguments:
@@ -210,32 +203,14 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 
 <a id="closest-currency-3">03.</a> USD is used when no other currency could be matched to the country.
 
-<a id="closest-culture-4">04.</a> English (UK) has been selected due to the use of [South African English][south-african-english] in South Africa.
-
-<a id="closest-culture-5">05.</a> Spanish is considered to be the closest language to [Rioplatense Spanish][rioplatense-spanish]
-
-<a id="closest-culture-6">06.</a> English (UK) has been selected due to the use of [Malaysian English][malaysian-english] in Malaysia.
-
 <a id="closest-culture-7">07.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
 
-<a id="closest-currency-8">08.</a> USD is used because the Saudi riyal is [pegged with][saudi-riyal-fixed-exchange-rate] the US Dollar.
-
 <a id="closest-culture-9">09.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
-
-<a id="closest-culture-10">10.</a> English is one of the [official languages][hong-kong-traditional-chinese-english] of Hong-Kong. Traditional Chinese is one of the [official scripts][hong-kong-traditional-chinese-english] of Hong Kong, `zh-tw` is the only other culture available using Traditional Chinese.
-
-<a id="closest-culture-11">11.</a> English (US) has been selected because it is the default language.
 
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
 [managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/
 [bandwidth-pricing-details]: https://azure.microsoft.com/en-us/pricing/details/bandwidth/
-[iceland-import-export]: https://atlas.media.mit.edu/en/profile/country/isl/#Destinations
-[south-african-english]: https://en.wikipedia.org/wiki/South_African_English
-[rioplatense-spanish]: https://en.wikipedia.org/wiki/Rioplatense_Spanish
-[malaysian-english]: https://en.wikipedia.org/wiki/Malaysian_English
 [new-zealand-english]: https://en.wikipedia.org/wiki/New_Zealand_English
-[saudi-riyal-fixed-exchange-rate]: https://en.wikipedia.org/wiki/Saudi_riyal#Fixed_exchange_rate
 [european-union]: https://europa.eu/european-union/about-eu/countries_en#tab-0-0
 [swizerland-official-languages]: https://en.wikipedia.org/wiki/Switzerland#Languages
 [azure-china]: https://www.azure.cn/en-us/pricing/details/virtual-machines/
-[hong-kong-traditional-chinese-english]: https://en.wikipedia.org/wiki/Hong_Kong#cite_note-language-status-8
