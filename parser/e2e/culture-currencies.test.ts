@@ -354,7 +354,7 @@ function assert(
     expect(code).toBe(0);
 
     if (crawlerErrors.length > 0) {
-      done.fail(`Errors: ${crawlerErrors}`);
+      done(new Error(`Errors: ${crawlerErrors}`));
     }
 
     const fileStream = fs.createReadStream(
