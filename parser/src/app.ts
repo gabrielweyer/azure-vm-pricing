@@ -40,7 +40,7 @@ function timeEvent(eventName: string): void {
   timeEvent('crawlerStartedAt');
 
   let culture = 'en-au';
-  let currency = 'AUD';
+  let currency = 'aud';
   let operatingSystem = 'windows';
   let region = 'australia-southeast'
 
@@ -78,7 +78,7 @@ function timeEvent(eventName: string): void {
 
   const config: AzureVmPricingConfig = {
     culture: culture,
-    currency: currency,
+    currency: currency.toLowerCase(),
     operatingSystem: operatingSystem,
     region: region
   }
