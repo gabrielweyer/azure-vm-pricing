@@ -4,6 +4,7 @@ using System.IO;
 using AzureVmCoster.Models;
 using AzureVmCoster.Models.Csv;
 using CsvHelper;
+using CsvHelper.Configuration;
 
 namespace AzureVmCoster.Services
 {
@@ -11,11 +12,15 @@ namespace AzureVmCoster.Services
     {
         public void Write(string filename, List<PricedVm> pricedVms, CultureInfo culture)
         {
-            using (var writer = new StreamWriter($@"Out\{filename}"))
-            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            var csvConfiguration = new CsvConfiguration(culture)
             {
-                csv.Configuration.RegisterClassMap<PricedVmMap>();
-                csv.Configuration.CultureInfo = culture;
+                Delimiter = ","
+            };
+
+            using (var writer = new StreamWriter($@"Out\{filename}"))
+            using (var csv = new CsvWriter(writer, csvConfiguration))
+            {
+                csv.Context.RegisterClassMap<PricedVmMap>();
                 csv.WriteRecords(pricedVms);
             }
         }
