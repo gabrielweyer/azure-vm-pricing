@@ -1,3 +1,5 @@
 # Jest snapshots
-
 *.snap eol=lf
+
+# Yarn
+/.yarn/releases/** binary
