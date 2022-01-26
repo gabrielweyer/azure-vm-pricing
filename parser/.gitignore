@@ -1,16 +1,19 @@
 # npm packages
-
 node_modules/
 
 # Yarn
-
 yarn-error.log
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Output
-
 out/*.csv
 out/*.json
 
 # Jest
-
 junit.xml
