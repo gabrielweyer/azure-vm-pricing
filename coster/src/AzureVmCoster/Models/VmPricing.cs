@@ -2,9 +2,9 @@ namespace AzureVmCoster.Models;
 
 public class VmPricing
 {
-    public string Region { get; set; }
-    public string OperatingSystem { get; set; }
-    public string Instance { get; set; }
+    public string Region { get; set; } = default!;
+    public string OperatingSystem { get; set; } = default!;
+    public string Instance { get; set; } = default!;
     public short VCpu { get; set; }
     public decimal Ram { get; set; }
     public decimal PayAsYouGo { get; set; }

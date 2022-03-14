@@ -8,7 +8,7 @@ public static class Program
 
     static int Main(string[] args)
     {
-        string inputFilePath = null;
+        string? inputFilePath = null;
         var culture = Thread.CurrentThread.CurrentCulture;
 
 #if DEBUG
