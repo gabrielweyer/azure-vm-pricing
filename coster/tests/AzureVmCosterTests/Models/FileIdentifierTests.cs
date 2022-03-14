@@ -3,42 +3,41 @@ using AzureVmCoster.Models;
 using FluentAssertions;
 using Xunit;
 
-namespace AzureVmCosterTests.Models
+namespace AzureVmCosterTests.Models;
+
+public class FileIdentifierTests
 {
-    public class FileIdentifierTests
+    [Fact]
+    public void GivenInitialisedIdentifier_WhenGetPricingFilename_ThenExpected()
     {
-        [Fact]
-        public void GivenInitialisedIdentifier_WhenGetPricingFilename_ThenExpected()
-        {
-            // Arrange
+        // Arrange
 
-            var identifier = new FileIdentifier("some-region", "some-operating-system");
+        var identifier = new FileIdentifier("some-region", "some-operating-system");
 
-            // Actual
+        // Actual
 
-            var actual = identifier.GetPricingFilename();
+        var actual = identifier.GetPricingFilename();
 
-            // Assert
+        // Assert
 
-            actual.Should().Be("vm-pricing_some-region_some-operating-system.json");
-        }
+        actual.Should().Be("vm-pricing_some-region_some-operating-system.json");
+    }
 
-        [Fact]
-        public void GivenValidFilename_WhenFrom_Then()
-        {
-            // Arrange
+    [Fact]
+    public void GivenValidFilename_WhenFrom_Then()
+    {
+        // Arrange
 
-            var file = new FileInfo(@"E:\tmp\vm-pricing_some-region_some-operating-system.json");
+        var file = new FileInfo(@"E:\tmp\vm-pricing_some-region_some-operating-system.json");
 
-            // Act
+        // Act
 
-            var actual = FileIdentifier.From(file);
+        var actual = FileIdentifier.From(file);
 
-            // Assert
+        // Assert
 
-            var expected = new FileIdentifier("some-region", "some-operating-system");
+        var expected = new FileIdentifier("some-region", "some-operating-system");
 
-            actual.Should().BeEquivalentTo(expected);
-        }
+        actual.Should().BeEquivalentTo(expected);
     }
 }

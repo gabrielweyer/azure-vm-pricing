@@ -3,39 +3,38 @@ using System.IO;
 using AzureVmCoster.Models;
 using Newtonsoft.Json;
 
-namespace AzureVmCoster.Services
+namespace AzureVmCoster.Services;
+
+public class VmPricingParser
 {
-    public class VmPricingParser
+    private readonly string _pricingDirectory;
+
+    public VmPricingParser(string pricingDirectory)
     {
-        private readonly string _pricingDirectory;
+        _pricingDirectory = pricingDirectory;
+    }
 
-        public VmPricingParser(string pricingDirectory)
+    public List<VmPricing> Parse()
+    {
+        var pricingFiles = Directory.GetFiles(_pricingDirectory, "*.json");
+
+        var allVmPricing = new List<VmPricing>();
+
+        foreach (var pricingFile in pricingFiles)
         {
-            _pricingDirectory = pricingDirectory;
-        }
+            var fileInfo = new FileInfo(pricingFile);
+            var fileIdentifier = FileIdentifier.From(fileInfo);
 
-        public List<VmPricing> Parse()
-        {
-            var pricingFiles = Directory.GetFiles(_pricingDirectory, "*.json");
-
-            var allVmPricing = new List<VmPricing>();
-
-            foreach (var pricingFile in pricingFiles)
+            var fileVmPricing = JsonConvert.DeserializeObject<List<VmPricing>>(File.ReadAllText(pricingFile));
+            fileVmPricing.ForEach(pricing =>
             {
-                var fileInfo = new FileInfo(pricingFile);
-                var fileIdentifier = FileIdentifier.From(fileInfo);
+                pricing.Region = fileIdentifier.Region;
+                pricing.OperatingSystem = fileIdentifier.OperatingSystem;
+            });
 
-                var fileVmPricing = JsonConvert.DeserializeObject<List<VmPricing>>(File.ReadAllText(pricingFile));
-                fileVmPricing.ForEach(pricing =>
-                {
-                    pricing.Region = fileIdentifier.Region;
-                    pricing.OperatingSystem = fileIdentifier.OperatingSystem;
-                });
-
-                allVmPricing.AddRange(fileVmPricing);
-            }
-
-            return allVmPricing;
+            allVmPricing.AddRange(fileVmPricing);
         }
+
+        return allVmPricing;
     }
 }
