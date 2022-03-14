@@ -23,6 +23,12 @@ public class VmPricingParser
             var fileIdentifier = FileIdentifier.From(fileInfo);
 
             var fileVmPricing = JsonConvert.DeserializeObject<List<VmPricing>>(File.ReadAllText(pricingFile));
+
+            if (fileVmPricing == null || !fileVmPricing.Any())
+            {
+                continue;
+            }
+
             fileVmPricing.ForEach(pricing =>
             {
                 pricing.Region = fileIdentifier.Region;

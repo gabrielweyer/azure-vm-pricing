@@ -82,8 +82,28 @@ public class Pricer
 
     private class FileIdentifierComparer : IEqualityComparer<FileIdentifier>
     {
-        public bool Equals(FileIdentifier x, FileIdentifier y)
+        public bool Equals(FileIdentifier? x, FileIdentifier? y)
         {
+            if (ReferenceEquals(x, y))
+            {
+                return true;
+            }
+
+            if (ReferenceEquals(x, null))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(y, null))
+            {
+                return false;
+            }
+
+            if (x.GetType() != y.GetType())
+            {
+                return false;
+            }
+
             return string.Equals(x.Region, y.Region, StringComparison.Ordinal) &&
                    string.Equals(x.OperatingSystem, y.OperatingSystem, StringComparison.Ordinal);
         }
