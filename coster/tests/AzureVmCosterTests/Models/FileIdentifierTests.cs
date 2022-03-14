@@ -1,14 +1,9 @@
-using System.IO;
-using AzureVmCoster.Models;
-using FluentAssertions;
-using Xunit;
-
 namespace AzureVmCosterTests.Models;
 
-public class FileIdentifierTests
+public static class FileIdentifierTests
 {
     [Fact]
-    public void GivenInitialisedIdentifier_WhenGetPricingFilename_ThenExpected()
+    public static void GivenInitialisedIdentifier_WhenGetPricingFilename_ThenExpected()
     {
         // Arrange
 
@@ -24,7 +19,7 @@ public class FileIdentifierTests
     }
 
     [Fact]
-    public void GivenValidFilename_WhenFrom_Then()
+    public static void GivenValidFilename_WhenFrom_Then()
     {
         // Arrange
 

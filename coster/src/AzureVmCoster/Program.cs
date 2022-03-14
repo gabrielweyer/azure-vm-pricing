@@ -1,8 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-using System.Threading;
-using AzureVmCoster.Services;
+﻿using AzureVmCoster.Services;
 
 namespace AzureVmCoster;
 

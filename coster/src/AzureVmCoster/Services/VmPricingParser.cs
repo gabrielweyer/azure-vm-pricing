@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.IO;
-using AzureVmCoster.Models;
 using Newtonsoft.Json;
 
 namespace AzureVmCoster.Services;
