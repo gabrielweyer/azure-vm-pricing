@@ -16,13 +16,11 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenPreserveOrder()
     {
         // Act
-
         var file = new FileInfo(@"SampleInputs/input-en-au.csv");
         var culture = new CultureInfo("en-au");
         var actualVms = InputVmParser.Parse(file, culture);
 
         // Assert
-
         Assert.NotNull(actualVms);
         actualVms.Select(v => v.Name).Should().ContainInOrder("name-1", "name-2", "name-3");
     }
@@ -31,13 +29,11 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenParseAllFields()
     {
         // Act
-
         var file = new FileInfo(@"SampleInputs/input-en-au.csv");
         var culture = new CultureInfo("en-au");
         var actualVms = InputVmParser.Parse(file, culture);
 
         // Assert
-
         Assert.NotNull(actualVms);
         actualVms.Should().BeEquivalentTo(_expected);
     }
@@ -46,13 +42,11 @@ public class InputVmParserTests
     public void GivenInputWithUnknownFieldsAndCultureWithPeriodDecimalPoint_WhenParse_ThenIgnoreUnknownFields()
     {
         // Act
-
         var fileInfo = new FileInfo(@"SampleInputs/input-en-au-extra-fields.csv");
         var culture = new CultureInfo("en-au");
         var actualVms = InputVmParser.Parse(fileInfo, culture);
 
         // Assert
-
         Assert.NotNull(actualVms);
         actualVms.Should().BeEquivalentTo(_expected);
     }
@@ -61,13 +55,11 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithCommaDecimalPoint_WhenParse_ThenParseAllFields()
     {
         // Act
-
         var file = new FileInfo(@"SampleInputs/input-fr-fr.csv");
         var culture = new CultureInfo("fr-fr");
         var actualVms = InputVmParser.Parse(file, culture);
 
         // Assert
-
         Assert.NotNull(actualVms);
         actualVms.Should().BeEquivalentTo(_expected);
     }
