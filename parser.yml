@@ -10,6 +10,15 @@ trigger:
     - parser/*
     - parser.yml
 
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - parser/*
+    - parser.yml
+
 schedules:
 - cron: "20 0 * * *"
   displayName: Daily

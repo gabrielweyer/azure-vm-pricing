@@ -10,6 +10,15 @@ trigger:
     - coster/*
     - coster.yml
 
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - coster/*
+    - coster.yml
+
 steps:
 
 - task: DotNetCoreInstaller@2
