@@ -58,10 +58,10 @@ public class Pricer
 
     private static short GetCpuMedianForNonZeroValues(List<InputVm> vms)
     {
-        var orderedCpus = vms.Where(v => v.Cpu > 0).Select(v => (decimal) v.Cpu).OrderBy(c => c).ToList();
+        var orderedCpus = vms.Where(v => v.Cpu > 0).Select(v => (decimal)v.Cpu).OrderBy(c => c).ToList();
         var medianCpu = GetMedian(orderedCpus);
 
-        return (short) Math.Ceiling(medianCpu);
+        return (short)Math.Ceiling(medianCpu);
     }
 
     private static decimal GetRamMedianForNonZeroValues(List<InputVm> vms)
@@ -72,7 +72,10 @@ public class Pricer
 
     private static decimal GetMedian(IReadOnlyList<decimal> orderedList)
     {
-        if (orderedList.Count % 2 != 0) return orderedList[orderedList.Count / 2];
+        if (orderedList.Count % 2 != 0)
+        {
+            return orderedList[orderedList.Count / 2];
+        }
 
         var lowerMedian = orderedList[orderedList.Count / 2 - 1];
         var upperMedian = orderedList[orderedList.Count / 2];

@@ -1,4 +1,4 @@
-﻿using AzureVmCoster.Services;
+using AzureVmCoster.Services;
 
 namespace AzureVmCoster;
 
@@ -6,22 +6,22 @@ public static class Program
 {
     private const string PricingDirectory = @"Pricing\";
 
-    static int Main(string[] args)
+    public static int Main(string[] args)
     {
         string? inputFilePath = null;
         var culture = Thread.CurrentThread.CurrentCulture;
 
 #if DEBUG
-            Console.Write("Input file path: ");
-            inputFilePath = Console.ReadLine();
+        Console.Write("Input file path: ");
+        inputFilePath = Console.ReadLine();
 
-            Console.Write("Culture (leave blank for system default): ");
-            var cultureInput = Console.ReadLine();
+        Console.Write("Culture (leave blank for system default): ");
+        var cultureInput = Console.ReadLine();
 
-            if (!string.IsNullOrWhiteSpace(cultureInput))
-            {
-                culture = new CultureInfo(cultureInput);
-            }
+        if (!string.IsNullOrWhiteSpace(cultureInput))
+        {
+            culture = new CultureInfo(cultureInput);
+        }
 #else
         for (var offset = 0; offset < args.Length; offset += 2)
         {
