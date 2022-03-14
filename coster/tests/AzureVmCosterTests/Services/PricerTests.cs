@@ -5,91 +5,90 @@ using AzureVmCoster.Services;
 using FluentAssertions;
 using Xunit;
 
-namespace AzureVmCosterTests.Services
+namespace AzureVmCosterTests.Services;
+
+public class PricerTests
 {
-    public class PricerTests
+    private readonly Pricer _target;
+
+    public PricerTests()
     {
-        private readonly Pricer _target;
+        _target = new Pricer(@"SamplePricing/");
+    }
 
-        public PricerTests()
+    [Fact]
+    public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    {
+        // Arrange
+
+        var vms = new List<InputVm>
         {
-            _target = new Pricer(@"SamplePricing/");
-        }
+            new InputVm {Region = "missing", OperatingSystem = "missing"}
+        };
 
-        [Fact]
-        public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+        // Act
+
+        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
+
+        // Assert
+
+        Assert.NotNull(actualException);
+    }
+
+    [Fact]
+    public void GivenExistingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenDoNotThrow()
+    {
+        // Arrange
+
+        var vms = new List<InputVm>
         {
-            // Arrange
+            new InputVm {Region = "region", OperatingSystem = "operating-system"}
+        };
 
-            var vms = new List<InputVm>
-            {
-                new InputVm {Region = "missing", OperatingSystem = "missing"}
-            };
+        // Act
 
-            // Act
+        var action = () => _target.EnsurePricingExists(vms);
 
-            var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
+        // Assert
 
-            // Assert
+        action.Should().NotThrow();
+    }
 
-            Assert.NotNull(actualException);
-        }
+    [Fact]
+    public void GivenExistingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    {
+        // Arrange
 
-        [Fact]
-        public void GivenExistingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenDoNotThrow()
+        var vms = new List<InputVm>
         {
-            // Arrange
+            new InputVm {Region = "region", OperatingSystem = "missing"}
+        };
 
-            var vms = new List<InputVm>
-            {
-                new InputVm {Region = "region", OperatingSystem = "operating-system"}
-            };
+        // Act
 
-            // Act
+        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
 
-            Action action = () => _target.EnsurePricingExists(vms);
+        // Assert
 
-            // Assert
+        Assert.NotNull(actualException);
+    }
 
-            action.Should().NotThrow();
-        }
+    [Fact]
+    public void GivenMissingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    {
+        // Arrange
 
-        [Fact]
-        public void GivenExistingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+        var vms = new List<InputVm>
         {
-            // Arrange
+            new InputVm {Region = "missing", OperatingSystem = "operating-system"}
+        };
 
-            var vms = new List<InputVm>
-            {
-                new InputVm {Region = "region", OperatingSystem = "missing"}
-            };
+        // Act
 
-            // Act
+        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
 
-            var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
+        // Assert
 
-            // Assert
-
-            Assert.NotNull(actualException);
-        }
-
-        [Fact]
-        public void GivenMissingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
-        {
-            // Arrange
-
-            var vms = new List<InputVm>
-            {
-                new InputVm {Region = "missing", OperatingSystem = "operating-system"}
-            };
-
-            // Act
-
-            var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
-
-            // Assert
-
-            Assert.NotNull(actualException);
-        }
+        Assert.NotNull(actualException);
     }
 }
