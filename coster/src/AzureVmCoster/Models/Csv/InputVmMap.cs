@@ -1,6 +1,3 @@
-using System.Globalization;
-using CsvHelper.Configuration;
-
 namespace AzureVmCoster.Models.Csv;
 
 public sealed class InputVmMap : ClassMap<InputVm>

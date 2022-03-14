@@ -1,11 +1,5 @@
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using AzureVmCoster.Models;
 using AzureVmCoster.Services;
-using FluentAssertions;
-using Xunit;
 
 namespace AzureVmCosterTests.Services;
 

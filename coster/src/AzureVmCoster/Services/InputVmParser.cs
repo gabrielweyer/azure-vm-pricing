@@ -1,11 +1,5 @@
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using AzureVmCoster.Models;
 using AzureVmCoster.Models.Csv;
 using CsvHelper;
-using CsvHelper.Configuration;
 
 namespace AzureVmCoster.Services;
 

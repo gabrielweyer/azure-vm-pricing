@@ -1,5 +1,3 @@
-using CsvHelper.Configuration;
-
 namespace AzureVmCoster.Models.Csv;
 
 public sealed class PricedVmMap : ClassMap<PricedVm>

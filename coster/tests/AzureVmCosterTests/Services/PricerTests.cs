@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using AzureVmCoster.Models;
 using AzureVmCoster.Services;
-using FluentAssertions;
-using Xunit;
 
 namespace AzureVmCosterTests.Services;
 
