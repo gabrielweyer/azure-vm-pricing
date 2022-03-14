@@ -1,0 +1,40 @@
+name: Coster build
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'coster/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'coster/**'
+env:
+  BUILD_CONFIGURATION: Release
+jobs:
+  Build:
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: coster
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Restore NuGet packages
+        run: dotnet restore
+      - name: Format
+        run: dotnet format --verify-no-changes
+      - name: Build
+        run: dotnet build --configuration $BUILD_CONFIGURATION --no-restore
+      - name: Test
+        run: dotnet test --configuration $BUILD_CONFIGURATION --no-build --logger "trx;LogFileName=${{ github.workspace }}/coster/artifacts/test-results/test-results.trx"
+      - name: Report test results
+        uses: dorny/test-reporter@v1.5.0
+        continue-on-error: false
+        if: ${{ always() }}
+        with:
+          name: Test results
+          path: './coster/artifacts/test-results/*.trx'
+          reporter: dotnet-trx
