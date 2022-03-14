@@ -1,10 +1,16 @@
-name: "CodeQL"
+name: "C# security scanning"
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'coster/**'
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
+    paths:
+      - 'coster/**'
   schedule:
     - cron: '39 10 * * 5'
 
@@ -20,7 +26,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'csharp', 'javascript' ]
+        language: [ 'csharp' ]
 
     steps:
     - name: Checkout repository
