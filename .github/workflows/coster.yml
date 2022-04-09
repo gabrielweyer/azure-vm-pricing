@@ -5,11 +5,13 @@ on:
       - main
     paths:
       - 'coster/**'
+      - .github/workflows/coster.yml
   pull_request:
     branches:
       - main
     paths:
       - 'coster/**'
+      - .github/workflows/coster.yml
 env:
   BUILD_CONFIGURATION: Release
 jobs:
