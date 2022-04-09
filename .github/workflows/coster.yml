@@ -32,11 +32,10 @@ jobs:
         run: dotnet build --configuration $BUILD_CONFIGURATION --no-restore
       - name: Test
         run: dotnet test --configuration $BUILD_CONFIGURATION --no-build --logger "trx;LogFileName=${{ github.workspace }}/coster/artifacts/test-results/test-results.trx"
-      - name: Report test results
-        uses: dorny/test-reporter@v1.5.0
-        continue-on-error: false
-        if: ${{ always() }}
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
         with:
-          name: Test results
+          name: test-results
           path: './coster/artifacts/test-results/*.trx'
-          reporter: dotnet-trx
+          if-no-files-found: error
