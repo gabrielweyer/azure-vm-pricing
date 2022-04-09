@@ -6,11 +6,6 @@ on:
       - main
     paths:
       - 'coster/**'
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'coster/**'
   schedule:
     - cron: '39 10 * * 5'
 
