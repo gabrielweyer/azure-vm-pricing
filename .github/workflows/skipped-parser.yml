@@ -1,0 +1,21 @@
+name: Parser tests
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'parser/**'
+      - .github/workflows/parser.yml
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - 'parser/**'
+      - .github/workflows/parser.yml
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    steps:
+      - run: echo "Handling skipped but required check, see https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-the-mergeability-of-pull-requests/troubleshooting-required-status-checks#handling-skipped-but-required-checks"
