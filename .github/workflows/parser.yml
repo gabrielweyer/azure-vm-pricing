@@ -1,0 +1,45 @@
+name: Parser tests
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'parser/**'
+      - .github/workflows/parser.yml
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'parser/**'
+      - .github/workflows/parser.yml
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-20.04
+    defaults:
+      run:
+        working-directory: parser
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: yarn install
+        run: yarn install
+      - name: yarn test
+        run: yarn test-ci
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ${{ runner.temp }}
+          JEST_JUNIT_OUTPUT_NAME: unit.xml
+      - name: yarn e2e
+        run: yarn e2e-all-ci
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ${{ runner.temp }}
+          JEST_JUNIT_OUTPUT_NAME: e2e-all.xml
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-results
+          path: '${{ runner.temp }}/*.xml'
+          if-no-files-found: error
