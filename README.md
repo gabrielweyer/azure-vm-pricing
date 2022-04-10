@@ -13,9 +13,9 @@ This tool is composed of two components:
 
 This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
-[![Build Status](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_apis/build/status/Parser?branchName=main&label=Parser)](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_build/latest?definitionId=14&branchName=main)
+[![Build Status][github-actions-parser-shield]][github-actions-parser]
 
-[![Build Status](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_apis/build/status/Coster?branchName=main&label=Coster)](https://dev.azure.com/gabrielweyer/azure-vm-pricing/_build/latest?definitionId=18&branchName=main)
+[![Build Status][github-actions-coster-shield]][github-actions-coster]
 
 ## Parser
 
@@ -215,3 +215,7 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 [swizerland-official-languages]: https://en.wikipedia.org/wiki/Switzerland#Languages
 [azure-china]: https://www.azure.cn/en-us/pricing/details/virtual-machines/
 [dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/6.0
+[github-actions-parser-shield]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/parser.yml/badge.svg
+[github-actions-parser]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/parser.yml
+[github-actions-coster-shield]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/coster.yml/badge.svg
+[github-actions-coster]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/coster.yml
