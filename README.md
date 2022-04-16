@@ -88,6 +88,10 @@ Arguments:
 - `currency` any of the `option` `value` in the **Currency** `select`
 - `operating-system` any of the `option` `value` in the **OS/Software** `select`
 - `region` any of the `option` `value` in the **Region** `select`
+- (Option) Output settings:
+  - `-O <filename>` or `--output-filename <filename>`: set your filename if you want to output with your own filename. (Please omit the extension)
+  - `-C` or `--output-csv-only` flag: output CSV file only
+  - `-J` or `--output-json-only` flag: output JSON file only
 
 ![OS, Region amd Currency select](docs/assets/os-region-currency.png)
 
@@ -102,6 +106,18 @@ Writes `2` output files in the `out\` directory. One is a `CSV`, the other one i
 ```text
 .\out\vm-pricing_<region>_<operating-system>.csv
 .\out\vm-pricing_<region>_<operating-system>.json
+```
+
+If you want to change output filename, you can use the `-O` or `--output-filename` option. (Please omit the extension)
+
+```powershell
+> yarn crawl -l en-us -c USD -o linux -r us-west -O .\out\my-azure-vm-pricecard
+```
+
+If you only need `CSV` file, you can use the `-C` or `--output-csv-only` option. And `JSON` file also, you can use the `-J` or `--output-json-only` option.
+
+```powershell
+> yarn crawl -l en-us -c USD -o linux -r us-west -J
 ```
 
 Fields:
