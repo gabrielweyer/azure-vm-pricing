@@ -1,11 +1,5 @@
 name: Coster build
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'coster/**'
-      - .github/workflows/coster.yml
   pull_request:
     branches:
       - main
