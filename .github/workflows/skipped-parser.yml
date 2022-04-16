@@ -1,11 +1,5 @@
 name: Parser tests
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - 'parser/**'
-      - .github/workflows/parser.yml
   pull_request:
     branches:
       - main
