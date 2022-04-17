@@ -43,3 +43,10 @@ jobs:
           name: test-results
           path: ${{ env.TEST_RESULTS_PATH }}
           if-no-files-found: error
+      - name: Upload unit tests coverage
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: coverage
+          path: ${{ github.workspace }}/parser/coverage/lcov-report
+          if-no-files-found: error
