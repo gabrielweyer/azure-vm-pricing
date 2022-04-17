@@ -14,7 +14,7 @@ on:
       - .github/workflows/parser.yml
 jobs:
   tests:
-    name: Tests
+    name: Parser tests
     runs-on: ubuntu-20.04
     defaults:
       run:
