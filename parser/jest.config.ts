@@ -99,7 +99,15 @@ export default {
   // projects: undefined,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: [ 'default', 'jest-junit' ],
+  reporters: [
+    'default',
+    [
+      'jest-html-reporter',
+      {
+        "outputPath": 'test-results/test-results.html'
+      }
+    ]
+  ],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
