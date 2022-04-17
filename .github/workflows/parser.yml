@@ -19,6 +19,9 @@ jobs:
     defaults:
       run:
         working-directory: parser
+    env:
+      IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+      RUN_E2E_TESTS: 'true'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -32,7 +35,17 @@ jobs:
         run: yarn test-ci
         env:
           JEST_HTML_REPORTER_OUTPUT_PATH: ${{ env.TEST_RESULTS_PATH }}/unit.html
+      - name: Determine if we're skipping end-to-end tests on Pull Request
+        if: ${{ env.IS_PULL_REQUEST == 'true' }}
+        run: |
+          headCommitMessage=$(git log ${{ github.event.pull_request.head.sha }} -n 1 --format=%B)
+          echo "HEAD commit message is: $headCommitMessage"
+          if [[ $headCommitMessage == *"[skip-e2e]"* ]]; then
+            echo "RUN_E2E_TESTS=false" >> $GITHUB_ENV
+            echo "::warning title=Skipping end-to-end tests::End-to-end tests have been skipped because '[skip-e2e]' was present in the commit message."
+          fi
       - name: yarn e2e
+        if: ${{ env.RUN_E2E_TESTS == 'true' }}
         run: yarn e2e-all-ci
         env:
           JEST_HTML_REPORTER_OUTPUT_PATH: ${{ env.TEST_RESULTS_PATH }}/e2e-all.html
