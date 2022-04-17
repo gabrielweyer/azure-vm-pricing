@@ -2,7 +2,7 @@
   "scripts": {
     "crawl": "ts-node src/app.ts",
     "test": "jest src --reporters=default",
-    "test-ci": "jest src --ci",
+    "test-ci": "jest src --ci --coverage",
     "e2e-us": "jest e2e --reporters=default -t \"English \\(US\\) USD - US Dollar\"",
     "e2e-us-ci": "jest e2e --ci -t \"English \\(US\\) USD - US Dollar\"",
     "e2e-all": "jest e2e --reporters=default",
