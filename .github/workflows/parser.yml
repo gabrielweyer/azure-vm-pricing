@@ -26,20 +26,20 @@ jobs:
           fetch-depth: 0
       - name: yarn install
         run: yarn install
+      - name: Set test results path environment variable
+        run: echo "TEST_RESULTS_PATH=${{ runner.temp }}/test-results" >> $GITHUB_ENV
       - name: yarn test
         run: yarn test-ci
         env:
-          JEST_JUNIT_OUTPUT_DIR: ${{ runner.temp }}
-          JEST_JUNIT_OUTPUT_NAME: unit.xml
+          JEST_HTML_REPORTER_OUTPUT_PATH: ${{ env.TEST_RESULTS_PATH }}/unit.html
       - name: yarn e2e
         run: yarn e2e-all-ci
         env:
-          JEST_JUNIT_OUTPUT_DIR: ${{ runner.temp }}
-          JEST_JUNIT_OUTPUT_NAME: e2e-all.xml
+          JEST_HTML_REPORTER_OUTPUT_PATH: ${{ env.TEST_RESULTS_PATH }}/e2e-all.html
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-results
-          path: '${{ runner.temp }}/*.xml'
+          path: ${{ env.TEST_RESULTS_PATH }}
           if-no-files-found: error

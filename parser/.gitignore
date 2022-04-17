@@ -16,4 +16,4 @@ out/*.csv
 out/*.json
 
 # Jest
-junit.xml
+test-results/

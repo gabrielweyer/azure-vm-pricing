@@ -1,12 +1,12 @@
 {
   "scripts": {
     "crawl": "ts-node src/app.ts",
-    "test": "jest src",
-    "test-ci": "jest src --ci --reporters=default --reporters=jest-junit",
-    "e2e-us": "jest e2e -t \"English \\(US\\) USD - US Dollar\"",
-    "e2e-us-ci": "jest e2e --ci --reporters=default --reporters=jest-junit -t \"English \\(US\\) USD - US Dollar\"",
-    "e2e-all": "jest e2e",
-    "e2e-all-ci": "jest e2e --ci --reporters=default --reporters=jest-junit"
+    "test": "jest src --reporters=default",
+    "test-ci": "jest src --ci",
+    "e2e-us": "jest e2e --reporters=default -t \"English \\(US\\) USD - US Dollar\"",
+    "e2e-us-ci": "jest e2e --ci -t \"English \\(US\\) USD - US Dollar\"",
+    "e2e-all": "jest e2e --reporters=default",
+    "e2e-all-ci": "jest e2e --ci"
   },
   "prettier": {
     "singleQuote": true,
@@ -21,7 +21,7 @@
     "@types/puppeteer": "^5.4.5",
     "babel-jest": "27.2.4",
     "jest": "27.2.4",
-    "jest-junit": "13.0.0",
+    "jest-html-reporter": "^3.4.2",
     "jsdom": "17.0.0",
     "prettier": "2.4.1",
     "puppeteer": "^13.4.1",
