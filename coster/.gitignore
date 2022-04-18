@@ -15,4 +15,4 @@ artifacts/
 src/AzureVmCoster/Out/*.csv
 
 # NUKE
-.nuke/
+.nuke/temp

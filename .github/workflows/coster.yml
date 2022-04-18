@@ -35,3 +35,10 @@ jobs:
           name: test-results
           path: 'coster/artifacts/test-results/**/*.html'
           if-no-files-found: error
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: code-coverage
+          path: 'coster/artifacts/coverage-report'
+          if-no-files-found: error
