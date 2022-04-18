@@ -1,2 +1,5 @@
 # Rider
 *.DotSettings eol=lf
+
+# Shell
+*.sh eol=lf

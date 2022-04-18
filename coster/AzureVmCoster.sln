@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1C50DD3F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureVmCosterTests", "tests\AzureVmCosterTests\AzureVmCosterTests.csproj", "{DC8273A1-1BEC-4719-A5C1-3088A504AA5C}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{5BCA4033-CAD2-4851-981F-0F39511CADC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5BCA4033-CAD2-4851-981F-0F39511CADC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BCA4033-CAD2-4851-981F-0F39511CADC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EBB8D410-06F1-443B-B76E-5CD16795D95A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EBB8D410-06F1-443B-B76E-5CD16795D95A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EBB8D410-06F1-443B-B76E-5CD16795D95A}.Debug|x64.ActiveCfg = Debug|Any CPU

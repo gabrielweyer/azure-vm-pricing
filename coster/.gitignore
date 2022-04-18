@@ -10,5 +10,9 @@ obj/
 src/AzureVmCoster/Pricing/*.json
 src/AzureVmCoster/Pricing/*.csv
 
-# Ouptput
+# Build
+artifacts/
 src/AzureVmCoster/Out/*.csv
+
+# NUKE
+.nuke/
