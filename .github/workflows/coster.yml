@@ -16,7 +16,7 @@ env:
   BUILD_CONFIGURATION: Release
 jobs:
   build:
-    name: Build
+    name: Coster Build
     runs-on: ubuntu-20.04
     defaults:
       run:
@@ -39,5 +39,5 @@ jobs:
         if: always()
         with:
           name: test-results
-          path: './coster/artifacts/test-results/*.trx'
+          path: 'coster/artifacts/test-results/*.trx'
           if-no-files-found: error
