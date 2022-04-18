@@ -14,4 +14,8 @@
     <PackageReference Include="Nuke.Common" Version="6.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageDownload Include="ReportGenerator" Version="[5.1.4]" />
+  </ItemGroup>
+
 </Project>
