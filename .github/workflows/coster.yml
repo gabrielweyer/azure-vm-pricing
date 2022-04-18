@@ -26,14 +26,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Restore NuGet packages
-        run: dotnet restore
-      - name: Dotnet format
-        run: dotnet format --verify-no-changes
       - name: Build
-        run: dotnet build --configuration $BUILD_CONFIGURATION --no-restore
-      - name: Test
-        run: dotnet test --configuration $BUILD_CONFIGURATION --no-build --logger "html;LogFileName=${{ github.workspace }}/coster/artifacts/test-results/test-results.html"
+        run: ./build.sh
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
