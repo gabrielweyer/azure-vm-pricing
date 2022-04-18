@@ -33,11 +33,11 @@ jobs:
       - name: Build
         run: dotnet build --configuration $BUILD_CONFIGURATION --no-restore
       - name: Test
-        run: dotnet test --configuration $BUILD_CONFIGURATION --no-build --logger "trx;LogFileName=${{ github.workspace }}/coster/artifacts/test-results/test-results.trx"
+        run: dotnet test --configuration $BUILD_CONFIGURATION --no-build --logger "html;LogFileName=${{ github.workspace }}/coster/artifacts/test-results/test-results.html"
       - name: Upload test results
         uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-results
-          path: 'coster/artifacts/test-results/*.trx'
+          path: 'coster/artifacts/test-results/**/*.html'
           if-no-files-found: error
