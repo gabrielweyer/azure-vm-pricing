@@ -60,7 +60,7 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 
 ### Parser pre-requisites
 
-- [Latest Node.js][latest-node-js-lts]
+- [Latest Node.js LTS][latest-node-js-lts]
 - [Yarn modern][yarn-modern]
 
 ```powershell
