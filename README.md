@@ -60,8 +60,8 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 
 ### Parser pre-requisites
 
-- `Node.js 12.13.0`
-- `Yarn 1.22.4`
+- [Latest Node.js][latest-node-js-lts]
+- [Yarn modern][yarn-modern]
 
 ```powershell
 > cd .\parser\
@@ -219,3 +219,5 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 [github-actions-parser]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/parser.yml
 [github-actions-coster-shield]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/coster.yml/badge.svg
 [github-actions-coster]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/coster.yml
+[yarn-modern]: https://yarnpkg.com/getting-started/install
+[latest-node-js-lts]: https://nodejs.org/en/download/
