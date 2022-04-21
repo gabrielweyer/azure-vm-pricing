@@ -3,3 +3,7 @@
 
 # Yarn
 /.yarn/releases/** binary
+
+# Vendored extensions
+*.cjs linguist-vendored
+*.js linguist-vendored
