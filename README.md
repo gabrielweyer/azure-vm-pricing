@@ -21,38 +21,38 @@ This approach allows to decouple pricing acquisition from its usage and open the
 
 Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
 
-| Culture | Culture display name | Currency | Currency display name | Support |
-| - | - | - | - | - |
-| `en-us` | `English (US)` | `usd` | `US Dollar ($)` | :white_check_mark: |
-| `cs-cz` | `Čeština` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `da-dk` | `Dansk` | `dkk` | `Danish Krone (kr)` | :white_check_mark: |
-| `de-de` | `Deutsch` | `eur` | `Euro (€)` | :white_check_mark: |
-| | | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
-| `en-au` | `English (Australia)` | `aud` | `Australian Dollar ($)` | :white_check_mark: |
-| `en-ca` | `English (Canada)` | `cad` | `Canadian Dollar ($)` | :white_check_mark: |
-| `en-in` | `English (India)` | `inr` | `Indian Rupee (₹)` | :white_check_mark: |
-| `en-gb` | `English (UK)` | `gpb` | `British Pound (£)` | :white_check_mark: |
-| | | `nzd`[[7]](#closest-culture-7) | `New Zealand Dollar ($)` | :white_check_mark: |
-| `es-es` | `Español` | `eur` | `Euro (€)` | :white_check_mark: |
-| `es-mx` | `Español (MX)` | `usd`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
-| `fr-fr` | `Français` | `eur` | `Euro (€)` | :white_check_mark: |
-| | | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)` | :white_check_mark: |
-| `fr-ca` | `Français (Canada)` | `cad` | `Canadian Dollar ($)` | :white_check_mark: |
-| `it-it` | `Italiano` | `eur` | `Euro (€)` | :white_check_mark: |
-| | | `chf`[[9]](#closest-culture-9) | `Swiss Franc. (chf)` | :white_check_mark: |
-| `hu-hu` | `Magyar` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `nb-no` | `Norsk` | `nk` | `Norwegian Krone (kr)` | :white_check_mark: |
-| `nl-nl` | `Nederlands` | `eur` | `Euro (€)` | :white_check_mark: |
-| `pl-pl` | `Polski` | `eur`[[1]](#closest-currency-1) | `Euro (€)` | :white_check_mark: |
-| `pt-br` | `Português (Brasil)` | `brl` | `Brazilian Real (R$)` | :white_check_mark: |
-| `pt-pt` | `Português` | `eur` | `Euro (€)` | :white_check_mark: |
-| `sv-se` | `Svenska` | `sek` | `Swedish Krona (kr)` | :white_check_mark: |
-| `tr-tr` | `Türkçe` | `usd`[[3]](#closest-currency-3) | `US Dollar ($)` | :white_check_mark: |
-| `ru-ru` | `Pусский` | `rub` | `Russian Ruble (руб)` | :white_check_mark: |
-| `ja-jp` | `日本語` | `jpy` | `Japanese Yen (¥)` | :white_check_mark: |
-| `ko-kr` | `한국어` | `krw` | `Korean Won (₩)` | :white_check_mark: |
-| `zh-cn` | `中文(简体)` | `N/A` | `N/A` | `N/A` |
-| `zh-tw` | `中文(繁體)` | `twd` | `Taiwanese Dollar (NT$)` | :white_check_mark: |
+| Culture | Culture display name  | Currency                        | Currency display name    | Support            |
+| ------- | --------------------- | ------------------------------- | ------------------------ | ------------------ |
+| `en-us` | `English (US)`        | `usd`                           | `US Dollar ($)`          | :white_check_mark: |
+| `cs-cz` | `Čeština`             | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
+| `da-dk` | `Dansk`               | `dkk`                           | `Danish Krone (kr)`      | :white_check_mark: |
+| `de-de` | `Deutsch`             | `eur`                           | `Euro (€)`               | :white_check_mark: |
+|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
+| `en-au` | `English (Australia)` | `aud`                           | `Australian Dollar ($)`  | :white_check_mark: |
+| `en-ca` | `English (Canada)`    | `cad`                           | `Canadian Dollar ($)`    | :white_check_mark: |
+| `en-in` | `English (India)`     | `inr`                           | `Indian Rupee (₹)`       | :white_check_mark: |
+| `en-gb` | `English (UK)`        | `gpb`                           | `British Pound (£)`      | :white_check_mark: |
+|         |                       | `nzd`[[7]](#closest-culture-7)  | `New Zealand Dollar ($)` | :white_check_mark: |
+| `es-es` | `Español`             | `eur`                           | `Euro (€)`               | :white_check_mark: |
+| `es-mx` | `Español (MX)`        | `usd`[[3]](#closest-currency-3) | `US Dollar ($)`          | :white_check_mark: |
+| `fr-fr` | `Français`            | `eur`                           | `Euro (€)`               | :white_check_mark: |
+|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
+| `fr-ca` | `Français (Canada)`   | `cad`                           | `Canadian Dollar ($)`    | :white_check_mark: |
+| `it-it` | `Italiano`            | `eur`                           | `Euro (€)`               | :white_check_mark: |
+|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
+| `hu-hu` | `Magyar`              | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
+| `nb-no` | `Norsk`               | `nk`                            | `Norwegian Krone (kr)`   | :white_check_mark: |
+| `nl-nl` | `Nederlands`          | `eur`                           | `Euro (€)`               | :white_check_mark: |
+| `pl-pl` | `Polski`              | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
+| `pt-br` | `Português (Brasil)`  | `brl`                           | `Brazilian Real (R$)`    | :white_check_mark: |
+| `pt-pt` | `Português`           | `eur`                           | `Euro (€)`               | :white_check_mark: |
+| `sv-se` | `Svenska`             | `sek`                           | `Swedish Krona (kr)`     | :white_check_mark: |
+| `tr-tr` | `Türkçe`              | `usd`[[3]](#closest-currency-3) | `US Dollar ($)`          | :white_check_mark: |
+| `ru-ru` | `Pусский`             | `rub`                           | `Russian Ruble (руб)`    | :white_check_mark: |
+| `ja-jp` | `日本語`               | `jpy`                           | `Japanese Yen (¥)`       | :white_check_mark: |
+| `ko-kr` | `한국어`               | `krw`                           | `Korean Won (₩)`         | :white_check_mark: |
+| `zh-cn` | `中文(简体)`           | `N/A`                           | `N/A`                    | `N/A`              |
+| `zh-tw` | `中文(繁體)`           | `twd`                           | `Taiwanese Dollar (NT$)` | :white_check_mark: |
 
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
