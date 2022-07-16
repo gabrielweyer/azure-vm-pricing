@@ -377,9 +377,21 @@ function getPricing(): PartialVmPricing[] {
   return pricing;
 }
 
+async function waitForPriceWithoutHybridBenefits(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
+      const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') !== -1);
+      return ahbOffset === -1;
+    },
+    { timeout: 3000 }
+  );
+}
+
 async function parsePricing(page: puppeteer.Page): Promise<VmPricing[]> {
   const pricingWithHybridBenefits = await page.evaluate(() => getPricing());
   await page.click('button#isAhb');
+  await waitForPriceWithoutHybridBenefits(page);
   const pricingWithoutHybridBenefits = await page.evaluate(() => getPricing());
 
   if (pricingWithHybridBenefits.length !== pricingWithoutHybridBenefits.length) {
