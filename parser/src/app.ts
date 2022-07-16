@@ -168,19 +168,6 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
   const priceText = span.textContent;
 
   let firstDigitOffset = -1;
-  let separatorOffset = priceText.indexOf('/');
-
-  if (separatorOffset === -1) {
-    separatorOffset = priceText.indexOf(' per ');
-  }
-
-  if (separatorOffset === -1) {
-    separatorOffset = priceText.indexOf(' (~');
-  }
-
-  if (separatorOffset === - 1) {
-    separatorOffset = priceText.length;
-  }
 
   for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
   {
@@ -191,8 +178,8 @@ export function getPrice(tr: HTMLTableRowElement, columnSelector: string): numbe
     }
   }
 
-  if (firstDigitOffset > -1 && separatorOffset > firstDigitOffset) {
-    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset, separatorOffset);
+  if (firstDigitOffset > -1) {
+    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset);
 
     const lastIndexOfDot = priceWithoutCurrencyAndDuration.lastIndexOf('.');
     const lastIndexOfComma = priceWithoutCurrencyAndDuration.lastIndexOf(',');
