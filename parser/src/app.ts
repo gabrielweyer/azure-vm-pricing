@@ -23,6 +23,17 @@ interface VmPricing {
   spotWithAzureHybridBenefit: number;
 }
 
+interface PartialVmPricing {
+  azureHybridBenefit: boolean;
+  instance: string;
+  vCpu: number;
+  ram: number;
+  payAsYouGo: number;
+  oneYearReserved: number;
+  threeYearReserved: number;
+  spot: number;
+}
+
 let recordTiming = false;
 let previousPerformanceNow = 0;
 
@@ -122,11 +133,15 @@ function timeEvent(eventName: string): void {
     await selectRegion(page, config.region);
     timeEvent('regionSelectionCompletedAt');
 
+    timeEvent('hourlyPricingSelectionStartedAt');
+    await selectHourlyPricing(page);
+    timeEvent('hourlyPricingSelectionCompletedAt');
+
     console.log();
 
     timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
-    const vmPricing = await parsePricing(page, config.region);
+    const vmPricing = await parsePricing(page);
     timeEvent('parsePricingCompletedAt');
 
     console.log();
@@ -145,7 +160,7 @@ function timeEvent(eventName: string): void {
 }());
 
 export function getPrice(tr: HTMLTableRowElement, columnSelector: string): number {
-  const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' > span');
+  const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' span.price-value');
 
   if (span == null) {
     return undefined;
@@ -254,7 +269,7 @@ function writeCsv(vmPricing: VmPricing[], culture: string, region: string, opera
 async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
   console.log('Selecting currency:', currency);
 
-  const selector = '#currency-selector';
+  const selector = '[name="currency"]';
 
   await setSelect(page, selector, currency);
 }
@@ -262,22 +277,26 @@ async function selectCurrency(page: puppeteer.Page, currency: string): Promise<v
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
   console.log('Selecting region:', region);
 
-  const selector = '#region-selector';
+  const selector = '[name="region"]';
 
   await setSelect(page, selector, region);
 }
 
-function getPricing(): VmPricing[] {
+async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
+  const selector = '[name="unitPricing"]';
+  await setSelect(page, selector, 'hour');
+}
+
+function getPricing(): PartialVmPricing[] {
   const pricingRowSelector = '.data-table__table:not([style="visibility: hidden;"]) tbody tr';
+  const activeInstanceRowSelector = 'td:nth-last-child(1) > span.active';
+  let rowCount = 0;
+  let activeInstanceRowCount = 0;
 
   const pricing =
   Array.from(document.querySelectorAll(pricingRowSelector))
   .map((tr: HTMLTableRowElement) => {
-    let isInstanceRow = tr.querySelector('td:nth-last-child(1) > span.wa-conditionalDisplay') !== null;
-
-    if (!isInstanceRow) {
-      return undefined;
-    }
+    rowCount++;
 
     const getInstance = function getInstance(tr: Element): string {
       let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
@@ -291,12 +310,14 @@ function getPricing(): VmPricing[] {
     }
 
     const instance = getInstance(tr);
-    let isActive = tr.querySelector('td:nth-last-child(1) > span.active') !== null;
+    let isActive = tr.querySelector(activeInstanceRowSelector) !== null;
 
     if (!isActive) {
       console.log(`Instance '${instance}' is inactive`);
       return undefined;
     }
+
+    activeInstanceRowCount++;
 
     const getCpu = function getCpu(tr: Element): number {
       let vCpu = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
@@ -329,47 +350,91 @@ function getPricing(): VmPricing[] {
 
     const ram = getRam(tr);
 
-    const payAsYouGo = getPrice(tr, 'td:nth-child(5) span:nth-child(1)');
-    const payAsYouGoWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(5) span:nth-child(2)');
-    const oneYearReserved = getPrice(tr, 'td:nth-child(6) span:nth-child(1)');
-    const oneYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(6) span:nth-child(2)');
-    const threeYearReserved = getPrice(tr, 'td:nth-child(7) span:nth-child(1)');
-    const threeYearReservedWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(7) span:nth-child(2)');
-    const spot = getPrice(tr, 'td:nth-child(8) span:nth-child(1)');
-    const spotWithAzureHybridBenefit = getPrice(tr, 'td:nth-child(8) span:nth-child(2)');
+    const payAsYouGo = getPrice(tr, 'td:nth-child(5)');
+    const oneYearReserved = getPrice(tr, 'td:nth-child(6)');
+    const threeYearReserved = getPrice(tr, 'td:nth-child(7)');
+    const spot = getPrice(tr, 'td:nth-child(8)');
 
-    return <VmPricing> {
+    if (payAsYouGo === undefined &&
+        oneYearReserved === undefined &&
+        threeYearReserved === undefined &&
+        spot === undefined) {
+      console.log(`Instance '${instance}' has no valid prices`);
+      return undefined;
+    }
+
+    return <PartialVmPricing> {
       instance: instance,
       vCpu: vCpu,
       ram: ram,
       payAsYouGo: payAsYouGo,
-      payAsYouGoWithAzureHybridBenefit: payAsYouGoWithAzureHybridBenefit,
       oneYearReserved: oneYearReserved,
-      oneYearReservedWithAzureHybridBenefit: oneYearReservedWithAzureHybridBenefit,
       threeYearReserved: threeYearReserved,
-      threeYearReservedWithAzureHybridBenefit: threeYearReservedWithAzureHybridBenefit,
-      spot: spot,
-      spotWithAzureHybridBenefit: spotWithAzureHybridBenefit
+      spot: spot
     };
   })
   .filter(p => p != null);
 
-  if (pricing.length === 0) {
+  if (rowCount === 0) {
     throw `Did not find any pricing rows, is the selector "${pricingRowSelector}" still valid?`;
+  }
+
+  if (activeInstanceRowCount === 0) {
+    throw `Did not find any active instance rows, is the selector "${activeInstanceRowSelector}" still valid?`;
+  }
+
+  if (pricing.length === 0) {
+    throw `Did not find any prices`;
   }
 
   return pricing;
 }
 
-async function parsePricing(page: puppeteer.Page, region: string): Promise<VmPricing[]> {
-  return <VmPricing[]> await page.evaluate(() => getPricing());
+async function parsePricing(page: puppeteer.Page): Promise<VmPricing[]> {
+  const pricingWithHybridBenefits = await page.evaluate(() => getPricing());
+  await page.click('button#isAhb');
+  const pricingWithoutHybridBenefits = await page.evaluate(() => getPricing());
+
+  if (pricingWithHybridBenefits.length !== pricingWithoutHybridBenefits.length) {
+    throw `Expected same count of instances with hybrid benefits ${pricingWithHybridBenefits.length} and without ${pricingWithoutHybridBenefits.length}, good luck!`;
+  }
+
+  return pricingWithHybridBenefits.map((instanceWithHybridBenefits, o) => {
+    const instanceWithoutHybridBenefits = pricingWithoutHybridBenefits[o];
+
+    if (instanceWithHybridBenefits.instance !== instanceWithoutHybridBenefits.instance ||
+      instanceWithHybridBenefits.vCpu !== instanceWithoutHybridBenefits.vCpu ||
+      instanceWithHybridBenefits.ram !== instanceWithoutHybridBenefits.ram) {
+      throw `At offset ${o}, instance "${instanceWithHybridBenefits}" with hybrid benefits does not match instance "${instanceWithoutHybridBenefits}" without`
+    }
+
+    return <VmPricing> {
+      instance: instanceWithHybridBenefits.instance,
+      vCpu: instanceWithHybridBenefits.vCpu,
+      ram: instanceWithHybridBenefits.ram,
+      payAsYouGo: instanceWithoutHybridBenefits.payAsYouGo,
+      payAsYouGoWithAzureHybridBenefit: instanceWithHybridBenefits.payAsYouGo,
+      oneYearReserved: instanceWithoutHybridBenefits.oneYearReserved,
+      oneYearReservedWithAzureHybridBenefit: instanceWithHybridBenefits.oneYearReserved,
+      threeYearReserved: instanceWithoutHybridBenefits.threeYearReserved,
+      threeYearReservedWithAzureHybridBenefit: instanceWithHybridBenefits.threeYearReserved,
+      spot: instanceWithoutHybridBenefits.spot,
+      spotWithAzureHybridBenefit: instanceWithHybridBenefits.spot
+    }
+  });
 }
 
 async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
-  await page.waitForSelector(selector, { visible: true });
-  const selectedValue = await page.select(`select${selector}`, value);
+  const fullSelector = `select${selector}`;
+  await page.waitForSelector(fullSelector, { visible: true });
+  let selectedValue = await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
 
-  if (selectedValue.length != 1 || selectedValue[0] !== value) {
-    throw `Failed to select '${value}' for selector '${selector}', instead selected '${selectedValue}'`
+  if (selectedValue !== value) {
+    await page.select(fullSelector, value);
+    selectedValue = await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
+  }
+
+  if (selectedValue !== value) {
+    throw `Failed to select '${value}' for selector '${fullSelector}', instead selected '${selectedValue}'`
   }
 }
