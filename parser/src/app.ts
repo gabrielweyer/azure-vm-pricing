@@ -312,7 +312,7 @@ function getPricing(): PartialVmPricing[] {
       const indexOfSlash = vCpu.indexOf('/');
 
       if (indexOfSlash > -1) {
-        vCpu = vCpu.substr(indexOfSlash + 1);
+        vCpu = vCpu.substring(indexOfSlash + 1);
       }
 
       return Number.parseInt(vCpu.trim());
