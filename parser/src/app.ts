@@ -299,7 +299,7 @@ function getPricing(): PartialVmPricing[] {
     rowCount++;
 
     const getInstance = function getInstance(tr: Element): string {
-      let instance = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
+      let instance = (<HTMLTableCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
       const indexOfSup = instance.indexOf('<sup>');
 
       if (indexOfSup > -1) {
@@ -320,7 +320,7 @@ function getPricing(): PartialVmPricing[] {
     activeInstanceRowCount++;
 
     const getCpu = function getCpu(tr: Element): number {
-      let vCpu = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
+      let vCpu = (<HTMLTableCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
 
       const indexOfSlash = vCpu.indexOf('/');
 
@@ -334,7 +334,7 @@ function getPricing(): PartialVmPricing[] {
     const vCpu = getCpu(tr);
 
     const getRam = function getRam(tr: Element): number {
-      let ram = (<HTMLTableDataCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
+      let ram = (<HTMLTableCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
 
       const indexOfGib = ram.indexOf('GiB');
 
