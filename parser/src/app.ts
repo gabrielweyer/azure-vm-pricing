@@ -216,7 +216,7 @@ function isBlocked(url: string): boolean {
   {
     if (browser) {
       if (!wasSuccessful && page) {
-        await page.screenshot({ path: './out/screenshot.png', fullPage: true });
+        await page.screenshot({ path: `./out/${culture}_${currency}.png` });
       }
       await browser.close();
     }
@@ -321,18 +321,15 @@ function writeCsv(vmPricing: VmPricing[], culture: string, region: string, opera
 
 async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
   console.log('Selecting currency:', currency);
-
   const selector = '[name="currency"]';
-
   await setSelect(page, selector, currency);
 }
 
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
   console.log('Selecting region:', region);
-
   const selector = '[name="region"]';
-
   await setSelect(page, selector, region);
+  await waitForLoadedRegionalPrices(page);
 }
 
 async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
@@ -444,11 +441,23 @@ function getPricing(): PartialVmPricing[] {
   return pricing;
 }
 
+async function waitForLoadedRegionalPrices(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
+      return loadingRegionalPriceDiv === null;
+    },
+    {
+      timeout: 5000
+    }
+  );
+}
+
 async function waitForApplicableVirtualMachinesAnnouncement(page: puppeteer.Page): Promise<void> {
   await page.waitForFunction(
     () => {
       const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
-      return applicableVmsAnnouncemnt !== undefined;
+      return applicableVmsAnnouncemnt !== null;
     }
   );
 }
