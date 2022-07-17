@@ -47,6 +47,7 @@ jobs:
             echo "::warning title=Skipping end-to-end tests::End-to-end tests have been skipped because '[skip-e2e]' was present in the commit message."
           fi
       - name: yarn e2e
+        id: e2e
         if: ${{ env.RUN_E2E_TESTS == 'true' }}
         run: yarn e2e-all-ci
         env:
@@ -65,3 +66,9 @@ jobs:
           name: coverage
           path: ${{ github.workspace }}/parser/coverage/lcov-report
           if-no-files-found: error
+      - name: Upload failed screenshot
+        uses: actions/upload-artifact@v3
+        if: ${{ failure() && steps.e2e.conclusion == 'failure' }}
+        with:
+          name: failed-screenshot
+          path: '${{ github.workspace }}/parser/out/*.png'
