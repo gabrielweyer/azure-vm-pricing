@@ -13,8 +13,8 @@ yarn-error.log
 
 # Output
 out/*.csv
-out/*.json
-out/*.png
+out/**/*.json
+out/**/*.png
 
 # Jest
 test-results/

@@ -34,9 +34,38 @@ interface PartialVmPricing {
   spot: number;
 }
 
+interface LogMessage {
+  loggedAt: Date,
+  level: 'warn' | 'error',
+  args: any[]
+}
+
 let recordTiming = false;
 let previousPerformanceNow = 0;
 let wasSuccessful = false;
+const logMessages: LogMessage[] = [];
+
+const consoleWarn = console.warn
+
+console.warn = function(...args) {
+  consoleWarn.apply(console, args);
+  logMessage('warn', args);
+}
+
+const consoleError = console.error
+
+console.error = function(...args) {
+  consoleError.apply(console, args);
+  logMessage('error', args);
+}
+
+function logMessage(level: 'warn' | 'error', args: any[]): void {
+  logMessages.push(<LogMessage> {
+    loggedAt: new Date(),
+    level: level,
+    args: args
+  });
+}
 
 function timeEvent(eventName: string): void {
   if (!recordTiming) return;
@@ -214,9 +243,19 @@ function isBlocked(url: string): boolean {
   }
   finally
   {
+    if (!wasSuccessful) {
+      const logFilename = `./out/log/${culture}_${currency}.json`;
+
+      fs.writeFile(logFilename, JSON.stringify(logMessages.length > 0 ? logMessages : 'No log messages recorded'), function(err) {
+        if (err) {
+            return console.error(err);
+        }
+      });
+    }
+
     if (browser) {
       if (!wasSuccessful && page) {
-        await page.screenshot({ path: `./out/${culture}_${currency}.png` });
+        await page.screenshot({ path: `./out/log/${culture}_${currency}.png`, fullPage: true });
       }
       await browser.close();
     }
