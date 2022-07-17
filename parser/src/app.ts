@@ -169,7 +169,8 @@ function isBlocked(url: string): boolean {
       if (log.type() === 'warning' || log.type() === 'error') {
         return;
       }
-      console[log.type()](log.text())
+
+      console[log.type()](log.text());
     });
 
     console.log('Culture:', config.culture);
@@ -196,8 +197,6 @@ function isBlocked(url: string): boolean {
     timeEvent('hourlyPricingSelectionStartedAt');
     await selectHourlyPricing(page);
     timeEvent('hourlyPricingSelectionCompletedAt');
-
-    console.log();
 
     timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
@@ -330,6 +329,7 @@ async function selectRegion(page: puppeteer.Page, region: string): Promise<void>
 }
 
 async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
+  console.log('Selecting hourly pricing');
   const selector = '[name="unitPricing"]';
   await setSelect(page, selector, 'hour');
 }
