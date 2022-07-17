@@ -36,6 +36,7 @@ interface PartialVmPricing {
 
 let recordTiming = false;
 let previousPerformanceNow = 0;
+let wasSuccessful = false;
 
 function timeEvent(eventName: string): void {
   if (!recordTiming) return;
@@ -144,12 +145,12 @@ function isBlocked(url: string): boolean {
 
   timeEvent('chromeStartedAt');
   const browser = await puppeteer.launch({headless: runHeadless});
+  const page = await browser.newPage();
   timeEvent('chromeLaunchedAt');
 
   try
   {
     timeEvent('pageCreateStartedAt');
-    const page = await browser.newPage();
     page.setDefaultNavigationTimeout(60000);
     page.setRequestInterception(true);
     timeEvent('pageCreateCompletedAt');
@@ -186,6 +187,8 @@ function isBlocked(url: string): boolean {
       throw `The culture "${config.culture}" is not supported.`;
     }
 
+    await waitForApplicableVirtualMachinesAnnouncement(page);
+
     timeEvent('currencySelectionStartedAt');
     await selectCurrency(page, config.currency);
     timeEvent('currencySelectionCompletedAt');
@@ -207,10 +210,14 @@ function isBlocked(url: string): boolean {
 
     writeJson(vmPricing, config.region, config.operatingSystem);
     writeCsv(vmPricing, config.culture, config.region, config.operatingSystem);
+    wasSuccessful = true;
   }
   finally
   {
     if (browser) {
+      if (!wasSuccessful && page) {
+        await page.screenshot({ path: './out/screenshot.png', fullPage: true });
+      }
       await browser.close();
     }
 
@@ -435,6 +442,15 @@ function getPricing(): PartialVmPricing[] {
   }
 
   return pricing;
+}
+
+async function waitForApplicableVirtualMachinesAnnouncement(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
+      return applicableVmsAnnouncemnt !== undefined;
+    }
+  );
 }
 
 async function waitForPriceWithoutHybridBenefits(page: puppeteer.Page): Promise<void> {
