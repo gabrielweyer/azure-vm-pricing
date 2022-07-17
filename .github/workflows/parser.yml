@@ -66,9 +66,9 @@ jobs:
           name: coverage
           path: ${{ github.workspace }}/parser/coverage/lcov-report
           if-no-files-found: error
-      - name: Upload failed screenshot
+      - name: Upload failed e2e logs and screenshots
         uses: actions/upload-artifact@v3
         if: ${{ failure() && steps.e2e.conclusion == 'failure' }}
         with:
-          name: failed-screenshot
-          path: '${{ github.workspace }}/parser/out/*.png'
+          name: failed-e2e-log-screenshot
+          path: '${{ github.workspace }}/parser/out/log'
