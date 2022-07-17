@@ -309,35 +309,47 @@ function assert(
   });
 
   crawler.on('close', (code) => {
-    expect(code).toBe(0);
+    try
+    {
+      if (crawlerErrors.length > 0) {
+        done(new Error(`Crawler error(s): ${crawlerErrors}`));
+        return;
+      }
 
-    if (crawlerErrors.length > 0) {
-      done(new Error(`Errors: ${crawlerErrors}`));
+      expect(code).toBe(0);
+
+      const fileStream = fs.createReadStream(
+        `./out/vm-pricing_${region}_${operatingSystem}.csv`
+      );
+      const rl = readline.createInterface({
+        input: fileStream,
+        crlfDelay: Infinity
+      });
+
+      let foundExpectedVirtualMachine = false;
+
+      rl.on('close', () => {
+        if (!foundExpectedVirtualMachine) {
+          done(new Error('Did not find "D2 v3" virtual machine.'));
+        }
+      });
+
+      rl.on('line', (line) => {
+        try {
+          if (line.startsWith('D2 v3,')) {
+            foundExpectedVirtualMachine = true;
+            rl.close();
+            expect(line).toMatchSnapshot();
+            done();
+          }
+        } catch (error) {
+          done(error);
+        }
+      });
     }
-
-    const fileStream = fs.createReadStream(
-      `./out/vm-pricing_${region}_${operatingSystem}.csv`
-    );
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity
-    });
-
-    let foundExpectedVirtualMachine = false;
-
-    rl.on('close', () => {
-      if (!foundExpectedVirtualMachine) {
-        throw 'Did not find "D2 v3" virtual machine.';
-      }
-    });
-
-    rl.on('line', (line) => {
-      if (line.startsWith('D2 v3,')) {
-        foundExpectedVirtualMachine = true;
-        rl.close();
-        expect(line).toMatchSnapshot();
-        done();
-      }
-    });
+    catch (error)
+    {
+      done(error);
+    }
   });
 }
