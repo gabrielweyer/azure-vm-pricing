@@ -196,11 +196,14 @@ function isBlocked(url: string): boolean {
     });
 
     page.on('console', (log) => {
-      if (log.type() === 'warning' || log.type() === 'error') {
+      const text = log.text();
+      const location = log.location();
+
+      if (text === 'Failed to load resource: net::ERR_FAILED' && isBlocked(location.url)) {
         return;
       }
 
-      console[log.type()](log.text());
+      console[log.type()](text);
     });
 
     console.log('Culture:', config.culture);
@@ -229,6 +232,8 @@ function isBlocked(url: string): boolean {
     timeEvent('hourlyPricingSelectionStartedAt');
     await selectHourlyPricing(page);
     timeEvent('hourlyPricingSelectionCompletedAt');
+
+    console.log();
 
     timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});

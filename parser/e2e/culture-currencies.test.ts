@@ -311,11 +311,6 @@ function assert(
   crawler.on('close', (code) => {
     try
     {
-      if (crawlerErrors.length > 0) {
-        done(new Error(`Crawler error(s): ${crawlerErrors}`));
-        return;
-      }
-
       expect(code).toBe(0);
 
       const fileStream = fs.createReadStream(
