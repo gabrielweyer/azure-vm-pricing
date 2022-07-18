@@ -372,7 +372,9 @@ async function selectCurrency(page: puppeteer.Page, currency: string): Promise<v
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
   console.log('Selecting region:', region);
   const selector = '[name="region"]';
-  await setSelect(page, selector, region);
+  const loadingPromise = waitForLoadingRegionalPrices(page);
+  const setSelectPromise = setSelect(page, selector, region);
+  await Promise.all([loadingPromise, setSelectPromise]);
   await waitForLoadedRegionalPrices(page);
 }
 
@@ -483,6 +485,18 @@ function getPricing(): PartialVmPricing[] {
   }
 
   return pricing;
+}
+
+async function waitForLoadingRegionalPrices(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
+      return loadingRegionalPriceDiv !== null;
+    },
+    {
+      timeout: 5000
+    }
+  );
 }
 
 async function waitForLoadedRegionalPrices(page: puppeteer.Page): Promise<void> {
