@@ -373,9 +373,12 @@ async function selectRegion(page: puppeteer.Page, region: string): Promise<void>
   console.log('Selecting region:', region);
   const selector = '[name="region"]';
   const loadingPromise = waitForLoadingRegionalPrices(page);
+  const busyMainAppPromise = waitForBusyMainApp(page);
   const setSelectPromise = setSelect(page, selector, region);
-  await Promise.all([loadingPromise, setSelectPromise]);
-  await waitForLoadedRegionalPrices(page);
+  await Promise.all([loadingPromise, busyMainAppPromise, setSelectPromise]);
+  const loadedPromise = waitForLoadedRegionalPrices(page);
+  const idleMainAppPromise = waitForIdleMainApp(page);
+  await Promise.all([loadedPromise, idleMainAppPromise]);
 }
 
 async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
@@ -485,6 +488,30 @@ function getPricing(): PartialVmPricing[] {
   }
 
   return pricing;
+}
+
+async function waitForBusyMainApp(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
+      return busyMainAppElement !== null;
+    },
+    {
+      timeout: 5000
+    }
+  );
+}
+
+async function waitForIdleMainApp(page: puppeteer.Page): Promise<void> {
+  await page.waitForFunction(
+    () => {
+      const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
+      return busyMainAppElement === null;
+    },
+    {
+      timeout: 5000
+    }
+  );
 }
 
 async function waitForLoadingRegionalPrices(page: puppeteer.Page): Promise<void> {
