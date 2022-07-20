@@ -1,6 +1,7 @@
 import * as puppeteer from 'puppeteer';
 const fs = require('fs');
 const { performance } = require('perf_hooks');
+const util = require('util');
 
 interface AzureVmPricingConfig {
   culture: string;
@@ -196,14 +197,27 @@ function isBlocked(url: string): boolean {
     });
 
     page.on('console', (log) => {
+      const type = log.type();
       const text = log.text();
       const location = log.location();
+      const stackTrace = log.stackTrace();
 
       if (text === 'Failed to load resource: net::ERR_FAILED' && isBlocked(location.url)) {
         return;
       }
 
-      console[log.type()](text);
+      if (stackTrace.length > 0 && stackTrace[stackTrace.length - 1].url === '__puppeteer_evaluation_script__') {
+        return console[type](text);
+      }
+
+      const serialisableLog = {
+        text: text,
+        location: location,
+        stackTrace: stackTrace,
+        args: util.inspect(log.args())
+      };
+
+      console[type](serialisableLog);
     });
 
     console.log('Culture:', config.culture);
@@ -342,7 +356,7 @@ const commaDecimalPointCountries = [
 function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string): void {
   const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
 
-  var writer = fs.createWriteStream(outFilename);
+  const writer = fs.createWriteStream(outFilename);
   writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,PAY AS YOU GO WITH AZURE HYBRID BENEFIT,ONE YEAR RESERVED,ONE YEAR RESERVED WITH AZURE HYBRID BENEFIT,THREE YEAR RESERVED,THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT,SPOT,SPOT WITH AZURE HYBRID BENEFIT\n');
 
   const writePrice = function writePrice(price: number): string {
