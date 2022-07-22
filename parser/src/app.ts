@@ -196,6 +196,26 @@ function isBlocked(url: string): boolean {
       req.continue();
     });
 
+    page.on('response', async res => {
+      if (res.status() !== 403) {
+        return;
+      }
+
+      let responseBody = '';
+      const resourceType = res.request().resourceType();
+      const responseHeaders = res.headers();
+
+      try {
+        if (resourceType !== 'preflight' && responseHeaders['content-length'] !== "0") {
+          responseBody = await res.text();
+        }
+      } catch (error) {
+        console.warn(`Failed to read response body for "${res.url()}"`);
+      }
+
+      console.warn(`Request "${res.url()}" returned 403 with headers`, responseHeaders, 'and body', responseBody);
+    });
+
     page.on('console', (log) => {
       const type = log.type();
       const text = log.text();
