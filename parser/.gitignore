@@ -14,7 +14,6 @@ yarn-error.log
 # Output
 out/*.csv
 out/**/*.json
-out/**/*.log
 out/**/*.png
 
 # Jest

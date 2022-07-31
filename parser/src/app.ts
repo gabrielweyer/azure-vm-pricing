@@ -339,15 +339,6 @@ function isBlocked(url: string): boolean {
       await browser.close();
     }
 
-    if (debugMode) {
-      const logFilename = `./out/log/execution-order.log`;
-      fs.appendFile(logFilename, `${fileName}\n`, function(err) {
-        if (err) {
-          return console.error(err);
-        }
-      });
-    }
-
     timeEvent('crawlerCompletedAt');
   }
 }());
