@@ -446,6 +446,12 @@ async function selectCurrency(page: puppeteer.Page, currency: string): Promise<v
 async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
   console.log('Selecting region:', region);
   const selector = '[name="region"]';
+  const isRegionAlreadySelected = await isSelectedSelect(page, selector, region);
+
+  if (isRegionAlreadySelected) {
+    return;
+  }
+
   const loadingPromise = waitForLoadingRegionalPrices(page);
   const busyMainAppPromise = waitForBusyMainApp(page);
   const setSelectPromise = setSelect(page, selector, region);
@@ -668,16 +674,30 @@ async function parsePricing(page: puppeteer.Page): Promise<VmPricing[]> {
 }
 
 async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
-  const fullSelector = `select${selector}`;
-  await page.waitForSelector(fullSelector, { visible: true });
-  let selectedValue = await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
+  const fullSelector = getSelectFullSelector(selector);
+  let selectedValue = await getSelectedValue(page, selector);
 
   if (selectedValue !== value) {
     await page.select(fullSelector, value);
-    selectedValue = await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
+    selectedValue = await getSelectedValue(page, selector);
   }
 
   if (selectedValue !== value) {
     throw `Failed to select '${value}' for selector '${fullSelector}', instead selected '${selectedValue}'`
   }
+}
+
+async function isSelectedSelect(page: puppeteer.Page, selector: string, value: string): Promise<boolean> {
+  let selectedValue = await getSelectedValue(page, selector);
+  return selectedValue === value;
+}
+
+async function getSelectedValue(page: puppeteer.Page, selector: string): Promise<string> {
+  const fullSelector = getSelectFullSelector(selector);
+  await page.waitForSelector(fullSelector, { visible: true });
+  return await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
+}
+
+function getSelectFullSelector(selector: string): string {
+  return `select${selector}`;
 }
