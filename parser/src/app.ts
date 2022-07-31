@@ -253,7 +253,7 @@ function isBlocked(url: string): boolean {
         return;
       }
 
-      if (stackTrace.length > 0 && stackTrace[stackTrace.length - 1].url === '__puppeteer_evaluation_script__') {
+      if (stackTrace.length > 0 && stackTrace[stackTrace.length - 1].url === 'pptr://__puppeteer_evaluation_script__') {
         return console[type](text);
       }
 
