@@ -46,6 +46,13 @@ let previousPerformanceNow = 0;
 let wasSuccessful = false;
 const logMessages: LogMessage[] = [];
 
+const consoleLog = console.log
+
+console.log = function(...args) {
+  consoleLog.apply(console, args);
+  logMessage('log', args);
+}
+
 const consoleWarn = console.warn
 
 console.warn = function(...args) {
@@ -60,7 +67,7 @@ console.error = function(...args) {
   logMessage('error', args);
 }
 
-function logMessage(level: 'warn' | 'error', args: any[]): void {
+function logMessage(level: 'log' | 'warn' | 'error', args: any[]): void {
   logMessages.push(<LogMessage> {
     loggedAt: new Date(),
     level: level,
@@ -132,7 +139,8 @@ function isBlocked(url: string): boolean {
   let culture = 'en-au';
   let currency = 'aud';
   let operatingSystem = 'windows';
-  let region = 'australia-southeast'
+  let region = 'australia-southeast';
+  let debugMode = false;
 
   if (!process.argv[1].endsWith('app.ts')) {
     return;
@@ -142,28 +150,47 @@ function isBlocked(url: string): boolean {
 
   const args = process.argv.slice(2);
 
-  for (let offset = 0; offset < args.length - 1; offset += 2) {
-    switch (args[offset]) {
-      case '-l':
-      case '--culture':
-        culture = args[offset + 1];
-        break;
-      case '-c':
-      case '--currency':
-        currency = args[offset + 1];
-        break;
-      case '-o':
-      case '--operating-system':
-        operatingSystem = args[offset + 1];
-        break;
-      case '-r':
-      case '--region':
-        region = args[offset + 1];
-        break;
-      default:
-        console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region'`)
-        break;
+  for (let offset = 0; offset < args.length;) {
+    let parsedBinaryArg = false;
+
+    if (offset < args.length - 1) {
+      parsedBinaryArg = true;
+      switch (args[offset]) {
+        case '-l':
+        case '--culture':
+          culture = args[offset + 1];
+          break;
+        case '-c':
+        case '--currency':
+          currency = args[offset + 1];
+          break;
+        case '-o':
+        case '--operating-system':
+          operatingSystem = args[offset + 1];
+          break;
+        case '-r':
+        case '--region':
+          region = args[offset + 1];
+          break;
+        default:
+          parsedBinaryArg = false;
+          break;
+      }
     }
+
+    if (!parsedBinaryArg) {
+      switch (args[offset]) {
+        case '-d':
+        case '--debug':
+          debugMode = true;
+          break;
+        default:
+          console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region'. None of these switches should be provided as the last arg as they require a value.`);
+          break;
+      }
+    }
+
+    offset += parsedBinaryArg ? 2 : 1;
   }
 
   const config: AzureVmPricingConfig = {
@@ -240,6 +267,10 @@ function isBlocked(url: string): boolean {
       console[type](serialisableLog);
     });
 
+    if (debugMode) {
+      console.log('Running in debug mode');
+    }
+
     console.log('Culture:', config.culture);
     console.log('Operating System:', config.operatingSystem);
 
@@ -280,21 +311,30 @@ function isBlocked(url: string): boolean {
     writeCsv(vmPricing, config.culture, config.region, config.operatingSystem);
     wasSuccessful = true;
   }
+  catch (e)
+  {
+    if (debugMode) {
+      console.error('Terminating error:', util.inspect(e));
+    }
+    throw e;
+  }
   finally
   {
-    if (!wasSuccessful) {
-      const logFilename = `./out/log/${culture}_${currency}.json`;
+    const fileName = `${culture}_${currency}_${region}_${operatingSystem}`;
+
+    if (!wasSuccessful && debugMode) {
+      const logFilename = `./out/log/${fileName}.json`;
 
       fs.writeFile(logFilename, JSON.stringify(logMessages.length > 0 ? logMessages : 'No log messages recorded'), function(err) {
         if (err) {
-            return console.error(err);
+          return console.error(err);
         }
       });
     }
 
     if (browser) {
-      if (!wasSuccessful && page) {
-        await page.screenshot({ path: `./out/log/${culture}_${currency}.png`, fullPage: true });
+      if (!wasSuccessful && debugMode && page) {
+        await page.screenshot({ path: `./out/log/${fileName}.png`, fullPage: true });
       }
       await browser.close();
     }

@@ -297,7 +297,8 @@ function assert(
       '-o',
       operatingSystem,
       '-r',
-      region
+      region,
+      '--debug'
     ],
     { shell: true }
   );
