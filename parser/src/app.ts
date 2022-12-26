@@ -298,6 +298,10 @@ function isBlocked(url: string): boolean {
     await selectHourlyPricing(page);
     timeEvent('hourlyPricingSelectionCompletedAt');
 
+    timeEvent('reservedInstancesSelectionStartedAt');
+    await selectReservedInstances(page);
+    timeEvent('reservedInstancesSelectionCompletedAt');
+
     console.log();
 
     timeEvent('parsePricingStartedAt');
@@ -465,6 +469,12 @@ async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
   console.log('Selecting hourly pricing');
   const selector = '[name="unitPricing"]';
   await setSelect(page, selector, 'hour');
+}
+
+async function selectReservedInstances(page: puppeteer.Page): Promise<void> {
+  console.log('Selecting reserved instances');
+  const selector = '[name="pricingModel"]';
+  await setSelect(page, selector, 'payg-ri');
 }
 
 function getPricing(): PartialVmPricing[] {
