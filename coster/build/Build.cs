@@ -14,7 +14,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 namespace Gabo;
 
 [ShutdownDotNetAfterServerBuild]
-class Build : NukeBuild
+sealed class Build : NukeBuild
 {
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
