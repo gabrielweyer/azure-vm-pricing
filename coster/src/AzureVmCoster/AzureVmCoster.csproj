@@ -6,7 +6,12 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <NoWarn>CA1303</NoWarn>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AzureVmCosterTests" />
+  </ItemGroup>
 
   <ItemGroup>
     <Using Include="AzureVmCoster.Models" />

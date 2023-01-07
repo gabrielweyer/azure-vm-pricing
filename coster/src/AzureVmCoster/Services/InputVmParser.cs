@@ -3,7 +3,7 @@ using CsvHelper;
 
 namespace AzureVmCoster.Services;
 
-public class InputVmParser
+internal static class InputVmParser
 {
     public static List<InputVm> Parse(FileInfo inputCsv, CultureInfo culture)
     {

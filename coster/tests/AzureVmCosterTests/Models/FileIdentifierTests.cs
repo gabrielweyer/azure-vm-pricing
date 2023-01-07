@@ -9,7 +9,7 @@ public static class FileIdentifierTests
         var identifier = new FileIdentifier("some-region", "some-operating-system");
 
         // Actual
-        var actual = identifier.GetPricingFilename();
+        var actual = identifier.PricingFilename;
 
         // Assert
         actual.Should().Be("vm-pricing_some-region_some-operating-system.json");

@@ -50,7 +50,7 @@ public static class Program
 
         if (inputFilePath.StartsWith('"'))
         {
-            inputFilePath = inputFilePath.Replace("\"", "");
+            inputFilePath = inputFilePath.Replace("\"", "", StringComparison.Ordinal);
         }
 
         var inputFile = new FileInfo(inputFilePath);

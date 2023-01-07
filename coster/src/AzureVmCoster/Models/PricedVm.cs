@@ -1,6 +1,6 @@
 namespace AzureVmCoster.Models;
 
-public class PricedVm
+internal class PricedVm
 {
     public PricedVm(InputVm inputVm, VmPricing? vmPricing)
     {

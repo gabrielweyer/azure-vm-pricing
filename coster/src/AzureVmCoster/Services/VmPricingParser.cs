@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace AzureVmCoster.Services;
 
-public class VmPricingParser
+internal class VmPricingParser
 {
     private readonly string _pricingDirectory;
 
