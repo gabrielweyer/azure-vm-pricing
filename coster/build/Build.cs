@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI;
@@ -73,7 +74,7 @@ class Build : NukeBuild
         {
             var testProjects =
                 from testProject in Solution.AllProjects
-                where testProject.Name.EndsWith("Tests")
+                where testProject.Name.EndsWith("Tests", StringComparison.Ordinal)
                 from framework in testProject.GetTargetFrameworks()
                 select new { TestProject = testProject, Framework = framework };
 

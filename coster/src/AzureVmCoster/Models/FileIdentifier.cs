@@ -1,9 +1,10 @@
 namespace AzureVmCoster.Models;
 
-public class FileIdentifier
+internal class FileIdentifier
 {
     public string Region { get; }
     public string OperatingSystem { get; }
+    public string PricingFilename => $"vm-pricing_{Region}_{OperatingSystem}.json";
 
     public FileIdentifier(string region, string operatingSystem)
     {
@@ -11,14 +12,9 @@ public class FileIdentifier
         OperatingSystem = operatingSystem;
     }
 
-    public string GetPricingFilename()
-    {
-        return $"vm-pricing_{Region}_{OperatingSystem}.json";
-    }
-
     public static FileIdentifier From(FileInfo fileInfo)
     {
-        var underscoreFirstIndex = fileInfo.Name.IndexOf('_');
+        var underscoreFirstIndex = fileInfo.Name.IndexOf('_', StringComparison.Ordinal);
         var underscoreLastIndex = fileInfo.Name.LastIndexOf('_');
         var extensionIndex = fileInfo.Name.LastIndexOf(".json", StringComparison.Ordinal);
 

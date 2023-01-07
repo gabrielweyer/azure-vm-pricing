@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace AzureVmCoster.Services;
 
-public class Pricer
+internal class Pricer
 {
     private readonly string _pricingDirectory;
 
@@ -16,7 +16,7 @@ public class Pricer
         var missingFiles = vms
             .Select(vm => new FileIdentifier(vm.Region, vm.OperatingSystem))
             .Distinct(new FileIdentifierComparer())
-            .Where(fileIdentifier => !File.Exists($@"{_pricingDirectory}{fileIdentifier.GetPricingFilename()}"))
+            .Where(fileIdentifier => !File.Exists($@"{_pricingDirectory}{fileIdentifier.PricingFilename}"))
             .ToList();
 
         if (missingFiles.Count > 0)
@@ -113,7 +113,7 @@ public class Pricer
 
         public int GetHashCode(FileIdentifier obj)
         {
-            return obj.Region.GetHashCode() ^ obj.OperatingSystem.GetHashCode();
+            return obj.Region.GetHashCode(StringComparison.Ordinal) ^ obj.OperatingSystem.GetHashCode(StringComparison.Ordinal);
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace AzureVmCoster.Models.Csv;
 
-public sealed class PricedVmMap : ClassMap<PricedVm>
+internal sealed class PricedVmMap : ClassMap<PricedVm>
 {
     public PricedVmMap()
     {

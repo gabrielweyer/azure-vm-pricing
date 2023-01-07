@@ -3,7 +3,7 @@ using CsvHelper;
 
 namespace AzureVmCoster.Services;
 
-public static class PricedVmWriter
+internal static class PricedVmWriter
 {
     public static void Write(string filename, List<PricedVm> pricedVms, CultureInfo culture)
     {
