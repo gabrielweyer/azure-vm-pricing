@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using Nuke.Common.Tooling;
 
+namespace Gabo;
+
 [TypeConverter(typeof(TypeConverter<Configuration>))]
 sealed class Configuration : Enumeration
 {
