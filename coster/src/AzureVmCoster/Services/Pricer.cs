@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace AzureVmCoster.Services;
 
@@ -21,7 +21,7 @@ internal class Pricer
 
         if (missingFiles.Count > 0)
         {
-            throw new InvalidOperationException($"Pricing files are missing for {JsonConvert.SerializeObject(missingFiles)}");
+            throw new InvalidOperationException($"Pricing files are missing for {JsonSerializer.Serialize(missingFiles)}");
         }
     }
 

@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" />
-    <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
 
   <ItemGroup>

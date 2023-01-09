@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace AzureVmCoster.Services;
 
@@ -22,7 +22,7 @@ internal class VmPricingParser
             var fileInfo = new FileInfo(pricingFile);
             var fileIdentifier = FileIdentifier.From(fileInfo);
 
-            var fileVmPricing = JsonConvert.DeserializeObject<List<VmPricing>>(File.ReadAllText(pricingFile));
+            var fileVmPricing = JsonSerializer.Deserialize<List<VmPricing>>(File.ReadAllText(pricingFile));
 
             if (fileVmPricing == null || !fileVmPricing.Any())
             {
