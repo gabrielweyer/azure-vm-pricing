@@ -306,7 +306,7 @@ function isBlocked(url: string): boolean {
 
     timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
-    const vmPricing = await parsePricing(page);
+    const vmPricing = await parsePricing(page, config.operatingSystem);
     timeEvent('parsePricingCompletedAt');
 
     console.log();
@@ -648,37 +648,52 @@ async function waitForPriceWithoutHybridBenefits(page: puppeteer.Page): Promise<
   );
 }
 
-async function parsePricing(page: puppeteer.Page): Promise<VmPricing[]> {
-  const pricingWithHybridBenefits = await page.evaluate(() => getPricing());
-  await page.click('button#isAhb');
-  await waitForPriceWithoutHybridBenefits(page);
-  const pricingWithoutHybridBenefits = await page.evaluate(() => getPricing());
+async function parsePricing(page: puppeteer.Page, operatingSystem: string): Promise<VmPricing[]> {
+  const operatingSystemWithHybridBenefit = ['windows', 'ml-server-windows', 'sharepoint', 'sql-server-enterprise', 'sql-server-standard', 'sql-server-web']
+  const hasHybridBenefit = operatingSystemWithHybridBenefit.includes(operatingSystem);
 
-  if (pricingWithHybridBenefits.length !== pricingWithoutHybridBenefits.length) {
-    throw `Expected same count of instances with hybrid benefits ${pricingWithHybridBenefits.length} and without ${pricingWithoutHybridBenefits.length}, good luck!`;
+  const pricing = await page.evaluate(() => getPricing());
+  let pricingWithHybridBenefits: PartialVmPricing[];
+  let pricingWithoutHybridBenefits: PartialVmPricing[];
+
+  if (hasHybridBenefit) {
+    pricingWithHybridBenefits = pricing;
+    await page.click('button#isAhb');
+    await waitForPriceWithoutHybridBenefits(page);
+    pricingWithoutHybridBenefits = await page.evaluate(() => getPricing());
+
+    if (pricing.length !== pricingWithoutHybridBenefits.length) {
+      throw `Expected same count of instances with hybrid benefits ${pricing.length} and without ${pricingWithoutHybridBenefits.length}, good luck!`;
+    }
+  } else {
+    pricingWithoutHybridBenefits = pricing;
   }
 
-  return pricingWithHybridBenefits.map((instanceWithHybridBenefits, o) => {
-    const instanceWithoutHybridBenefits = pricingWithoutHybridBenefits[o];
+  return pricingWithoutHybridBenefits.map((instanceWithoutHybridBenefit, o) => {
+    let instanceWithHybridBenefit: PartialVmPricing = undefined;
 
-    if (instanceWithHybridBenefits.instance !== instanceWithoutHybridBenefits.instance ||
-      instanceWithHybridBenefits.vCpu !== instanceWithoutHybridBenefits.vCpu ||
-      instanceWithHybridBenefits.ram !== instanceWithoutHybridBenefits.ram) {
-      throw `At offset ${o}, instance "${instanceWithHybridBenefits}" with hybrid benefits does not match instance "${instanceWithoutHybridBenefits}" without`
+    if (hasHybridBenefit) {
+      instanceWithHybridBenefit = pricingWithHybridBenefits[o];
+
+      if (instanceWithoutHybridBenefit.instance !== instanceWithHybridBenefit.instance ||
+        instanceWithoutHybridBenefit.vCpu !== instanceWithHybridBenefit.vCpu ||
+        instanceWithoutHybridBenefit.ram !== instanceWithHybridBenefit.ram) {
+        throw `At offset ${o}, instance "${instanceWithHybridBenefit}" with hybrid benefits does not match instance "${instanceWithoutHybridBenefit}" without`
+      }
     }
 
-    return <VmPricing> {
-      instance: instanceWithHybridBenefits.instance,
-      vCpu: instanceWithHybridBenefits.vCpu,
-      ram: instanceWithHybridBenefits.ram,
-      payAsYouGo: instanceWithoutHybridBenefits.payAsYouGo,
-      payAsYouGoWithAzureHybridBenefit: instanceWithHybridBenefits.payAsYouGo,
-      oneYearReserved: instanceWithoutHybridBenefits.oneYearReserved,
-      oneYearReservedWithAzureHybridBenefit: instanceWithHybridBenefits.oneYearReserved,
-      threeYearReserved: instanceWithoutHybridBenefits.threeYearReserved,
-      threeYearReservedWithAzureHybridBenefit: instanceWithHybridBenefits.threeYearReserved,
-      spot: instanceWithoutHybridBenefits.spot,
-      spotWithAzureHybridBenefit: instanceWithHybridBenefits.spot
+    return <VmPricing>{
+      instance: instanceWithoutHybridBenefit.instance,
+      vCpu: instanceWithoutHybridBenefit.vCpu,
+      ram: instanceWithoutHybridBenefit.ram,
+      payAsYouGo: instanceWithoutHybridBenefit.payAsYouGo,
+      payAsYouGoWithAzureHybridBenefit: instanceWithHybridBenefit?.payAsYouGo,
+      oneYearReserved: instanceWithoutHybridBenefit.oneYearReserved,
+      oneYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.oneYearReserved,
+      threeYearReserved: instanceWithoutHybridBenefit.threeYearReserved,
+      threeYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.threeYearReserved,
+      spot: instanceWithoutHybridBenefit.spot,
+      spotWithAzureHybridBenefit: instanceWithHybridBenefit?.spot
     }
   });
 }
