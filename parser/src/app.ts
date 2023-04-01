@@ -2,44 +2,11 @@ import * as puppeteer from 'puppeteer';
 const fs = require('fs');
 const { performance } = require('perf_hooks');
 const util = require('util');
-
-interface AzureVmPricingConfig {
-  culture: string;
-  currency: string;
-  operatingSystem: string;
-  region: string;
-}
-
-interface VmPricing {
-  instance: string;
-  vCpu: number;
-  ram: number;
-  payAsYouGo: number;
-  payAsYouGoWithAzureHybridBenefit: number;
-  oneYearReserved: number;
-  oneYearReservedWithAzureHybridBenefit: number;
-  threeYearReserved: number;
-  threeYearReservedWithAzureHybridBenefit: number;
-  spot: number;
-  spotWithAzureHybridBenefit: number;
-}
-
-interface PartialVmPricing {
-  azureHybridBenefit: boolean;
-  instance: string;
-  vCpu: number;
-  ram: number;
-  payAsYouGo: number;
-  oneYearReserved: number;
-  threeYearReserved: number;
-  spot: number;
-}
-
-interface LogMessage {
-  loggedAt: Date,
-  level: 'warn' | 'error',
-  args: any[]
-}
+import { AzureVmPricingConfig } from './azureVmPricingConfig';
+import { LogMessage } from './logMessage';
+import { isUrlBlocked } from './isUrlBlocked';
+import { writeCsv, writeJson } from './writeFile';
+import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions';
 
 let recordTiming = false;
 let previousPerformanceNow = 0;
@@ -81,54 +48,6 @@ function timeEvent(eventName: string): void {
   const happenedAt = Math.round(performance.now());
   console.log(eventName, happenedAt, 'Elapsed', happenedAt - previousPerformanceNow);
   previousPerformanceNow = happenedAt;
-}
-
-const blockedUrls = [
-  'https://www.microsoft.com/library/svy/azure/broker.js',
-];
-
-const blockedDomains = [
-  'https://munchkin.marketo.net/',
-  'https://cdnssl.clicktale.net/',
-  'https://publisher.liveperson.net/',
-  'https://www.facebook.com/',
-  'https://googleads.g.doubleclick.net/',
-  'https://dc.ads.linkedin.com/',
-  'https://dpm.demdex.net/',
-  'https://mscom.demdex.net/',
-  'https://msftenterprise.sc.omtrdc.net/',
-  'https://cm.everesttech.net/',
-  'https://sync.mathtag.com/',
-  'https://ib.adnxs.com/',
-  'https://idsync.rlcdn.com/',
-  'https://cm.g.doubleclick.net/',
-  'https://rtd.tubemogul.com/',
-  'https://idpix.media6degrees.com/',
-  'https://ad.doubleclick.net/'
-];
-
-const blockedFiles = [
-  '/LivePersonChat-iframe.js'
-];
-
-function isBlocked(url: string): boolean {
-  if (blockedUrls.includes(url)) {
-    return true;
-  }
-
-  for (let offset = 0; offset < blockedDomains.length; offset++) {
-    if (url.startsWith(blockedDomains[offset])) {
-      return true;
-    }
-  }
-
-  for (let offset = 0; offset < blockedFiles.length; offset++) {
-    if (url.endsWith(blockedFiles[offset])) {
-      return true;
-    }
-  }
-
-  return false;
 }
 
 (async function() {
@@ -215,7 +134,7 @@ function isBlocked(url: string): boolean {
     page.on('request', req => {
       const url = req.url();
 
-      if (isBlocked(url)) {
+      if (isUrlBlocked(url)) {
         req.abort();
         return;
       }
@@ -249,7 +168,7 @@ function isBlocked(url: string): boolean {
       const location = log.location();
       const stackTrace = log.stackTrace();
 
-      if (text === 'Failed to load resource: net::ERR_FAILED' && isBlocked(location.url)) {
+      if (text === 'Failed to load resource: net::ERR_FAILED' && isUrlBlocked(location.url)) {
         return;
       }
 
@@ -284,29 +203,30 @@ function isBlocked(url: string): boolean {
       throw `The culture "${config.culture}" is not supported.`;
     }
 
-    await waitForApplicableVirtualMachinesAnnouncement(page);
+    var portal = new AzurePortal(page);
+    await portal.waitForApplicableVirtualMachinesAnnouncement();
 
     timeEvent('currencySelectionStartedAt');
-    await selectCurrency(page, config.currency);
+    await portal.selectCurrency(config.currency);
     timeEvent('currencySelectionCompletedAt');
 
     timeEvent('regionSelectionStartedAt');
-    await selectRegion(page, config.region);
+    await portal.selectRegion(config.region);
     timeEvent('regionSelectionCompletedAt');
 
     timeEvent('hourlyPricingSelectionStartedAt');
-    await selectHourlyPricing(page);
+    await portal.selectHourlyPricing();
     timeEvent('hourlyPricingSelectionCompletedAt');
 
     timeEvent('reservedInstancesSelectionStartedAt');
-    await selectReservedInstances(page);
+    await portal.selectReservedInstances();
     timeEvent('reservedInstancesSelectionCompletedAt');
 
     console.log();
 
     timeEvent('parsePricingStartedAt');
     await page.addScriptTag({ content: `${getPrice} ${getPricing}`});
-    const vmPricing = await parsePricing(page, config.operatingSystem);
+    const vmPricing = await portal.parsePricing(config.operatingSystem);
     timeEvent('parsePricingCompletedAt');
 
     console.log();
@@ -346,383 +266,3 @@ function isBlocked(url: string): boolean {
     timeEvent('crawlerCompletedAt');
   }
 }());
-
-export function getPrice(tr: HTMLTableRowElement, columnSelector: string): number {
-  const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' span.price-value');
-
-  if (span == null) {
-    return undefined;
-  }
-  const priceText = span.textContent;
-
-  let firstDigitOffset = -1;
-
-  for (let priceTextOffset = 0; priceTextOffset < priceText.length; priceTextOffset++)
-  {
-    if (priceText[priceTextOffset] >= '0' && priceText[priceTextOffset] <= '9')
-    {
-      firstDigitOffset = priceTextOffset;
-      break;
-    }
-  }
-
-  if (firstDigitOffset > -1) {
-    let priceWithoutCurrencyAndDuration = priceText.substring(firstDigitOffset);
-
-    const lastIndexOfDot = priceWithoutCurrencyAndDuration.lastIndexOf('.');
-    const lastIndexOfComma = priceWithoutCurrencyAndDuration.lastIndexOf(',');
-
-    if (lastIndexOfComma > -1 && lastIndexOfComma > lastIndexOfDot) {
-      priceWithoutCurrencyAndDuration = priceWithoutCurrencyAndDuration.replace('.', '').replace(',', '.');
-    } else if (lastIndexOfComma > -1) {
-      priceWithoutCurrencyAndDuration = priceWithoutCurrencyAndDuration.replace(',', '');
-    }
-
-    return Number.parseFloat(priceWithoutCurrencyAndDuration);
-  }
-  else {
-    return undefined;
-  }
-}
-
-function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.json`;
-
-  fs.writeFile(outFilename, JSON.stringify(vmPricing, null, 2), function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log('Saved:', outFilename);
-  });
-}
-
-const commaDecimalPointCountries = [
-  'cs-cz',
-  'da-dk',
-  'de-de',
-  'es-es',
-  'fr-fr',
-  'fr-ca',
-  'id-id',
-  'it-it',
-  'hu-hu',
-  'nb-no',
-  'nl-nl',
-  'pl-pl',
-  'pt-br',
-  'pt-pt',
-  'sv-se',
-  'tr-tr',
-  'ru-ru'
-];
-
-function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
-
-  const writer = fs.createWriteStream(outFilename);
-  writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,PAY AS YOU GO WITH AZURE HYBRID BENEFIT,ONE YEAR RESERVED,ONE YEAR RESERVED WITH AZURE HYBRID BENEFIT,THREE YEAR RESERVED,THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT,SPOT,SPOT WITH AZURE HYBRID BENEFIT\n');
-
-  const writePrice = function writePrice(price: number): string {
-    if (price === undefined) {
-      return 'N/A';
-    }
-
-    if (commaDecimalPointCountries.indexOf(culture) > -1) {
-      return `"${price.toString().replace('.', ',')}"`;
-    }
-
-    return price.toString();
-  }
-
-  vmPricing.forEach(vm => writer.write(`${vm.instance},${vm.vCpu},${vm.ram},${writePrice(vm.payAsYouGo)},${writePrice(vm.payAsYouGoWithAzureHybridBenefit)},${writePrice(vm.oneYearReserved)},${writePrice(vm.oneYearReservedWithAzureHybridBenefit)},${writePrice(vm.threeYearReserved)},${writePrice(vm.threeYearReservedWithAzureHybridBenefit)},${writePrice(vm.spot)},${writePrice(vm.spotWithAzureHybridBenefit)}\n`));
-
-  writer.end();
-  console.log('Saved:', outFilename);
-}
-
-async function selectCurrency(page: puppeteer.Page, currency: string): Promise<void> {
-  console.log('Selecting currency:', currency);
-  const selector = '[name="currency"]';
-  await setSelect(page, selector, currency);
-}
-
-async function selectRegion(page: puppeteer.Page, region: string): Promise<void> {
-  console.log('Selecting region:', region);
-  const selector = '[name="region"]';
-  const isRegionAlreadySelected = await isSelectedSelect(page, selector, region);
-
-  if (isRegionAlreadySelected) {
-    return;
-  }
-
-  const loadingPromise = waitForLoadingRegionalPrices(page);
-  const busyMainAppPromise = waitForBusyMainApp(page);
-  const setSelectPromise = setSelect(page, selector, region);
-  await Promise.all([loadingPromise, busyMainAppPromise, setSelectPromise]);
-  const loadedPromise = waitForLoadedRegionalPrices(page);
-  const idleMainAppPromise = waitForIdleMainApp(page);
-  await Promise.all([loadedPromise, idleMainAppPromise]);
-}
-
-async function selectHourlyPricing(page: puppeteer.Page): Promise<void> {
-  console.log('Selecting hourly pricing');
-  const selector = '[name="unitPricing"]';
-  await setSelect(page, selector, 'hour');
-}
-
-async function selectReservedInstances(page: puppeteer.Page): Promise<void> {
-  console.log('Selecting reserved instances');
-  const selector = '[name="pricingModel"]';
-  await setSelect(page, selector, 'payg-ri');
-}
-
-function getPricing(): PartialVmPricing[] {
-  const pricingRowSelector = '.data-table__table:not([style="visibility: hidden;"]) tbody tr';
-  const activeInstanceRowSelector = 'td:nth-last-child(1) > span.active';
-  let rowCount = 0;
-  let activeInstanceRowCount = 0;
-
-  const pricing =
-  Array.from(document.querySelectorAll(pricingRowSelector))
-  .map((tr: HTMLTableRowElement) => {
-    rowCount++;
-
-    const getInstance = function getInstance(tr: Element): string {
-      let instance = (<HTMLTableCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
-      const indexOfSup = instance.indexOf('<sup>');
-
-      if (indexOfSup > -1) {
-        instance = instance.substring(0, indexOfSup);
-      }
-
-      return instance.trim();
-    }
-
-    const instance = getInstance(tr);
-    let isActive = tr.querySelector(activeInstanceRowSelector) !== null;
-
-    if (!isActive) {
-      console.log(`Instance '${instance}' is inactive`);
-      return undefined;
-    }
-
-    activeInstanceRowCount++;
-
-    const getCpu = function getCpu(tr: Element): number {
-      let vCpu = (<HTMLTableCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
-
-      const indexOfSlash = vCpu.indexOf('/');
-
-      if (indexOfSlash > -1) {
-        vCpu = vCpu.substring(indexOfSlash + 1);
-      }
-
-      return Number.parseInt(vCpu.trim());
-    }
-
-    const vCpu = getCpu(tr);
-
-    const getRam = function getRam(tr: Element): number {
-      let ram = (<HTMLTableCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
-
-      const indexOfGib = ram.indexOf('GiB');
-
-      if (indexOfGib > -1) {
-        ram = ram.substring(0, indexOfGib);
-      }
-      else {
-        console.log('Missing unit for RAM')
-      }
-
-      return Number.parseFloat(ram.trim());
-    }
-
-    const ram = getRam(tr);
-
-    const payAsYouGo = getPrice(tr, 'td:nth-child(5)');
-    const oneYearReserved = getPrice(tr, 'td:nth-child(6)');
-    const threeYearReserved = getPrice(tr, 'td:nth-child(7)');
-    const spot = getPrice(tr, 'td:nth-child(8)');
-
-    if (payAsYouGo === undefined &&
-        oneYearReserved === undefined &&
-        threeYearReserved === undefined &&
-        spot === undefined) {
-      console.log(`Instance '${instance}' has no valid prices`);
-      return undefined;
-    }
-
-    return <PartialVmPricing> {
-      instance: instance,
-      vCpu: vCpu,
-      ram: ram,
-      payAsYouGo: payAsYouGo,
-      oneYearReserved: oneYearReserved,
-      threeYearReserved: threeYearReserved,
-      spot: spot
-    };
-  })
-  .filter(p => p != null);
-
-  if (rowCount === 0) {
-    throw `Did not find any pricing rows, is the selector "${pricingRowSelector}" still valid?`;
-  }
-
-  if (activeInstanceRowCount === 0) {
-    throw `Did not find any active instance rows, is the selector "${activeInstanceRowSelector}" still valid?`;
-  }
-
-  if (pricing.length === 0) {
-    throw `Did not find any prices`;
-  }
-
-  return pricing;
-}
-
-async function waitForBusyMainApp(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
-      return busyMainAppElement !== null;
-    },
-    {
-      timeout: 5000
-    }
-  );
-}
-
-async function waitForIdleMainApp(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
-      return busyMainAppElement === null;
-    },
-    {
-      timeout: 5000
-    }
-  );
-}
-
-async function waitForLoadingRegionalPrices(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
-      return loadingRegionalPriceDiv !== null;
-    },
-    {
-      timeout: 5000
-    }
-  );
-}
-
-async function waitForLoadedRegionalPrices(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
-      return loadingRegionalPriceDiv === null;
-    },
-    {
-      timeout: 5000
-    }
-  );
-}
-
-async function waitForApplicableVirtualMachinesAnnouncement(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
-      return applicableVmsAnnouncemnt !== null;
-    }
-  );
-}
-
-async function waitForPriceWithoutHybridBenefits(page: puppeteer.Page): Promise<void> {
-  await page.waitForFunction(
-    () => {
-      const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
-      const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') !== -1);
-      return ahbOffset === -1;
-    },
-    { timeout: 3000 }
-  );
-}
-
-async function parsePricing(page: puppeteer.Page, operatingSystem: string): Promise<VmPricing[]> {
-  const operatingSystemWithHybridBenefit = ['windows', 'ml-server-windows', 'sharepoint', 'sql-server-enterprise', 'sql-server-standard', 'sql-server-web']
-  const hasHybridBenefit = operatingSystemWithHybridBenefit.includes(operatingSystem);
-
-  const pricing = await page.evaluate(() => getPricing());
-  let pricingWithHybridBenefits: PartialVmPricing[];
-  let pricingWithoutHybridBenefits: PartialVmPricing[];
-
-  if (hasHybridBenefit) {
-    pricingWithHybridBenefits = pricing;
-    await page.click('button#isAhb');
-    await waitForPriceWithoutHybridBenefits(page);
-    pricingWithoutHybridBenefits = await page.evaluate(() => getPricing());
-
-    if (pricing.length !== pricingWithoutHybridBenefits.length) {
-      throw `Expected same count of instances with hybrid benefits ${pricing.length} and without ${pricingWithoutHybridBenefits.length}, good luck!`;
-    }
-  } else {
-    pricingWithoutHybridBenefits = pricing;
-  }
-
-  return pricingWithoutHybridBenefits.map((instanceWithoutHybridBenefit, o) => {
-    let instanceWithHybridBenefit: PartialVmPricing = undefined;
-
-    if (hasHybridBenefit) {
-      instanceWithHybridBenefit = pricingWithHybridBenefits[o];
-
-      if (instanceWithoutHybridBenefit.instance !== instanceWithHybridBenefit.instance ||
-        instanceWithoutHybridBenefit.vCpu !== instanceWithHybridBenefit.vCpu ||
-        instanceWithoutHybridBenefit.ram !== instanceWithHybridBenefit.ram) {
-        throw `At offset ${o}, instance "${instanceWithHybridBenefit}" with hybrid benefits does not match instance "${instanceWithoutHybridBenefit}" without`
-      }
-    }
-
-    return <VmPricing>{
-      instance: instanceWithoutHybridBenefit.instance,
-      vCpu: instanceWithoutHybridBenefit.vCpu,
-      ram: instanceWithoutHybridBenefit.ram,
-      payAsYouGo: instanceWithoutHybridBenefit.payAsYouGo,
-      payAsYouGoWithAzureHybridBenefit: instanceWithHybridBenefit?.payAsYouGo,
-      oneYearReserved: instanceWithoutHybridBenefit.oneYearReserved,
-      oneYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.oneYearReserved,
-      threeYearReserved: instanceWithoutHybridBenefit.threeYearReserved,
-      threeYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.threeYearReserved,
-      spot: instanceWithoutHybridBenefit.spot,
-      spotWithAzureHybridBenefit: instanceWithHybridBenefit?.spot
-    }
-  });
-}
-
-async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
-  const fullSelector = getSelectFullSelector(selector);
-  let selectedValue = await getSelectedValue(page, selector);
-
-  if (selectedValue !== value) {
-    await page.select(fullSelector, value);
-    selectedValue = await getSelectedValue(page, selector);
-  }
-
-  if (selectedValue !== value) {
-    throw `Failed to select '${value}' for selector '${fullSelector}', instead selected '${selectedValue}'`
-  }
-}
-
-async function isSelectedSelect(page: puppeteer.Page, selector: string, value: string): Promise<boolean> {
-  let selectedValue = await getSelectedValue(page, selector);
-  return selectedValue === value;
-}
-
-async function getSelectedValue(page: puppeteer.Page, selector: string): Promise<string> {
-  const fullSelector = getSelectFullSelector(selector);
-  await page.waitForSelector(fullSelector, { visible: true });
-  return await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
-}
-
-function getSelectFullSelector(selector: string): string {
-  return `select${selector}`;
-}
