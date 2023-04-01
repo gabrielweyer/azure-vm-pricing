@@ -1,5 +1,5 @@
 import * as jsdom from 'jsdom';
-import { getPrice } from './app';
+import { getPrice } from './azurePortalExtensions';
 
 function getMarkup(priceValue: string, timePeriod: string): HTMLTableRowElement {
   return jsdom.JSDOM

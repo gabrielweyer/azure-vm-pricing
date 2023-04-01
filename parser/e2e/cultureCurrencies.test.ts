@@ -1,4 +1,4 @@
-import assert from "./assert-extensions";
+import assert from "./assertExtensions";
 
 describe('End-to-end tests for supported cultures and currencies', () => {
   describe('en-us - English (US)', () => {
