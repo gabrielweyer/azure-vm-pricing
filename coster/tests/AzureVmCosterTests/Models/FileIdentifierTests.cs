@@ -16,7 +16,7 @@ public static class FileIdentifierTests
     }
 
     [Fact]
-    public static void GivenValidFilename_WhenFrom_Then()
+    public static void GivenValidFilename_WhenFromFileInfo_ThenExpected()
     {
         // Arrange
         var file = new FileInfo(@"E:\tmp\vm-pricing_some-region_some-operating-system.json");
