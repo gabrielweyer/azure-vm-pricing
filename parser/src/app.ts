@@ -218,10 +218,6 @@ function timeEvent(eventName: string): void {
     await portal.selectHourlyPricing();
     timeEvent('hourlyPricingSelectionCompletedAt');
 
-    timeEvent('reservedInstancesSelectionStartedAt');
-    await portal.selectReservedInstances();
-    timeEvent('reservedInstancesSelectionCompletedAt');
-
     console.log();
 
     timeEvent('parsePricingStartedAt');
