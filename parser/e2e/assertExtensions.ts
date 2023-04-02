@@ -6,7 +6,8 @@ export default function assert(
   done: jest.DoneCallback,
   culture: string,
   currency: string,
-  operatingSystem: string = 'windows'
+  operatingSystem: string = 'windows',
+  instance: string = 'D2 v3'
 ): void {
   const region = 'us-west';
 
@@ -50,13 +51,13 @@ export default function assert(
 
       rl.on('close', () => {
         if (!foundExpectedVirtualMachine) {
-          done(new Error('Did not find "D2 v3" virtual machine.'));
+          done(new Error(`Did not find "${instance}" virtual machine.`));
         }
       });
 
       rl.on('line', (line) => {
         try {
-          if (line.startsWith('D2 v3,')) {
+          if (line.startsWith(`${instance},`)) {
             foundExpectedVirtualMachine = true;
             rl.close();
             expect(line).toMatchSnapshot();

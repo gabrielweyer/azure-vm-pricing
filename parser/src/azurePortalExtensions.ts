@@ -1,6 +1,7 @@
 import * as puppeteer from 'puppeteer';
 import { PartialVmPricing, VmPricing } from "./vmPricing";
 import { isSelectedSelect, setSelect } from './puppeteerExtensions';
+import { json } from 'stream/consumers';
 
 export class AzurePortal {
   private p: puppeteer.Page;
@@ -58,48 +59,80 @@ export class AzurePortal {
     const operatingSystemWithHybridBenefit = ['windows', 'ml-server-windows', 'sharepoint', 'sql-server-enterprise', 'sql-server-standard', 'sql-server-web']
     const hasHybridBenefit = operatingSystemWithHybridBenefit.includes(operatingSystem);
 
-    const pricing = await this.p.evaluate(() => getPricing());
-    let pricingWithHybridBenefits: PartialVmPricing[];
-    let pricingWithoutHybridBenefits: PartialVmPricing[];
+    const savingsPlanPricing = await this.p.evaluate(() => getPricing());
+    let savingsPlanWithHybridBenefits: PartialVmPricing[];
+    let savingsPlansWithoutHybridBenefits: PartialVmPricing[];
 
     if (hasHybridBenefit) {
-      pricingWithHybridBenefits = pricing;
+      savingsPlanWithHybridBenefits = savingsPlanPricing;
       await this.p.click('button#isAhb');
       await this.waitForPriceWithoutHybridBenefits();
-      pricingWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
+      savingsPlansWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
 
-      if (pricing.length !== pricingWithoutHybridBenefits.length) {
-        throw `Expected same count of instances with hybrid benefits ${pricing.length} and without ${pricingWithoutHybridBenefits.length}, good luck!`;
+      if (savingsPlanWithHybridBenefits.length !== savingsPlansWithoutHybridBenefits.length) {
+        throw `Expected same count of savings plan instances with hybrid benefits (${savingsPlanWithHybridBenefits.length}) and without (${savingsPlansWithoutHybridBenefits.length}), good luck!`;
       }
     } else {
-      pricingWithoutHybridBenefits = pricing;
+      savingsPlansWithoutHybridBenefits = savingsPlanPricing;
     }
 
-    return pricingWithoutHybridBenefits.map((instanceWithoutHybridBenefit, o) => {
-      let instanceWithHybridBenefit: PartialVmPricing = undefined;
+    await this.selectReservedInstances();
+
+    const reservedPricing = await this.p.evaluate(() => getPricing());
+    let reservedWithHybridBenefits: PartialVmPricing[];
+    let reservedWithoutHybridBenefits: PartialVmPricing[];
+
+    if (hasHybridBenefit) {
+      reservedWithoutHybridBenefits = reservedPricing;
+      await this.p.click('button#isAhb');
+      await this.waitForPriceWithHybridBenefits();
+      reservedWithHybridBenefits = await this.p.evaluate(() => getPricing());
+
+      if (reservedWithoutHybridBenefits.length !== reservedWithHybridBenefits.length) {
+        throw `Expected same count of reserved instances with hybrid benefits (${reservedWithHybridBenefits.length}) and without (${reservedWithoutHybridBenefits.length}), good luck!`;
+      }
+    } else {
+      reservedWithoutHybridBenefits = reservedPricing;
+    }
+
+    // Sometimes instances are available as reserved and not as savings plan, hoping that reserved is always a superset of savings plan
+    return reservedWithoutHybridBenefits.map((reservedInstanceWithoutHybridBenefit, o) => {
+      let savingsPlanInstanceWithHybridBenefit: PartialVmPricing = undefined;
+      let reservedInstanceWithHybridBenefit: PartialVmPricing = undefined;
+      let savingsPlansInstanceWithoutHybridBenefit = savingsPlansWithoutHybridBenefits.find(i => i.instance === reservedInstanceWithoutHybridBenefit.instance &&
+        i.vCpu === reservedInstanceWithoutHybridBenefit.vCpu &&
+        i.ram === reservedInstanceWithoutHybridBenefit.ram);
 
       if (hasHybridBenefit) {
-        instanceWithHybridBenefit = pricingWithHybridBenefits[o];
+        savingsPlanInstanceWithHybridBenefit = savingsPlanWithHybridBenefits.find(i => i.instance === reservedInstanceWithoutHybridBenefit.instance &&
+          i.vCpu === reservedInstanceWithoutHybridBenefit.vCpu &&
+          i.ram === reservedInstanceWithoutHybridBenefit.ram);
 
-        if (instanceWithoutHybridBenefit.instance !== instanceWithHybridBenefit.instance ||
-          instanceWithoutHybridBenefit.vCpu !== instanceWithHybridBenefit.vCpu ||
-          instanceWithoutHybridBenefit.ram !== instanceWithHybridBenefit.ram) {
-          throw `At offset ${o}, instance "${instanceWithHybridBenefit}" with hybrid benefits does not match instance "${instanceWithoutHybridBenefit}" without`
+        reservedInstanceWithHybridBenefit = reservedWithHybridBenefits[o];
+
+        if (reservedInstanceWithoutHybridBenefit.instance !== reservedInstanceWithHybridBenefit.instance ||
+          reservedInstanceWithoutHybridBenefit.vCpu !== reservedInstanceWithHybridBenefit.vCpu ||
+          reservedInstanceWithoutHybridBenefit.ram !== reservedInstanceWithHybridBenefit.ram) {
+          throw `At offset ${o}, reserved instance "${JSON.stringify(reservedInstanceWithHybridBenefit)}" with hybrid benefits does not match instance "${JSON.stringify(reservedInstanceWithoutHybridBenefit)}" without`
         }
       }
 
       return <VmPricing>{
-        instance: instanceWithoutHybridBenefit.instance,
-        vCpu: instanceWithoutHybridBenefit.vCpu,
-        ram: instanceWithoutHybridBenefit.ram,
-        payAsYouGo: instanceWithoutHybridBenefit.payAsYouGo,
-        payAsYouGoWithAzureHybridBenefit: instanceWithHybridBenefit?.payAsYouGo,
-        oneYearReserved: instanceWithoutHybridBenefit.oneYearReserved,
-        oneYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.oneYearReserved,
-        threeYearReserved: instanceWithoutHybridBenefit.threeYearReserved,
-        threeYearReservedWithAzureHybridBenefit: instanceWithHybridBenefit?.threeYearReserved,
-        spot: instanceWithoutHybridBenefit.spot,
-        spotWithAzureHybridBenefit: instanceWithHybridBenefit?.spot
+        instance: reservedInstanceWithoutHybridBenefit.instance,
+        vCpu: reservedInstanceWithoutHybridBenefit.vCpu,
+        ram: reservedInstanceWithoutHybridBenefit.ram,
+        payAsYouGo: reservedInstanceWithoutHybridBenefit.payAsYouGo,
+        payAsYouGoWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.payAsYouGo,
+        oneYearSavingsPlan: savingsPlansInstanceWithoutHybridBenefit?.oneYear,
+        oneYearSavingsPlanWithAzureHybridBenefit: savingsPlanInstanceWithHybridBenefit?.oneYear,
+        threeYearSavingsPlan: savingsPlansInstanceWithoutHybridBenefit?.threeYear,
+        threeYearSavingsPlanWithAzureHybridBenefit: savingsPlanInstanceWithHybridBenefit?.threeYear,
+        oneYearReserved: reservedInstanceWithoutHybridBenefit.oneYear,
+        oneYearReservedWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.oneYear,
+        threeYearReserved: reservedInstanceWithoutHybridBenefit.threeYear,
+        threeYearReservedWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.threeYear,
+        spot: reservedInstanceWithoutHybridBenefit.spot,
+        spotWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.spot
       }
     });
   }
@@ -158,6 +191,17 @@ export class AzurePortal {
         const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
         const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') !== -1);
         return ahbOffset === -1;
+      },
+      { timeout: 3000 }
+    );
+  }
+
+  private async waitForPriceWithHybridBenefits(): Promise<void> {
+    await this.p.waitForFunction(
+      () => {
+        const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
+        const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') === -1);
+        return ahbOffset !== -1;
       },
       { timeout: 3000 }
     );
@@ -266,13 +310,13 @@ export function getPricing(): PartialVmPricing[] {
     const ram = getRam(tr);
 
     const payAsYouGo = getPrice(tr, 'td:nth-child(5)');
-    const oneYearReserved = getPrice(tr, 'td:nth-child(6)');
-    const threeYearReserved = getPrice(tr, 'td:nth-child(7)');
+    const oneYear = getPrice(tr, 'td:nth-child(6)');
+    const threeYear = getPrice(tr, 'td:nth-child(7)');
     const spot = getPrice(tr, 'td:nth-child(8)');
 
     if (payAsYouGo === undefined &&
-        oneYearReserved === undefined &&
-        threeYearReserved === undefined &&
+        oneYear === undefined &&
+        threeYear === undefined &&
         spot === undefined) {
       console.log(`Instance '${instance}' has no valid prices`);
       return undefined;
@@ -283,8 +327,8 @@ export function getPricing(): PartialVmPricing[] {
       vCpu: vCpu,
       ram: ram,
       payAsYouGo: payAsYouGo,
-      oneYearReserved: oneYearReserved,
-      threeYearReserved: threeYearReserved,
+      oneYear: oneYear,
+      threeYear: threeYear,
       spot: spot
     };
   })

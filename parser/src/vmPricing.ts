@@ -4,6 +4,10 @@ export interface VmPricing {
   ram: number;
   payAsYouGo: number;
   payAsYouGoWithAzureHybridBenefit: number;
+  oneYearSavingsPlan: number;
+  oneYearSavingsPlanWithAzureHybridBenefit: number;
+  threeYearSavingsPlan: number;
+  threeYearSavingsPlanWithAzureHybridBenefit: number;
   oneYearReserved: number;
   oneYearReservedWithAzureHybridBenefit: number;
   threeYearReserved: number;
@@ -13,12 +17,11 @@ export interface VmPricing {
 }
 
 export interface PartialVmPricing {
-  azureHybridBenefit: boolean;
   instance: string;
   vCpu: number;
   ram: number;
   payAsYouGo: number;
-  oneYearReserved: number;
-  threeYearReserved: number;
+  oneYear: number;
+  threeYear: number;
   spot: number;
 }
