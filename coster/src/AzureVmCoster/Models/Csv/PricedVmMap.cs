@@ -21,5 +21,11 @@ internal sealed class PricedVmMap : ClassMap<PricedVm>
             .Name("Three Year Reserved with Azure Hybrid Benefit");
         Map(v => v.Spot).Index(12).Name("Spot");
         Map(v => v.SpotWithAzureHybridBenefit).Index(13).Name("Spot with Azure Hybrid Benefit");
+        Map(v => v.OneYearSavingsPlan).Index(14).Name("One Year Savings plan");
+        Map(v => v.OneYearSavingsPlanWithAzureHybridBenefit).Index(15)
+            .Name("One Year Savings plan with Azure Hybrid Benefit");
+        Map(v => v.ThreeYearSavingsPlan).Index(16).Name("Three Year Savings plan");
+        Map(v => v.ThreeYearSavingsPlanWithAzureHybridBenefit).Index(17)
+            .Name("Three Year Savings plan with Azure Hybrid Benefit");
     }
 }

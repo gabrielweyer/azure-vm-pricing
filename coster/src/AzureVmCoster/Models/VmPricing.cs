@@ -15,4 +15,8 @@ public class VmPricing
     public decimal? ThreeYearReservedWithAzureHybridBenefit { get; set; }
     public decimal? Spot { get; set; }
     public decimal? SpotWithAzureHybridBenefit { get; set; }
+    public decimal? OneYearSavingsPlan { get; set; }
+    public decimal? OneYearSavingsPlanWithAzureHybridBenefit { get; set; }
+    public decimal? ThreeYearSavingsPlan { get; set; }
+    public decimal? ThreeYearSavingsPlanWithAzureHybridBenefit { get; set; }
 }

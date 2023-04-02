@@ -21,6 +21,10 @@ internal class PricedVm
             ThreeYearReservedWithAzureHybridBenefit = vmPricing.ThreeYearReservedWithAzureHybridBenefit;
             Spot = vmPricing.Spot;
             SpotWithAzureHybridBenefit = vmPricing.SpotWithAzureHybridBenefit;
+            OneYearSavingsPlan = vmPricing.OneYearSavingsPlan;
+            OneYearSavingsPlanWithAzureHybridBenefit = vmPricing.OneYearSavingsPlanWithAzureHybridBenefit;
+            ThreeYearSavingsPlan = vmPricing.ThreeYearSavingsPlan;
+            ThreeYearSavingsPlanWithAzureHybridBenefit = vmPricing.ThreeYearSavingsPlanWithAzureHybridBenefit;
         }
         else
         {
@@ -43,4 +47,8 @@ internal class PricedVm
     public decimal? ThreeYearReservedWithAzureHybridBenefit { get; }
     public decimal? Spot { get; }
     public decimal? SpotWithAzureHybridBenefit { get; }
+    public decimal? OneYearSavingsPlan { get; }
+    public decimal? OneYearSavingsPlanWithAzureHybridBenefit { get; }
+    public decimal? ThreeYearSavingsPlan { get; }
+    public decimal? ThreeYearSavingsPlanWithAzureHybridBenefit { get; }
 }
