@@ -4,7 +4,7 @@ Mass-pricing of `VMs` on `Azure` based on `CPU` cores count and memory. This is 
 
 The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricing].
 
-:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spends you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
+:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spend you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
 
 This tool is composed of two components:
 
@@ -83,7 +83,7 @@ You can also use short names:
 
 Arguments:
 
-- `culture` any of the `option` `value` in the **Culture** `select`
+- `culture` any of the `option` `value` in the **Change language** `select`
   - **This will impact the formatting of the pricing**
 - `currency` any of the `option` `value` in the **Currency** `select`
 - `operating-system` any of the `option` `value` in the **OS/Software** `select`
@@ -117,6 +117,10 @@ Fields:
 - _Three Year Reserved With Azure Hybrid Benefit_
 - _Spot_
 - _Spot With Azure Hybrid Benefit_
+- _One Year Savings plan_
+- _One Year Savings plan With Azure Hybrid Benefit_
+- _Three Year Savings plan
+- _Three Year Savings plan With Azure Hybrid Benefit_
 
 ### Parser tests
 
@@ -127,7 +131,7 @@ The parser has unit tests focusing on edge cases of price formatting:
 > yarn test
 ```
 
-The end-to-end tests attempt to compare known prices for the `windows` instance `D2 v3` in `us-west` using permutations of supported `culture` and `currency`:
+The end-to-end tests attempt to compare known prices for the `D2 v3` instance in `us-west` using permutations of supported `culture`, `operating-system`, and `currency`:
 
 ```powershell
 > cd .\parser\
@@ -176,7 +180,7 @@ You'll need to provide the `<input-path>` when prompted, the `culture` is option
 - _RAM_ (in `GB`, a `decimal`)
 - _Operating System_
 
-The columns can be in any order and the `CSV` file can contain extra-columns. The `Region` and `Operating System` fields must match existing regions and supported operating systems in `Azure`.
+The columns can be in any order and the `CSV` file can contain extra-columns. The `Region` and `Operating System` fields must match existing regions and supported operating systems in the Virtual Machines Pricing website.
 
 ### Coster output
 
@@ -196,6 +200,10 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 - _Three Year Reserved With Azure Hybrid Benefit_
 - _Spot_
 - _Spot With Azure Hybrid Benefit_
+- _One Year Savings plan_
+- _One Year Savings plan With Azure Hybrid Benefit_
+- _Three Year Savings plan_
+- _Three Year Savings plan With Azure Hybrid Benefit_
 
 ## Notes and references
 
