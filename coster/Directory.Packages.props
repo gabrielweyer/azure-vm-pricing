@@ -10,7 +10,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
     <PackageVersion Include="xunit" Version="2.4.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
-    <GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.29" />
+    <GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.33" />
     <GlobalPackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.5.22" />
     <GlobalPackageReference Include="AsyncFixer" Version="1.6.0" />
     <PackageVersion Include="xunit.analyzers" Version="1.1.0" />
