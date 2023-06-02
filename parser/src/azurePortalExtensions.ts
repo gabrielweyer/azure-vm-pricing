@@ -70,7 +70,25 @@ export class AzurePortal {
       savingsPlansWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
 
       if (savingsPlanWithHybridBenefits.length !== savingsPlansWithoutHybridBenefits.length) {
-        throw `Expected same count of savings plan instances with hybrid benefits (${savingsPlanWithHybridBenefits.length}) and without (${savingsPlansWithoutHybridBenefits.length}), good luck!`;
+        const instancesWithHybridBenefits = savingsPlanWithHybridBenefits.map(v => v.instance);
+        const instancesWithoutHybridBenefits = savingsPlansWithoutHybridBenefits.map(v => v.instance);
+        const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
+        const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
+
+        if (additionalWith.length > 0)
+        {
+          throw `Unexpected additional savings plan instance(s) with hybrid benefits: ${JSON.stringify(additionalWith)}. We only support additional without hybrid benefits instances.`;
+        }
+
+        additionalWithout.forEach(without => {
+          var offset = savingsPlansWithoutHybridBenefits.findIndex(v => v.instance == without);
+          var unavailableVm = <PartialVmPricing> {
+            instance: without,
+            vCpu: savingsPlansWithoutHybridBenefits[offset].vCpu,
+            ram: savingsPlansWithoutHybridBenefits[offset].ram
+          };
+          savingsPlanWithHybridBenefits.splice(offset, 0, unavailableVm);
+        });
       }
     } else {
       savingsPlansWithoutHybridBenefits = savingsPlanPricing;
@@ -89,7 +107,25 @@ export class AzurePortal {
       reservedWithHybridBenefits = await this.p.evaluate(() => getPricing());
 
       if (reservedWithoutHybridBenefits.length !== reservedWithHybridBenefits.length) {
-        throw `Expected same count of reserved instances with hybrid benefits (${reservedWithHybridBenefits.length}) and without (${reservedWithoutHybridBenefits.length}), good luck!`;
+        const instancesWithHybridBenefits = reservedWithHybridBenefits.map(v => v.instance);
+        const instancesWithoutHybridBenefits = reservedWithoutHybridBenefits.map(v => v.instance);
+        const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
+        const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
+
+        if (additionalWith.length > 0)
+        {
+          throw `Unexpected additional reserved instance(s) with hybrid benefits: ${JSON.stringify(additionalWith)}. We only support additional without hybrid benefits instances.`;
+        }
+
+        additionalWithout.forEach(without => {
+          var offset = reservedWithoutHybridBenefits.findIndex(v => v.instance == without);
+          var unavailableVm = <PartialVmPricing> {
+            instance: without,
+            vCpu: reservedWithoutHybridBenefits[offset].vCpu,
+            ram: reservedWithoutHybridBenefits[offset].ram
+          };
+          reservedWithHybridBenefits.splice(offset, 0, unavailableVm);
+        });
       }
     } else {
       reservedWithoutHybridBenefits = reservedPricing;
