@@ -345,10 +345,17 @@ export function getPricing(): PartialVmPricing[] {
 
     const ram = getRam(tr);
 
-    const payAsYouGo = getPrice(tr, 'td:nth-child(5)');
-    const oneYear = getPrice(tr, 'td:nth-child(6)');
-    const threeYear = getPrice(tr, 'td:nth-child(7)');
-    const spot = getPrice(tr, 'td:nth-child(8)');
+    const cellCount = tr.querySelectorAll('td').length;
+    const hasGpu = cellCount === 10;
+    const payAsYouGoOffset = 5 + (hasGpu ? 1 : 0);
+    const oneYearOffset = payAsYouGoOffset + 1;
+    const threeYearOffset = oneYearOffset + 1;
+    const spotOffset = threeYearOffset + 1;
+
+    const payAsYouGo = getPrice(tr, `td:nth-child(${payAsYouGoOffset})`);
+    const oneYear = getPrice(tr, `td:nth-child(${oneYearOffset})`);
+    const threeYear = getPrice(tr, `td:nth-child(${threeYearOffset})`);
+    const spot = getPrice(tr, `td:nth-child(${spotOffset})`);
 
     if (payAsYouGo === undefined &&
         oneYear === undefined &&
