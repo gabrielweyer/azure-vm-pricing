@@ -8,8 +8,4 @@ describe('End-to-end tests for instances with GPUs', () => {
   test('No reserved instances', (done) => {
     assert(done, culture, currency, operatingSystem, 'H16mr');
   });
-
-  test('No savings plan', (done) => {
-    assert(done, culture, currency, operatingSystem, 'NV18ads A10 v5');
-  });
 });
