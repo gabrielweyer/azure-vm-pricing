@@ -52,7 +52,7 @@ function timeEvent(eventName: string): void {
 
 (async function() {
   recordTiming = false;
-  const runHeadless = true;
+  const headlessMode = 'new';
   timeEvent('crawlerStartedAt');
 
   let culture = 'en-au';
@@ -120,7 +120,7 @@ function timeEvent(eventName: string): void {
   }
 
   timeEvent('chromeStartedAt');
-  const browser = await puppeteer.launch({headless: runHeadless});
+  const browser = await puppeteer.launch({headless: headlessMode});
   const page = await browser.newPage();
   timeEvent('chromeLaunchedAt');
 
