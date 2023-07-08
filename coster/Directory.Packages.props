@@ -8,7 +8,7 @@
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="FluentAssertions" Version="6.11.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.3" />
-    <PackageVersion Include="xunit" Version="2.4.2" />
+    <PackageVersion Include="xunit" Version="2.5.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.0" />
     <GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.63" />
     <GlobalPackageReference Include="AsyncFixer" Version="1.6.0" />
