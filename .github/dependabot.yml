@@ -5,3 +5,8 @@ updates:
     schedule:
       interval: "weekly"
       day: "saturday"
+    groups:
+      xunit:
+        patterns:
+          - xunit
+          - xunit.analyzers
