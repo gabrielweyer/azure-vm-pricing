@@ -8,6 +8,8 @@ public static class Program
 
     public static int Main(string[] args)
     {
+        ArgumentNullException.ThrowIfNull(args);
+
         var (inputFilePath, culture) = ParseConfiguration(args);
 
         if (string.IsNullOrWhiteSpace(inputFilePath))
