@@ -3,7 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Nuke.Common" Version="7.0.3" />
+    <PackageVersion Include="Nuke.Common" Version="7.0.4" />
     <PackageVersion Include="CsvHelper" Version="30.0.1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.0" />
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
