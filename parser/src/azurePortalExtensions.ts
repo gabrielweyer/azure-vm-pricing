@@ -49,6 +49,14 @@ export class AzurePortal {
     await setSelect(this.p, selector, 'hour');
   }
 
+  async dismissNudgePopupIfPresent(): Promise<void> {
+    const closeButton = await this.p.$('[data-testid="nudge-popup-close-btn"]');
+
+    if (closeButton !== null) {
+      closeButton.click();
+    }
+  }
+
   async selectReservedInstances(): Promise<void> {
     console.log('Selecting reserved instances');
     const selector = '[name="pricingModel"]';

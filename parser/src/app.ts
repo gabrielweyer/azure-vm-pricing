@@ -218,6 +218,8 @@ function timeEvent(eventName: string): void {
     await portal.selectHourlyPricing();
     timeEvent('hourlyPricingSelectionCompletedAt');
 
+    await portal.dismissNudgePopupIfPresent();
+
     console.log();
 
     timeEvent('parsePricingStartedAt');
