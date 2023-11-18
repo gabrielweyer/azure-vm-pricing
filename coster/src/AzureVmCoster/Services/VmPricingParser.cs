@@ -24,7 +24,7 @@ internal class VmPricingParser
 
             var fileVmPricing = JsonSerializer.Deserialize<List<VmPricing>>(File.ReadAllText(pricingFile));
 
-            if (fileVmPricing == null || !fileVmPricing.Any())
+            if (fileVmPricing == null || fileVmPricing.Count == 0)
             {
                 continue;
             }
