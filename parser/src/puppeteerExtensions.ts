@@ -19,6 +19,11 @@ export async function isSelectedSelect(page: puppeteer.Page, selector: string, v
   return selectedValue === value;
 }
 
+export async function isSelectedCheckbox(page: puppeteer.Page, selector: string): Promise<boolean> {
+  const value = await page.$eval(selector, node => (<HTMLButtonElement> node).value);
+  return value === 'true';
+}
+
 async function getSelectedValue(page: puppeteer.Page, selector: string): Promise<string> {
   const fullSelector = getSelectFullSelector(selector);
   await page.waitForSelector(fullSelector, { visible: true });
