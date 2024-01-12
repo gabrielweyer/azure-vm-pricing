@@ -1,10 +1,10 @@
 import * as puppeteer from 'puppeteer';
 import { PartialVmPricing, VmPricing } from "./vmPricing";
-import { isSelectedSelect, setSelect } from './puppeteerExtensions';
-import { json } from 'stream/consumers';
+import { isSelectedSelect, setSelect, isSelectedCheckbox } from './puppeteerExtensions';
 
 export class AzurePortal {
   private p: puppeteer.Page;
+  private azureHybridBenefitButtonSelector = 'button#isAhb';
 
   constructor(page: puppeteer.Page) {
     this.p = page;
@@ -73,8 +73,7 @@ export class AzurePortal {
 
     if (hasHybridBenefit) {
       savingsPlanWithHybridBenefits = savingsPlanPricing;
-      await this.p.click('button#isAhb');
-      await this.waitForPriceWithoutHybridBenefits();
+      await this.hideAzureHybridBenefit();
       savingsPlansWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
 
       if (savingsPlanWithHybridBenefits.length !== savingsPlansWithoutHybridBenefits.length) {
@@ -110,8 +109,7 @@ export class AzurePortal {
 
     if (hasHybridBenefit) {
       reservedWithoutHybridBenefits = reservedPricing;
-      await this.p.click('button#isAhb');
-      await this.waitForPriceWithHybridBenefits();
+      await this.showAzureHybridBenefit();
       reservedWithHybridBenefits = await this.p.evaluate(() => getPricing());
 
       if (reservedWithoutHybridBenefits.length !== reservedWithHybridBenefits.length) {
@@ -227,6 +225,24 @@ export class AzurePortal {
         timeout: 5000
       }
     );
+  }
+
+  private async hideAzureHybridBenefit(): Promise<void> {
+    if (!await isSelectedCheckbox(this.p, this.azureHybridBenefitButtonSelector)) {
+      return;
+    }
+
+    await this.p.click(this.azureHybridBenefitButtonSelector);
+    await this.waitForPriceWithoutHybridBenefits();
+  }
+
+  private async showAzureHybridBenefit(): Promise<void> {
+    if (await isSelectedCheckbox(this.p, this.azureHybridBenefitButtonSelector)) {
+      return;
+    }
+
+    await this.p.click(this.azureHybridBenefitButtonSelector);
+    await this.waitForPriceWithHybridBenefits();
   }
 
   private async waitForPriceWithoutHybridBenefits(): Promise<void> {
