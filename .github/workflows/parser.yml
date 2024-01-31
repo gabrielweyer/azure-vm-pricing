@@ -24,6 +24,7 @@ jobs:
     env:
       IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
       RUN_E2E_TESTS: 'true'
+      TEST_RESULTS_PATH:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
