@@ -23,7 +23,7 @@ jobs:
         working-directory: coster
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: actions/setup-dotnet@v3
@@ -34,14 +34,14 @@ jobs:
       - name: Build
         run: ./build.sh
       - name: Upload test results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
           path: 'coster/artifacts/test-results/**/*.html'
           if-no-files-found: error
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: code-coverage
