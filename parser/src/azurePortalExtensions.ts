@@ -332,7 +332,6 @@ export function getPricing(): PartialVmPricing[] {
     let isActive = tr.querySelector(activeInstanceRowSelector) !== null;
 
     if (!isActive) {
-      console.log(`Instance '${instance}' is inactive`);
       return undefined;
     }
 
