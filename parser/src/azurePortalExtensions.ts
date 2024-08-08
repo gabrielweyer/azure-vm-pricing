@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { PartialVmPricing, VmPricing } from "./vmPricing";
+import { addUnavailableVms, PartialVmPricing, VmPricing } from "./vmPricing";
 import { isSelectedSelect, setSelect, isSelectedCheckbox } from './puppeteerExtensions';
 
 export class AzurePortal {
@@ -75,28 +75,7 @@ export class AzurePortal {
       savingsPlanWithHybridBenefits = savingsPlanPricing;
       await this.hideAzureHybridBenefit();
       savingsPlansWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
-
-      if (savingsPlanWithHybridBenefits.length !== savingsPlansWithoutHybridBenefits.length) {
-        const instancesWithHybridBenefits = savingsPlanWithHybridBenefits.map(v => v.instance);
-        const instancesWithoutHybridBenefits = savingsPlansWithoutHybridBenefits.map(v => v.instance);
-        const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
-        const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
-
-        if (additionalWith.length > 0)
-        {
-          throw `Unexpected additional savings plan instance(s) with hybrid benefits: ${JSON.stringify(additionalWith)}. We only support additional without hybrid benefits instances.`;
-        }
-
-        additionalWithout.forEach(without => {
-          var offset = savingsPlansWithoutHybridBenefits.findIndex(v => v.instance == without);
-          var unavailableVm = <PartialVmPricing> {
-            instance: without,
-            vCpu: savingsPlansWithoutHybridBenefits[offset].vCpu,
-            ram: savingsPlansWithoutHybridBenefits[offset].ram
-          };
-          savingsPlanWithHybridBenefits.splice(offset, 0, unavailableVm);
-        });
-      }
+      addUnavailableVms(savingsPlanWithHybridBenefits, savingsPlansWithoutHybridBenefits);
     } else {
       savingsPlansWithoutHybridBenefits = savingsPlanPricing;
     }
@@ -111,28 +90,7 @@ export class AzurePortal {
       reservedWithoutHybridBenefits = reservedPricing;
       await this.showAzureHybridBenefit();
       reservedWithHybridBenefits = await this.p.evaluate(() => getPricing());
-
-      if (reservedWithoutHybridBenefits.length !== reservedWithHybridBenefits.length) {
-        const instancesWithHybridBenefits = reservedWithHybridBenefits.map(v => v.instance);
-        const instancesWithoutHybridBenefits = reservedWithoutHybridBenefits.map(v => v.instance);
-        const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
-        const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
-
-        if (additionalWith.length > 0)
-        {
-          throw `Unexpected additional reserved instance(s) with hybrid benefits: ${JSON.stringify(additionalWith)}. We only support additional without hybrid benefits instances.`;
-        }
-
-        additionalWithout.forEach(without => {
-          var offset = reservedWithoutHybridBenefits.findIndex(v => v.instance == without);
-          var unavailableVm = <PartialVmPricing> {
-            instance: without,
-            vCpu: reservedWithoutHybridBenefits[offset].vCpu,
-            ram: reservedWithoutHybridBenefits[offset].ram
-          };
-          reservedWithHybridBenefits.splice(offset, 0, unavailableVm);
-        });
-      }
+      addUnavailableVms(reservedWithHybridBenefits, reservedWithoutHybridBenefits);
     } else {
       reservedWithoutHybridBenefits = reservedPricing;
     }

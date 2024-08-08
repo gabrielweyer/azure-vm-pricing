@@ -25,3 +25,32 @@ export interface PartialVmPricing {
   threeYear: number;
   spot: number;
 }
+
+function addUnavailable(additionalInstances: string[], additional: PartialVmPricing[], toFill: PartialVmPricing[]): void {
+  additionalInstances.forEach(additionalInstance => {
+    var offset = additional.findIndex(v => v.instance == additionalInstance);
+    var unavailableVm = <PartialVmPricing> {
+      instance: additionalInstance,
+      vCpu: additional[offset].vCpu,
+      ram: additional[offset].ram
+    };
+    toFill.splice(offset, 0, unavailableVm);
+  });
+}
+
+/**
+ * Ensure that if a VM is present in one of the arrays and not the other it will be added so that both arrays
+ * have the same VMs in the same order.
+ * @param withHybridBenefits the instances available with hybrid benefits. The array will be modified if the
+ * other one has additional instances.
+ * @param withoutHybridBenefits the instances available without hybrid benefits. The array will be modified
+ * if the other one has additional instances.
+ */
+export function addUnavailableVms(withHybridBenefits: PartialVmPricing[], withoutHybridBenefits: PartialVmPricing[]): void {
+  const instancesWithHybridBenefits = withHybridBenefits.map(v => v.instance);
+  const instancesWithoutHybridBenefits = withoutHybridBenefits.map(v => v.instance);
+  const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
+  const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
+  addUnavailable(additionalWith, withHybridBenefits, withoutHybridBenefits);
+  addUnavailable(additionalWithout, withoutHybridBenefits, withHybridBenefits);
+}
