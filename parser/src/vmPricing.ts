@@ -38,6 +38,16 @@ function addUnavailable(additionalInstances: string[], additional: PartialVmPric
   });
 }
 
+function validateUnique(instances: string[]): void {
+  const uniqueWith = [...new Set(instances)];
+
+  if (instances.length !== uniqueWith.length) {
+    let duplicates: string[] = [];
+    instances.forEach((i, o) => {if (instances.indexOf(i) !== o) { duplicates.push(i); }});
+    throw `Instances contain duplicates ${duplicates}.`;
+  }
+}
+
 /**
  * Ensure that if a VM is present in one of the arrays and not the other it will be added so that both arrays
  * have the same VMs in the same order.
@@ -48,7 +58,9 @@ function addUnavailable(additionalInstances: string[], additional: PartialVmPric
  */
 export function addUnavailableVms(withHybridBenefits: PartialVmPricing[], withoutHybridBenefits: PartialVmPricing[]): void {
   const instancesWithHybridBenefits = withHybridBenefits.map(v => v.instance);
+  validateUnique(instancesWithHybridBenefits);
   const instancesWithoutHybridBenefits = withoutHybridBenefits.map(v => v.instance);
+  validateUnique(instancesWithoutHybridBenefits);
   const additionalWith = instancesWithHybridBenefits.filter(v => !instancesWithoutHybridBenefits.includes(v));
   const additionalWithout = instancesWithoutHybridBenefits.filter(v => !instancesWithHybridBenefits.includes(v));
   addUnavailable(additionalWith, withHybridBenefits, withoutHybridBenefits);

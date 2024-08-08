@@ -70,4 +70,22 @@ describe('Add unavailable VMs', () => {
       expect(withoutHybridBenefits).toEqual(expected);
     });
   });
+
+  describe('Given duplicate with hybrid benefits', () => {
+    test('Then throw', () => {
+      let withHybridBenefits = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('A', 1, 1)];
+      let withoutHybridBenefits = [getVm('A', 1, 1)];
+
+      expect(() => addUnavailableVms(withHybridBenefits, withoutHybridBenefits)).toThrow();
+    });
+  });
+
+  describe('Given duplicate without hybrid benefits', () => {
+    test('Then throw', () => {
+      let withHybridBenefits = [getVm('A', 1, 1)];
+      let withoutHybridBenefits = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('A', 1, 1)];
+
+      expect(() => addUnavailableVms(withHybridBenefits, withoutHybridBenefits)).toThrow();
+    });
+  });
 });
