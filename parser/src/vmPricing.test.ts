@@ -1,4 +1,4 @@
-import { addUnavailableVms, PartialVmPricing } from "./vmPricing";
+import { addUnavailableVms, discardDuplicateVms, PartialVmPricing } from "./vmPricing";
 
 function getVm(name: string, vCpu: number, ram: number): PartialVmPricing {
   return <PartialVmPricing>{
@@ -86,6 +86,30 @@ describe('Add unavailable VMs', () => {
       let withoutHybridBenefits = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('A', 1, 1)];
 
       expect(() => addUnavailableVms(withHybridBenefits, withoutHybridBenefits)).toThrow();
+    });
+  });
+});
+
+describe('Discard duplicate VMs', () => {
+  describe('Given no duplicate', () => {
+    test('Then unmodified list', () => {
+      let vms = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('C', 3, 3)];
+
+      discardDuplicateVms(vms);
+
+      const expected = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('C', 3, 3)];
+      expect(vms).toEqual(expected);
+    });
+  });
+
+  describe('Given duplicates', () => {
+    test('Then duplicate instances are removed', () => {
+      let vms = [getVm('A', 1, 1), getVm('B', 2, 2), getVm('C', 3, 3), getVm('D', 4, 4), getVm('D', 5, 5), getVm('B', 6, 6), getVm('E', 7, 7), getVm('B', 8, 8)];
+
+      discardDuplicateVms(vms);
+
+      const expected = [getVm('A', 1, 1), getVm('C', 3, 3), getVm('E', 7, 7)];
+      expect(vms).toEqual(expected);
     });
   });
 });

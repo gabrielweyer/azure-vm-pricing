@@ -1,5 +1,5 @@
 import * as puppeteer from 'puppeteer';
-import { addUnavailableVms, PartialVmPricing, VmPricing } from "./vmPricing";
+import { addUnavailableVms, discardDuplicateVms, PartialVmPricing, VmPricing } from "./vmPricing";
 import { isSelectedSelect, setSelect, isSelectedCheckbox } from './puppeteerExtensions';
 
 export class AzurePortal {
@@ -67,14 +67,14 @@ export class AzurePortal {
     const operatingSystemWithHybridBenefit = ['windows', 'ml-server-windows', 'sharepoint', 'sql-server-enterprise', 'sql-server-standard', 'sql-server-web']
     const hasHybridBenefit = operatingSystemWithHybridBenefit.includes(operatingSystem);
 
-    const savingsPlanPricing = await this.p.evaluate(() => getPricing());
+    const savingsPlanPricing = await this.getUniquePricing();
     let savingsPlanWithHybridBenefits: PartialVmPricing[];
     let savingsPlansWithoutHybridBenefits: PartialVmPricing[];
 
     if (hasHybridBenefit) {
       savingsPlanWithHybridBenefits = savingsPlanPricing;
       await this.hideAzureHybridBenefit();
-      savingsPlansWithoutHybridBenefits = await this.p.evaluate(() => getPricing());
+      savingsPlansWithoutHybridBenefits = await this.getUniquePricing();
       addUnavailableVms(savingsPlanWithHybridBenefits, savingsPlansWithoutHybridBenefits);
     } else {
       savingsPlansWithoutHybridBenefits = savingsPlanPricing;
@@ -82,14 +82,14 @@ export class AzurePortal {
 
     await this.selectReservedInstances();
 
-    const reservedPricing = await this.p.evaluate(() => getPricing());
+    const reservedPricing = await this.getUniquePricing();
     let reservedWithHybridBenefits: PartialVmPricing[];
     let reservedWithoutHybridBenefits: PartialVmPricing[];
 
     if (hasHybridBenefit) {
       reservedWithoutHybridBenefits = reservedPricing;
       await this.showAzureHybridBenefit();
-      reservedWithHybridBenefits = await this.p.evaluate(() => getPricing());
+      reservedWithHybridBenefits = await this.getUniquePricing();
       addUnavailableVms(reservedWithHybridBenefits, reservedWithoutHybridBenefits);
     } else {
       reservedWithoutHybridBenefits = reservedPricing;
@@ -223,6 +223,12 @@ export class AzurePortal {
       },
       { timeout: 3000 }
     );
+  }
+
+  private async getUniquePricing(): Promise<PartialVmPricing[]> {
+    let pricing = await this.p.evaluate(() => getPricing());
+    discardDuplicateVms(pricing);
+    return pricing;
   }
 }
 

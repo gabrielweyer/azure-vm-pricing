@@ -66,3 +66,33 @@ export function addUnavailableVms(withHybridBenefits: PartialVmPricing[], withou
   addUnavailable(additionalWith, withHybridBenefits, withoutHybridBenefits);
   addUnavailable(additionalWithout, withoutHybridBenefits, withHybridBenefits);
 }
+
+/**
+ * Remove duplicate instance names. Unfortunately the pricing sometimes contain duplicate VMs. When
+ * that's the case, only the name is duplicated, the specs and prices are correct. The easiest fix is
+ * to remove all instances, e.g. if VM 'A' appears twice, I remove both instances.
+ * @param vms The list of VMs we crawled from the pricing page. The array will be modified in-place.
+ */
+export function discardDuplicateVms(vms: PartialVmPricing[]): void {
+  const uniqueNames = new Map<string, number>();
+  const offsetsToRemove = new Set<number>();
+
+  for (let o = 0; o < vms.length; o++) {
+    const name = vms[o].instance;
+
+    if (uniqueNames.has(name)) {
+      offsetsToRemove.add(uniqueNames.get(name));
+      offsetsToRemove.add(o);
+    } else {
+      uniqueNames.set(name, o);
+    }
+  }
+
+  let deletedElementCount = 0;
+  // We need to sort the offset to remove because a duplicate name could appear before and after
+  // another duplicate, e.g. ['A, 'B', 'B', 'A'].
+  for (const offsetToRemove of Array.from(offsetsToRemove.keys()).sort()) {
+    vms.splice(offsetToRemove - deletedElementCount, 1);
+    deletedElementCount++;
+  }
+}
