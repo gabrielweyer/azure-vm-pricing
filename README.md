@@ -58,6 +58,8 @@ Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **c
 
 :rotating_light: the parser is not able to retrieve pricing for the regions `us-dod-central` and `us-dod-east` as no virtual machines are listed as publicly available.
 
+Scroll down for the list of [supported regions](#supported-regions) and [supported OS/Software](#supported-ossoftware).
+
 ### Parser pre-requisites
 
 - [Latest Node.js LTS][latest-node-js-lts]
@@ -204,6 +206,127 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 - _One Year Savings plan With Azure Hybrid Benefit_
 - _Three Year Savings plan_
 - _Three Year Savings plan With Azure Hybrid Benefit_
+
+## Supported regions
+
+Supported regions (newer regions might have been added after I last updated the `README`, they're likely to be supported):
+
+- United States
+  - `us-central`
+  - `us-east`
+  - `us-east-2`
+  - `us-north-central`
+  - `us-south-central`
+  - `us-west-central`
+  - `us-west`
+  - `us-west-2`
+  - `us-west-3`
+- United Kingdom
+  - `united-kingdom-south`
+  - `united-kingdom-west`
+- United Arab Emirates
+  - `uae-central`
+  - `uae-north`
+- Switzerland
+  - `switzerland-north`
+  - `switzerland-west`
+- Sweden
+  - `sweden-central`
+  - `sweden-south`
+- Spain
+  - `spain-central`
+- Qatar
+  - `qatar-central`
+- Poland
+  - `poland-central`
+- Norway
+  - `norway-east`
+  - `norway-west`
+- Mexico
+  - `mexico-central`
+- Korea
+  - `korea-central`
+  - `korea-south`
+- Japan
+  - `japan-east`
+  - `japan-west`
+- Italy
+  - `italy-north`
+- Israel
+  - `israel-central`
+- India
+  - `central-india`
+  - `south-india`
+  - `west-india`
+- Germany
+  - `germany-north`
+  - `germany-west-central`
+- France
+  - `france-central`
+  - `france-south`
+- Europe
+  - `europe-north`
+  - `europe-west`
+- Canada
+  - `canada-central`
+  - `canada-east`
+- Brazil
+  - `brazil-south`
+  - `brazil-southeast`
+- Azure Government
+  - `usgov-arizona`
+  - `usgov-texas`
+  - `usgov-virginia`
+- Australia
+  - `australia-central`
+  - `australia-central-2`
+  - `australia-east`
+  - `australia-southeast`
+- Asia Pacific
+  - `asia-pacific-east`
+  - `asia-pacific-southeast`
+- Africa
+  - `south-africa-north`
+  - `south-africa-west`
+
+## Supported OS/Software
+
+Supported OS/Software:
+
+- Linux
+  - `linux` (Ubuntu)
+  - `red-hat` (Red Hat Enterprise Linux)
+  - `rhel-ha` (Red Hat Enterprise Linux with HA)
+  - `rhel-sap-ha` (RHEL for SAP with HA)
+  - `rhel-sap-business` (RHEL for SAP Business Applications)
+  - `sles-basic` (SUSE Linux Enterprise + Patching only)
+  - `sles-standard` (SUSE Linux Enterprise + 24x7 Support)
+  - `sles-hpc-standard` (SUSE Linux Enterprise for HPC + 24x7 Support)
+  - `sles-sap` (SUSE Linux Enterprise for SAP Applications + 24x7 Support)
+  - `ubuntu-pro` (Ubuntu Pro)
+  - `ubuntu-advantage-essential` (Ubuntu Advantage Essential (Support))
+  - `ubuntu-advantage-standard` (Ubuntu Advantage Standard (Support))
+  - `ubuntu-advantage-advanced` (Ubuntu Advantage Advanced (Support))
+  - `ml-server-rhel` (Machine Learning Server on Red Hat Enterprise Linux)
+  - `ml-server-ubuntu` (Machine Learning Server on Ubuntu or Centos Linux)
+  - `sql-server-enterprise-linux` (SQL Server Enterprise Ubuntu Linux)
+  - `sql-server-standard-linux` (SQL Server Standard Ubuntu Linux)
+  - `sql-server-web-linux` (SQL Server Web Ubuntu Linux)
+  - `sql-server-enterprise-redhat` (SQL Server Enterprise Red Hat Enterprise Linux)
+  - `sql-server-standard-redhat` (SQL Server Standard Red Hat Enterprise Linux)
+  - `sql-server-web-redhat` (SQL Server Web Red Hat Enterprise Linux)
+  - `sql-server-enterprise-sles` (SQL Server Enterprise SUSE Priority)
+  - `sql-server-standard-sles` (SQL Server Standard SUSE Priority)
+  - `sql-server-web-sles` (SQL Server Web SUSE Priority)
+- Windows
+  - `windows` (Windows OS)
+  - `biztalk-enterprise` (BizTalk Enterprise)
+  - `biztalk-standard` (BizTalk Standard)
+  - `ml-server-windows` (Machine Learning Server)
+  - `sharepoint` (SharePoint)
+  - `sql-server-enterprise` (SQL Server Enterprise)
+  - `sql-server-standard` (SQL Server Standard)
+  - `sql-server-web` (SQL Server Web)
 
 ## Notes and references
 
