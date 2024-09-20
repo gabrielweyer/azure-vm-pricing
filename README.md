@@ -74,13 +74,13 @@ Scroll down for the list of [supported regions](#supported-regions) and [support
 
 ```powershell
 > cd .\parser\
-> yarn crawl --culture en-us --currency usd --operating-system linux --region us-west
+> yarn crawl --culture en-us --currency usd --operating-system linux --region us-west --output-path .\out\
 ```
 
 You can also use short names:
 
 ```powershell
-> yarn crawl -l en-us -c usd -o linux -r us-west
+> yarn crawl -l en-us -c usd -o linux -r us-west -p .\out\
 ```
 
 Arguments:
@@ -99,7 +99,7 @@ In the footer:
 
 ### Parser output
 
-Writes `2` output files in the `out\` directory. One is a `CSV`, the other one is `JSON`. Both files contain the same data.
+Writes `2` output files in the `out\` directory, or the directory specified by the `--output-path` argument. One is a `CSV`, the other one is `JSON`. Both files contain the same data.
 
 ```text
 .\out\vm-pricing_<region>_<operating-system>.csv
@@ -123,6 +123,28 @@ Fields:
 - _One Year Savings plan With Azure Hybrid Benefit_
 - _Three Year Savings plan
 - _Three Year Savings plan With Azure Hybrid Benefit_
+
+### Docker
+
+#### Build the Docker image
+
+You can build a `Docker` image for the `azure-vm-pricing`:
+
+```bash
+# For Linux machines running on x86_64 or in Windows WSL
+docker build -f ./Dockerfile --platform linux/amd64 --build-arg ARCH=amd64 -t azure-vm-pricing .
+
+# For Linux machines running on arm64, for example Apple Macbooks with Apple Silicon
+docker build -f ./Dockerfile --platform linux/arm64 --build-arg ARCH=arm64 -t azure-vm-pricing .
+```
+
+#### Run the Docker image
+
+You can run the `azure-vm-pricing` image:
+
+```bash
+docker run --rm -it -v ./data:/data/ azure-vm-pricing:latest bash -c "yarn crawl --culture en-us --currency eur --operating-system linux --region europe-west -p /data/"
+```
 
 ### Parser tests
 

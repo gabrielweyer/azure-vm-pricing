@@ -1,8 +1,8 @@
 const fs = require('fs');
 import { VmPricing } from './vmPricing';
 
-export function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.json`;
+export function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string, outputPath: string): void {
+  const outFilename = `${outputPath}/vm-pricing_${region}_${operatingSystem}.json`;
 
   fs.writeFile(outFilename, JSON.stringify(vmPricing, null, 2), function (err) {
     if (err) {
@@ -13,8 +13,8 @@ export function writeJson(vmPricing: VmPricing[], region: string, operatingSyste
   });
 }
 
-export function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string): void {
-  const outFilename = `./out/vm-pricing_${region}_${operatingSystem}.csv`;
+export function writeCsv(vmPricing: VmPricing[], culture: string, region: string, operatingSystem: string, outputPath: string): void {
+  const outFilename = `${outputPath}/vm-pricing_${region}_${operatingSystem}.csv`;
 
   const writer = fs.createWriteStream(outFilename);
   writer.write('INSTANCE,VCPU,RAM,PAY AS YOU GO,PAY AS YOU GO WITH AZURE HYBRID BENEFIT,ONE YEAR RESERVED,ONE YEAR RESERVED WITH AZURE HYBRID BENEFIT,THREE YEAR RESERVED,THREE YEAR RESERVED WITH AZURE HYBRID BENEFIT,SPOT,SPOT WITH AZURE HYBRID BENEFIT,ONE YEAR SAVINGS PLAN,ONE YEAR SAVINGS PLAN WITH AZURE HYBRID BENEFIT,THREE YEAR SAVINGS PLAN,THREE YEAR SAVINGS PLAN WITH AZURE HYBRID BENEFIT\n');
