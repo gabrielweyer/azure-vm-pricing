@@ -1,0 +1,7 @@
+coverage
+src/*.test.ts
+out/*.csv
+out/*.json
+out/log/*.json
+out/log/*.png
+test-results

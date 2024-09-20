@@ -17,6 +17,12 @@ This approach allows to decouple pricing acquisition from its usage and open the
 
 [![Build Status][github-actions-coster-shield]][github-actions-coster]
 
+- [Parser](#parser)
+- [Coster](#coster)
+- [Supported regions](#supported-regions)
+- [Supported OS/Software](#supported-ossoftware)
+- [Run Parser in Docker](#run-parser-in-docker)
+
 ## Parser
 
 Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
@@ -69,6 +75,8 @@ Scroll down for the list of [supported regions](#supported-regions) and [support
 > cd .\parser\
 > yarn
 ```
+
+You can [run in Docker](#run-parser-in-docker) instead if you don't want to install Node.js and Yarn.
 
 ### Parser usage
 
@@ -327,6 +335,27 @@ Supported OS/Software:
   - `sql-server-enterprise` (SQL Server Enterprise)
   - `sql-server-standard` (SQL Server Standard)
   - `sql-server-web` (SQL Server Web)
+
+## Run Parser in Docker
+
+If you don't want to install Node.js and Yarn on your machine, you can run the Parser in Docker instead:
+
+```powershell
+cd .\parser\
+docker build -t gweyer/az-vm-price-parser .
+cd .\out\
+docker run --rm -it --mount "type=bind,src=$($PWD),dst=/app/out" gweyer/az-vm-price-parser
+```
+
+The instructions are Windows specific, but they can be adapted to other operating systems. You don't have to name your Docker image `gweyer/az-vm-price-parser`, but you'll have to use the same name in both commands.
+
+I'm mounting `parser\out\` so that the output files are available on the host.
+
+Once in the container:
+
+```shell
+yarn crawl -l en-us -c usd -o linux -r us-west
+```
 
 ## Notes and references
 
