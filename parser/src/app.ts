@@ -8,6 +8,8 @@ import { isUrlBlocked } from './isUrlBlocked';
 import { writeCsv, writeJson } from './writeFile';
 import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions';
 
+let outputPath: string | undefined;
+
 let recordTiming = false;
 let previousPerformanceNow = 0;
 let wasSuccessful = false;
@@ -91,6 +93,14 @@ function timeEvent(eventName: string): void {
         case '--region':
           region = args[offset + 1];
           break;
+        case '-p':
+        case '--output-path':
+          outputPath = args[offset + 1];
+          // If the output path is not defined or is an empty string, use the default path
+          if (outputPath === undefined || outputPath === '') {
+            outputPath = './out';
+          }
+          break;
         default:
           parsedBinaryArg = false;
           break;
@@ -104,7 +114,7 @@ function timeEvent(eventName: string): void {
           debugMode = true;
           break;
         default:
-          console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region'. None of these switches should be provided as the last arg as they require a value.`);
+          console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region', '-p', '--output-path . None of these switches should be provided as the last arg as they require a value.`);
           break;
       }
     }
@@ -120,7 +130,8 @@ function timeEvent(eventName: string): void {
   }
 
   timeEvent('chromeStartedAt');
-  const browser = await puppeteer.launch({headless: headlessMode});
+  // --no-sandbox and --disable-setuid-sandbox are required for running in a Docker container
+  const browser = await puppeteer.launch({headless: headlessMode, args: ['--no-sandbox', '--disable-setuid-sandbox']});
   const page = await browser.newPage();
   timeEvent('chromeLaunchedAt');
 
@@ -229,8 +240,8 @@ function timeEvent(eventName: string): void {
 
     console.log();
 
-    writeJson(vmPricing, config.region, config.operatingSystem);
-    writeCsv(vmPricing, config.culture, config.region, config.operatingSystem);
+    writeJson(vmPricing, config.region, config.operatingSystem, outputPath);
+    writeCsv(vmPricing, config.culture, config.region, config.operatingSystem, outputPath);
     wasSuccessful = true;
   }
   catch (e)
