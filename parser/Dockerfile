@@ -5,9 +5,9 @@ ARG ARCH=amd64
 FROM $ARCH/node:22-slim
 
 # Do not download Chromium, will be installed manually from Debian repositories
-ENV PUPPETEER_SKIP_DOWNLOAD true
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 # Set the path to the Chromium executable
-ENV PUPPETEER_EXECUTABLE_PATH "/usr/bin/chromium"
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium"
 
 # Create a directory for the app
 WORKDIR /app
@@ -18,7 +18,9 @@ RUN mkdir /data
 # Set volume for the app data
 VOLUME /data
 
-# Install dependencies
+# Install dependencies for Puppeteer respectively Chromium/Chrome
+# https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#running-puppeteer-on-gitlabci
+# hadolint ignore=DL3008
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -62,18 +64,9 @@ RUN apt-get update && apt-get install -y \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Copy the app files (azure-vm-pricing) to the container
-COPY ./parser .
-
-# When use a non-root user, the processes under the user will not have access to mounted volumes for some reason
-# # Create a non-root user to run Puppeteer
-# RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
-#   && mkdir -p /home/pptruser/Downloads \
-#   && chown -R pptruser:pptruser /home/pptruser \
-#   && chown -R pptruser:pptruser /app
-
-# # Switch to the non-root user
-# USER pptruser
+# Copy the app files (azure-vm-pricing/parser) to the container
+COPY ./ .
 
 # Install Yarn and dependencies
-RUN yarn install
+RUN yarn install \
+  && yarn cache clean

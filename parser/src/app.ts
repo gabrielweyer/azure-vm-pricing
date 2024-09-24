@@ -8,7 +8,8 @@ import { isUrlBlocked } from './isUrlBlocked';
 import { writeCsv, writeJson } from './writeFile';
 import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions';
 
-let outputPath: string | undefined;
+// If outputPath is not provided, the default value is './out'
+let outputPath: string | undefined = './out';
 
 let recordTiming = false;
 let previousPerformanceNow = 0;
@@ -96,10 +97,12 @@ function timeEvent(eventName: string): void {
         case '-p':
         case '--output-path':
           outputPath = args[offset + 1];
-          // If the output path is not defined or is an empty string, use the default path
+          // Assign default if undefined or empty
           if (outputPath === undefined || outputPath === '') {
             outputPath = './out';
           }
+          // Ensure the path exists
+          fs.mkdirSync(outputPath, { recursive: true });
           break;
         default:
           parsedBinaryArg = false;
@@ -131,6 +134,7 @@ function timeEvent(eventName: string): void {
 
   timeEvent('chromeStartedAt');
   // --no-sandbox and --disable-setuid-sandbox are required for running in a Docker container
+  // More info: https://github.com/puppeteer/puppeteer/blob/main/docs/troubleshooting.md#running-puppeteer-on-gitlabci
   const browser = await puppeteer.launch({headless: headlessMode, args: ['--no-sandbox', '--disable-setuid-sandbox']});
   const page = await browser.newPage();
   timeEvent('chromeLaunchedAt');

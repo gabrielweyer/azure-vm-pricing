@@ -131,9 +131,10 @@ Fields:
 You can build a `Docker` image for the `azure-vm-pricing`:
 
 ```bash
+# Parser Docker image
+cd parser
 # For Linux machines running on x86_64 or in Windows WSL
 docker build -f ./Dockerfile --platform linux/amd64 --build-arg ARCH=amd64 -t azure-vm-pricing .
-
 # For Linux machines running on arm64, for example Apple Macbooks with Apple Silicon
 docker build -f ./Dockerfile --platform linux/arm64 --build-arg ARCH=arm64 -t azure-vm-pricing .
 ```
