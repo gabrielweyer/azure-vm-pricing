@@ -55,7 +55,7 @@ function timeEvent(eventName: string): void {
 
 (async function() {
   recordTiming = false;
-  const headlessMode = 'new';
+  const headlessMode = true;
   timeEvent('crawlerStartedAt');
 
   let culture = 'en-au';
