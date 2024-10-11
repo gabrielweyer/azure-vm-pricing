@@ -41,6 +41,11 @@ export class AzurePortal {
     const loadedPromise = this.waitForLoadedRegionalPrices();
     const idleMainAppPromise = this.waitForIdleMainApp();
     await Promise.all([loadedPromise, idleMainAppPromise]);
+    await this.dismissAzureSuggestsRegionPopupIfPresent();
+  }
+
+  private async dismissAzureSuggestsRegionPopupIfPresent(): Promise<void> {
+    await this.dismissPopupIfPresent('.tooltip-popup-close-btn');
   }
 
   async selectHourlyPricing(): Promise<void> {
@@ -50,7 +55,11 @@ export class AzurePortal {
   }
 
   async dismissNudgePopupIfPresent(): Promise<void> {
-    const closeButton = await this.p.$('[data-testid="nudge-popup-close-btn"]');
+    await this.dismissPopupIfPresent('[data-testid="nudge-popup-close-btn"]');
+  }
+
+  private async dismissPopupIfPresent(cssSelector: string): Promise<void> {
+    const closeButton = await this.p.$(cssSelector);
 
     if (closeButton !== null) {
       closeButton.click();
