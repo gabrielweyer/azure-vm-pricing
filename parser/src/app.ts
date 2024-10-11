@@ -271,7 +271,7 @@ function timeEvent(eventName: string): void {
 
     if (browser) {
       if (!wasSuccessful && debugMode && page) {
-        await page.screenshot({ path: `./out/log/${fileName}.png`, fullPage: true });
+        await page.screenshot({ path: `./out/log/${fileName}.png` });
       }
       await browser.close();
     }
