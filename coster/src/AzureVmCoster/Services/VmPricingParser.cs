@@ -17,12 +17,17 @@ internal class VmPricingParser
 
         var allVmPricing = new List<VmPricing>();
 
+        JsonSerializerOptions options = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
         foreach (var pricingFile in pricingFiles)
         {
             var fileInfo = new FileInfo(pricingFile);
             var fileIdentifier = FileIdentifier.From(fileInfo);
 
-            var fileVmPricing = JsonSerializer.Deserialize<List<VmPricing>>(File.ReadAllText(pricingFile));
+            var fileVmPricing = JsonSerializer.Deserialize<List<VmPricing>>(File.ReadAllText(pricingFile), options);
 
             if (fileVmPricing == null || fileVmPricing.Count == 0)
             {

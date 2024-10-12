@@ -1,0 +1,19 @@
+[
+  {
+    "instance": "B2ts v2",
+    "vCpu": 2,
+    "ram": 1,
+    "payAsYouGo": 0.019,
+    "payAsYouGoWithAzureHybridBenefit": 0.0107,
+    "oneYearSavingsPlan": 0.0153,
+    "oneYearSavingsPlanWithAzureHybridBenefit": 0.0082,
+    "threeYearSavingsPlan": 0.0131,
+    "threeYearSavingsPlanWithAzureHybridBenefit": 0.0059,
+    "oneYearReserved": 0.0135,
+    "oneYearReservedWithAzureHybridBenefit": 0.0063,
+    "threeYearReserved": 0.0113,
+    "threeYearReservedWithAzureHybridBenefit": 0.0041,
+    "spot": 0.0063,
+    "spotWithAzureHybridBenefit": 0.0036
+  }
+]
