@@ -71,4 +71,23 @@ public class InputVmParserTests
         Assert.NotNull(actualVms);
         actualVms.Should().BeEquivalentTo(_expected);
     }
+
+    [Fact]
+    public void GivenRegionAndOperatingSystemWithUnexpectedCase_WhenParse_ThenLowerCase()
+    {
+        // Arrange
+        var file = new FileInfo("SampleInputs/input-en-au-wrong-case.csv");
+        var culture = new CultureInfo("en-au");
+
+        // Act
+        var actualVms = InputVmParser.Parse(file, culture);
+
+        // Assert
+        var expected = new List<InputVm>
+        {
+            new() {Name = "name-1", Region = "us-west", Cpu = 4, Ram = 8, OperatingSystem = "windows"}
+        };
+        Assert.NotNull(actualVms);
+        actualVms.Should().BeEquivalentTo(expected);
+    }
 }
