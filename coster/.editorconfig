@@ -188,6 +188,10 @@ dotnet_diagnostic.IDE2003.severity = warning
 # csharp_style_allow_blank_line_after_colon_in_constructor_initializer_experimental
 dotnet_diagnostic.IDE2004.severity = warning
 
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1308
+# The data I'm matching to is in lower case
+dotnet_diagnostic.CA1308.severity = none
+
 # CSharp code style settings:
 [*.cs]
 # Newline settings
