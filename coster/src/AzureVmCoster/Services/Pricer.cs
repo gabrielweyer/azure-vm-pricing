@@ -16,7 +16,7 @@ internal class Pricer
         var missingFiles = vms
             .Select(vm => new FileIdentifier(vm.Region, vm.OperatingSystem))
             .Distinct(new FileIdentifierComparer())
-            .Where(fileIdentifier => !File.Exists($@"{_pricingDirectory}{fileIdentifier.PricingFilename}"))
+            .Where(fileIdentifier => !File.Exists($"{_pricingDirectory}{fileIdentifier.PricingFilename}"))
             .ToList();
 
         if (missingFiles.Count > 0)

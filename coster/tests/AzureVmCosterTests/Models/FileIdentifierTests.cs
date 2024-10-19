@@ -29,4 +29,20 @@ public static class FileIdentifierTests
 
         actual.Should().BeEquivalentTo(expected);
     }
+
+    [Theory]
+    [InlineData(@"E:\tmp\vm-pricing_some-region.json")]
+    [InlineData(@"E:\tmp\vm-pricing.json")]
+    [InlineData(@"E:\tmp\vm-pricing_some-region_some-operating-system.csv")]
+    public static void GivenInvalidFilename_WhenFromFileInfo_ThenThrows(string filePath)
+    {
+        // Arrange
+        var file = new FileInfo(filePath);
+
+        // Act
+        var actualException = Assert.Throws<ArgumentOutOfRangeException>(() => FileIdentifier.From(file));
+
+        // Assert
+        Assert.NotNull(actualException);
+    }
 }

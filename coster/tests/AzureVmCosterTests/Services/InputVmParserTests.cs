@@ -16,7 +16,7 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenPreserveOrder()
     {
         // Arrange
-        var file = new FileInfo(@"SampleInputs/input-en-au.csv");
+        var file = new FileInfo("TestFiles/SampleInputs/input-en-au.csv");
         var culture = new CultureInfo("en-au");
 
         // Act
@@ -31,7 +31,7 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithPeriodDecimalPoint_WhenParse_ThenParseAllFields()
     {
         // Arrange
-        var file = new FileInfo(@"SampleInputs/input-en-au.csv");
+        var file = new FileInfo("TestFiles/SampleInputs/input-en-au.csv");
         var culture = new CultureInfo("en-au");
 
         // Act
@@ -46,7 +46,7 @@ public class InputVmParserTests
     public void GivenInputWithUnknownFieldsAndCultureWithPeriodDecimalPoint_WhenParse_ThenIgnoreUnknownFields()
     {
         // Arrange
-        var fileInfo = new FileInfo(@"SampleInputs/input-en-au-extra-fields.csv");
+        var fileInfo = new FileInfo("TestFiles/SampleInputs/input-en-au-extra-fields.csv");
         var culture = new CultureInfo("en-au");
 
         // Act
@@ -61,7 +61,7 @@ public class InputVmParserTests
     public void GivenExactMatchInputAndCultureWithCommaDecimalPoint_WhenParse_ThenParseAllFields()
     {
         // Arrange
-        var file = new FileInfo(@"SampleInputs/input-fr-fr.csv");
+        var file = new FileInfo("TestFiles/SampleInputs/input-fr-fr.csv");
         var culture = new CultureInfo("fr-fr");
 
         // Act
@@ -76,7 +76,7 @@ public class InputVmParserTests
     public void GivenRegionAndOperatingSystemWithUnexpectedCase_WhenParse_ThenLowerCase()
     {
         // Arrange
-        var file = new FileInfo("SampleInputs/input-en-au-wrong-case.csv");
+        var file = new FileInfo("TestFiles/SampleInputs/input-en-au-wrong-case.csv");
         var culture = new CultureInfo("en-au");
 
         // Act

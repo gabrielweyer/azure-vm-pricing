@@ -13,4 +13,40 @@ internal static class InputVmBuilder
             Cpu = 2
         };
     }
+
+    public static InputVm AsUsWestWindowsD4V3Equivalent()
+    {
+        return new InputVm
+        {
+            Name = "map-me-to-d4-v3",
+            OperatingSystem = "windows",
+            Ram = 16,
+            Region = "us-west",
+            Cpu = 4
+        };
+    }
+
+    public static InputVm AsUsWestWindowsD8V3Equivalent()
+    {
+        return new InputVm
+        {
+            Name = "map-me-to-d8-v3",
+            OperatingSystem = "windows",
+            Ram = 32,
+            Region = "us-west",
+            Cpu = 8
+        };
+    }
+
+    public static InputVm AsUsWestWindowsD16V3Equivalent()
+    {
+        return new InputVm
+        {
+            Name = "map-me-to-d16-v3",
+            OperatingSystem = "windows",
+            Ram = 64,
+            Region = "us-west",
+            Cpu = 16
+        };
+    }
 }

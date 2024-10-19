@@ -35,20 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SampleInputs\*.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="SamplePricing\*.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="TestPricing\*.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    <None Update="TestFiles\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

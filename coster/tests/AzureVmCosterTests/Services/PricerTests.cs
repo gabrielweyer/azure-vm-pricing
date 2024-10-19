@@ -5,12 +5,7 @@ namespace AzureVmCosterTests.Services;
 
 public class PricerTests
 {
-    private readonly Pricer _target;
-
-    public PricerTests()
-    {
-        _target = new Pricer(@"SamplePricing/");
-    }
+    private readonly Pricer _target = new("TestFiles/SamplePricing/");
 
     [Fact]
     public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
@@ -18,7 +13,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new InputVm {Region = "missing", OperatingSystem = "missing"}
+            new() {Region = "missing", OperatingSystem = "missing"}
         };
 
         // Act
@@ -34,7 +29,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new InputVm {Region = "region", OperatingSystem = "operating-system"}
+            new() {Region = "region", OperatingSystem = "operating-system"}
         };
 
         // Act
@@ -50,7 +45,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new InputVm {Region = "region", OperatingSystem = "missing"}
+            new() {Region = "region", OperatingSystem = "missing"}
         };
 
         // Act
@@ -66,7 +61,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new InputVm {Region = "missing", OperatingSystem = "operating-system"}
+            new() {Region = "missing", OperatingSystem = "operating-system"}
         };
 
         // Act
@@ -135,5 +130,86 @@ public class PricerTests
 
         // Assert
         filteredPrices.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void GivenMatchingPrice_WhenPrice_ThenPriceVm()
+    {
+        // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
+        };
+
+        // Act
+        var actualPricedVms = Pricer.Price(vms, prices);
+
+        // Assert
+        var expectedPricedVms = new List<PricedVm> { new(vms[0], prices[0]) };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
+    }
+
+    [Fact]
+    public void GivenNoMatchingPrice_WhenPrice_ThenHandleVmAsNoPrice()
+    {
+        // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>();
+
+        // Act
+        var actualPricedVms = Pricer.Price(vms, prices);
+
+        // Assert
+        var expectedPricedVms = new List<PricedVm> { new(vms[0], null) };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
+    }
+
+    [Fact]
+    public void GivenVmWithoutCpuAndWithoutRam_WhenPrice_ThenUseMedianCpuAndRam()
+    {
+        // Arrange
+        var vmWithoutCpuWithoutRam = new InputVm
+        {
+            Name = "map-me-to-median",
+            OperatingSystem = "windows",
+            Region = "us-west"
+        };
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent(),
+            InputVmBuilder.AsUsWestWindowsD4V3Equivalent(),
+            InputVmBuilder.AsUsWestWindowsD8V3Equivalent(),
+            InputVmBuilder.AsUsWestWindowsD16V3Equivalent(),
+            vmWithoutCpuWithoutRam
+        };
+        var medianPrice = VmPricingBuilder.AsUsWestWindowsD8V3();
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3(),
+            VmPricingBuilder.AsUsWestWindowsD4V3(),
+            medianPrice,
+            VmPricingBuilder.AsUsWestWindowsD16V3()
+        };
+
+        // Act
+        var actualPricedVms = Pricer.Price(vms, prices);
+
+        // Assert
+        var expectedPricedVms = new List<PricedVm>
+        {
+            new(vms[0], prices[0]),
+            new(vms[1], prices[1]),
+            new(vms[2], prices[2]),
+            new(vms[3], prices[3]),
+            new(vmWithoutCpuWithoutRam, medianPrice)
+        };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
     }
 }
