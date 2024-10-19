@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace AzureVmCoster.Services;
 
 internal class VmPricingParser
@@ -11,23 +9,18 @@ internal class VmPricingParser
         _pricingDirectory = pricingDirectory;
     }
 
-    public List<VmPricing> Parse()
+    public async Task<IList<VmPricing>> ParseAsync()
     {
         var pricingFiles = Directory.GetFiles(_pricingDirectory, "*.json");
 
         var allVmPricing = new List<VmPricing>();
-
-        JsonSerializerOptions options = new()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-        };
 
         foreach (var pricingFile in pricingFiles)
         {
             var fileInfo = new FileInfo(pricingFile);
             var fileIdentifier = FileIdentifier.From(fileInfo);
 
-            var fileVmPricing = JsonSerializer.Deserialize<List<VmPricing>>(File.ReadAllText(pricingFile), options);
+            var fileVmPricing = await JsonReader.DeserializeAsync<List<VmPricing>>(pricingFile);
 
             if (fileVmPricing == null || fileVmPricing.Count == 0)
             {

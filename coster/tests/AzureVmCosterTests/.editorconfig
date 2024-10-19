@@ -1,0 +1,5 @@
+root = false
+
+[*.cs]
+# VSTHRD200: Use `Async` naming convention
+dotnet_diagnostic.VSTHRD200.severity = none
