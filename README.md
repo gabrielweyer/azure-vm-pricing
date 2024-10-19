@@ -1,15 +1,15 @@
 # Azure VM pricing
 
-Mass-pricing of `VMs` on `Azure` based on `CPU` cores count and memory. This is useful when costing a lift-and-shift migration dealing with many thousands `VMS` of varied sizes.
+Mass-pricing of VMs on Azure based on CPU cores count and memory. This is useful when costing a lift-and-shift migration dealing with many thousands VMS of varied sizes.
 
 The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricing].
 
-:rotating_light: This tool will only provide you with an **estimation**. Depending on your `Azure` spend you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the `VM` price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
+:rotating_light: This tool will only provide you with an **estimation**. Depending on your Azure spend you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the VM price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
 
 This tool is composed of two components:
 
 1. A [Parser](#parser) retrieving the pricing from [Virtual Machines Pricing][virtual-machines-pricing]
-2. A [Coster](#coster) using the output from the `Parser` and a list of `VM` specifications to determine their price
+2. A [Coster](#coster) using the output from the `Parser` and a list of VM specifications to determine their price
 
 This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
@@ -19,40 +19,40 @@ This approach allows to decouple pricing acquisition from its usage and open the
 
 ## Parser
 
-Retrieve `VMs` **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
+Retrieve VMs **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
 
-| Culture | Culture display name  | Currency                        | Currency display name    | Support            |
-| ------- | --------------------- | ------------------------------- | ------------------------ | ------------------ |
-| `en-us` | `English (US)`        | `usd`                           | `US Dollar ($)`          | :white_check_mark: |
-| `cs-cz` | `Čeština`             | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
-| `da-dk` | `Dansk`               | `dkk`                           | `Danish Krone (kr)`      | :white_check_mark: |
-| `de-de` | `Deutsch`             | `eur`                           | `Euro (€)`               | :white_check_mark: |
-|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
-| `en-au` | `English (Australia)` | `aud`                           | `Australian Dollar ($)`  | :white_check_mark: |
-| `en-ca` | `English (Canada)`    | `cad`                           | `Canadian Dollar ($)`    | :white_check_mark: |
-| `en-in` | `English (India)`     | `inr`                           | `Indian Rupee (₹)`       | :white_check_mark: |
-| `en-gb` | `English (UK)`        | `gpb`                           | `British Pound (£)`      | :white_check_mark: |
-|         |                       | `nzd`[[7]](#closest-culture-7)  | `New Zealand Dollar ($)` | :white_check_mark: |
-| `es-es` | `Español`             | `eur`                           | `Euro (€)`               | :white_check_mark: |
-| `es-mx` | `Español (MX)`        | `usd`[[3]](#closest-currency-3) | `US Dollar ($)`          | :white_check_mark: |
-| `fr-fr` | `Français`            | `eur`                           | `Euro (€)`               | :white_check_mark: |
-|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
-| `fr-ca` | `Français (Canada)`   | `cad`                           | `Canadian Dollar ($)`    | :white_check_mark: |
-| `it-it` | `Italiano`            | `eur`                           | `Euro (€)`               | :white_check_mark: |
-|         |                       | `chf`[[9]](#closest-culture-9)  | `Swiss Franc. (chf)`     | :white_check_mark: |
-| `hu-hu` | `Magyar`              | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
-| `nb-no` | `Norsk`               | `nk`                            | `Norwegian Krone (kr)`   | :white_check_mark: |
-| `nl-nl` | `Nederlands`          | `eur`                           | `Euro (€)`               | :white_check_mark: |
-| `pl-pl` | `Polski`              | `eur`[[1]](#closest-currency-1) | `Euro (€)`               | :white_check_mark: |
-| `pt-br` | `Português (Brasil)`  | `brl`                           | `Brazilian Real (R$)`    | :white_check_mark: |
-| `pt-pt` | `Português`           | `eur`                           | `Euro (€)`               | :white_check_mark: |
-| `sv-se` | `Svenska`             | `sek`                           | `Swedish Krona (kr)`     | :white_check_mark: |
-| `tr-tr` | `Türkçe`              | `usd`[[3]](#closest-currency-3) | `US Dollar ($)`          | :white_check_mark: |
-| `ru-ru` | `Pусский`             | `rub`                           | `Russian Ruble (руб)`    | :white_check_mark: |
-| `ja-jp` | `日本語`               | `jpy`                           | `Japanese Yen (¥)`       | :white_check_mark: |
-| `ko-kr` | `한국어`               | `krw`                           | `Korean Won (₩)`         | :white_check_mark: |
-| `zh-cn` | `中文(简体)`           | `N/A`                           | `N/A`                    | `N/A`              |
-| `zh-tw` | `中文(繁體)`           | `twd`                           | `Taiwanese Dollar (NT$)` | :white_check_mark: |
+| Culture | Culture display name | Currency                        | Currency display name  | Support            |
+| ------- | ---------------------| ------------------------------- | ---------------------- | ------------------ |
+| `en-us` | English (US)         | `usd`                           | US Dollar ($)          | :white_check_mark: |
+| `cs-cz` | Čeština              | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
+| `da-dk` | Dansk                | `dkk`                           | Danish Krone (kr)      | :white_check_mark: |
+| `de-de` | Deutsch              | `eur`                           | Euro (€)               | :white_check_mark: |
+|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
+| `en-au` | English (Australia)  | `aud`                           | Australian Dollar ($)  | :white_check_mark: |
+| `en-ca` | English (Canada)     | `cad`                           | Canadian Dollar ($)    | :white_check_mark: |
+| `en-in` | English (India)      | `inr`                           | Indian Rupee (₹)       | :white_check_mark: |
+| `en-gb` | English (UK)         | `gpb`                           | British Pound (£)      | :white_check_mark: |
+|         |                      | `nzd`[[7]](#closest-culture-7)  | New Zealand Dollar ($) | :white_check_mark: |
+| `es-es` | Español              | `eur`                           | Euro (€)               | :white_check_mark: |
+| `es-mx` | Español (MX)         | `usd`[[3]](#closest-currency-3) | US Dollar ($)          | :white_check_mark: |
+| `fr-fr` | Français             | `eur`                           | Euro (€)               | :white_check_mark: |
+|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
+| `fr-ca` | Français (Canada)    | `cad`                           | Canadian Dollar ($)    | :white_check_mark: |
+| `it-it` | Italiano             | `eur`                           | Euro (€)               | :white_check_mark: |
+|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
+| `hu-hu` | Magyar               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
+| `nb-no` | Norsk                | `nk`                            | Norwegian Krone (kr)   | :white_check_mark: |
+| `nl-nl` | Nederlands           | `eur`                           | Euro (€)               | :white_check_mark: |
+| `pl-pl` | Polski               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
+| `pt-br` | Português (Brasil)   | `brl`                           | Brazilian Real (R$)    | :white_check_mark: |
+| `pt-pt` | Português            | `eur`                           | Euro (€)               | :white_check_mark: |
+| `sv-se` | Svenska              | `sek`                           | Swedish Krona (kr)     | :white_check_mark: |
+| `tr-tr` | Türkçe               | `usd`[[3]](#closest-currency-3) | US Dollar ($)          | :white_check_mark: |
+| `ru-ru` | Pусский              | `rub`                           | Russian Ruble (руб)    | :white_check_mark: |
+| `ja-jp` | 日本語                | `jpy`                           | Japanese Yen (¥)       | :white_check_mark: |
+| `ko-kr` | 한국어                | `krw`                           | Korean Won (₩)         | :white_check_mark: |
+| `zh-cn` | 中文(简体)            | `N/A`                           | N/A                    | `N/A`              |
+| `zh-tw` | 中文(繁體)            | `twd`                           | Taiwanese Dollar (NT$) | :white_check_mark: |
 
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
@@ -90,8 +90,9 @@ Arguments:
 - `currency` any of the `option` `value` in the **Currency** `select`
 - `operating-system` any of the `option` `value` in the **OS/Software** `select`
 - `region` any of the `option` `value` in the **Region** `select`
+- `output-path` where the output files will be written (defaults to `.\out\`)
 
-![OS, Region amd Currency select](docs/assets/os-region-currency.png)
+![OS, Region and Currency select](docs/assets/os-region-currency.png)
 
 In the footer:
 
@@ -165,7 +166,7 @@ The end-to-end tests attempt to compare known prices for the `D2 v3` instance in
 
 ## Coster
 
-Price `VMs` using the `JSON` pricing files generated by the `Parser`. The `Coster` will select the cheapest `VM` that has enough `CPU` cores and `RAM`.
+Price VMs using the `JSON` pricing files generated by the `Parser`. The `Coster` will select the cheapest VM that has enough CPU cores and RAM.
 
 ### Coster pre-requisites
 
@@ -205,7 +206,7 @@ You'll need to provide the `<input-path>` when prompted, the `culture` is option
 - _RAM_ (in `GB`, a `decimal`)
 - _Operating System_
 
-The columns can be in any order and the `CSV` file can contain extra-columns. The `Region` and `Operating System` fields must match existing regions and supported operating systems in the Virtual Machines Pricing website.
+The columns can be in any order and the `CSV` file can contain extra-columns. The _Region_ and _Operating System_ fields must match existing regions and supported operating systems in the Virtual Machines Pricing website.
 
 ### Coster output
 
