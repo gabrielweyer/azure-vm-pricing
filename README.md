@@ -181,11 +181,14 @@ In `Release` mode:
 ```powershell
 > cd .\coster\src\AzureVmCoster
 > dotnet run --configuration Release -- --input <input-path> --culture <culture>
+> dotnet run --configuration Release -- --input <input-path> --configuration <configuration-path>
 > dotnet run --configuration Release -- -i <input-path> -l <culture>
 > dotnet run --configuration Release -- -i <input-path>
 ```
 
 The `culture` is optional.
+
+You can exclude VMs by providing a configuration file, see [Coster configuration](#coster-configuration).
 
 In `Debug` mode
 
@@ -193,10 +196,11 @@ In `Debug` mode
 > cd .\coster\src\AzureVmCoster
 > dotnet run --configuration Debug
 Input file path: <input-path>
+Configuration file path (leave blank if not used): 
 Culture (leave blank for system default):
 ```
 
-You'll need to provide the `<input-path>` when prompted, the `culture` is optional.
+You'll need to provide the `<input-path>` when prompted, the configuration file path and culture are optional.
 
 `<input-path>` should point to a `CSV` file with the following fields:
 
@@ -351,6 +355,50 @@ Supported OS/Software:
   - `sql-server-enterprise` (SQL Server Enterprise)
   - `sql-server-standard` (SQL Server Standard)
   - `sql-server-web` (SQL Server Web)
+
+## Coster configuration
+
+The only configuration available currently is `excludedVms`, it takes an array of instance names. These instances won't be considered when costing VMs.
+
+For example, if you want to discard all burstable VMs, you can use the below configuration file:
+
+```json
+{
+  "excludedVms": [
+    "B2ts v2",
+    "B2ls v2",
+    "B2s v2",
+    "B4ls v2",
+    "B4s v2",
+    "B8ls v2",
+    "B8s v2",
+    "B16ls v2",
+    "B16s v2",
+    "B32ls v2",
+    "B32s v2",
+    "B2ats v2",
+    "B2als v2",
+    "B2as v2",
+    "B4als v2",
+    "B4as v2",
+    "B8als v2",
+    "B8as v2",
+    "B16als v2",
+    "B16as v2",
+    "B32als v2",
+    "B32as v2",
+    "B1s",
+    "B1ms",
+    "B2s",
+    "B2ms",
+    "B4ms",
+    "B8ms",
+    "B12ms",
+    "B16ms",
+    "B20ms"
+  ]
+}
+```
 
 ## Notes and references
 

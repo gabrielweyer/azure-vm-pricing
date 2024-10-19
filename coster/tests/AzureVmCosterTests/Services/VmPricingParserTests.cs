@@ -7,10 +7,10 @@ public class VmPricingParserTests
     private readonly VmPricingParser _parser = new("TestPricing/");
 
     [Fact]
-    public void GivenValidPrice_ThenParseVm()
+    public async Task GivenValidPrice_ThenParseVm()
     {
         // Act
-        var prices = _parser.Parse();
+        var prices = await _parser.ParseAsync();
 
         // Assert
         var expectedPrices = new List<VmPricing>

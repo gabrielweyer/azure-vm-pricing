@@ -192,6 +192,13 @@ dotnet_diagnostic.IDE2004.severity = warning
 # The data I'm matching to is in lower case
 dotnet_diagnostic.CA1308.severity = none
 
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca2007
+# This is not a library. The code is only used in a console app where there is no SynchronizationContext
+dotnet_diagnostic.CA2007.severity = none
+# https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0004.md
+# This is not a library. The code is only used in a console app where there is no SynchronizationContext
+dotnet_diagnostic.MA0004.severity = none
+
 # CSharp code style settings:
 [*.cs]
 # Newline settings

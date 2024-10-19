@@ -25,7 +25,20 @@ internal class Pricer
         }
     }
 
-    public static List<PricedVm> Price(List<InputVm> vms, List<VmPricing> pricings)
+    /// <summary>
+    /// Discard the prices contained in <paramref name="excludedVms"/>. The instances are discarded by name (case
+    /// insensitive), if the same instance is present with different regions/operating systems, all occurrences will be
+    /// discarded.
+    /// </summary>
+    /// <param name="pricings">The list of prices to filter</param>
+    /// <param name="excludedVms">The list of instances to remove</param>
+    /// <returns>The filtered prices</returns>
+    public static IList<VmPricing> FilterPricing(IList<VmPricing> pricings, IList<string> excludedVms)
+    {
+        return pricings.Where(p => !excludedVms.Contains(p.Instance, StringComparer.OrdinalIgnoreCase)).ToList();
+    }
+
+    public static List<PricedVm> Price(List<InputVm> vms, IList<VmPricing> pricings)
     {
         var medianCpu = GetCpuMedianForNonZeroValues(vms);
         var medianRam = GetRamMedianForNonZeroValues(vms);

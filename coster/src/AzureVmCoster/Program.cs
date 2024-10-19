@@ -6,11 +6,11 @@ public static class Program
 {
     private const string PricingDirectory = @"Pricing\";
 
-    public static int Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
         ArgumentNullException.ThrowIfNull(args);
 
-        var (inputFilePath, culture) = ParseConfiguration(args);
+        var (inputFilePath, configurationFilePath, culture) = ParseConfiguration(args);
 
         if (string.IsNullOrWhiteSpace(inputFilePath))
         {
@@ -18,10 +18,7 @@ public static class Program
             return -1;
         }
 
-        if (inputFilePath.StartsWith('"'))
-        {
-            inputFilePath = inputFilePath.Replace("\"", "", StringComparison.Ordinal);
-        }
+        StripSurroundingDoubleQuotes(ref inputFilePath);
 
         var inputFile = new FileInfo(inputFilePath);
 
@@ -37,12 +34,22 @@ public static class Program
             return -1;
         }
 
+        var configuration = new CosterConfiguration();
+
+        if (!string.IsNullOrWhiteSpace(configurationFilePath))
+        {
+            StripSurroundingDoubleQuotes(ref configurationFilePath);
+
+            configuration = await JsonReader.DeserializeAsync<CosterConfiguration>(configurationFilePath) ?? new CosterConfiguration();
+        }
+
         var inputVms = InputVmParser.Parse(inputFile, culture);
 
         var pricer = new Pricer(PricingDirectory);
         pricer.EnsurePricingExists(inputVms);
 
-        var pricings = new VmPricingParser(PricingDirectory).Parse();
+        var pricings = await new VmPricingParser(PricingDirectory).ParseAsync();
+        pricings = Pricer.FilterPricing(pricings, configuration.ExcludedVms);
 
         var pricedVms = Pricer.Price(inputVms, pricings);
         PricedVmWriter.Write(inputFile.Name, pricedVms, culture);
@@ -50,14 +57,18 @@ public static class Program
         return 0;
     }
 
-    private static (string? inputFilePath, CultureInfo culture) ParseConfiguration(string[] args)
+    private static (string? inputFilePath, string? configurationFilePath, CultureInfo culture) ParseConfiguration(string[] args)
     {
         string? inputFilePath = null;
+        string? configurationFilePath = null;
         var culture = Thread.CurrentThread.CurrentCulture;
 
 #if DEBUG
         Console.Write("Input file path: ");
         inputFilePath = Console.ReadLine();
+
+        Console.Write("Configuration file path (leave blank if not used): ");
+        configurationFilePath = Console.ReadLine();
 
         Console.Write("Culture (leave blank for system default): ");
         var cultureInput = Console.ReadLine();
@@ -79,13 +90,31 @@ public static class Program
                 case "--input":
                     inputFilePath = args[offset + 1];
                     break;
+                case "-c":
+                case "--configuration":
+                    configurationFilePath = args[offset + 1];
+                    break;
                 default:
-                    Console.WriteLine($"'{args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input'");
+                    Console.WriteLine($"'{args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input', '-c', '--configuration'");
                     break;
             }
         }
 #endif
 
-        return (inputFilePath, culture);
+        return (inputFilePath, configurationFilePath, culture);
+    }
+
+    /// <summary>
+    /// <para>Strip starting and trailing double quotes if present.</para>
+    /// <para>When copying a path from the Explorer, Windows surrounds the path with double quotes so that it remains
+    /// usable if a space is present.</para>
+    /// </summary>
+    /// <param name="filePath">The reference will be assigned to only if the path starts with ".</param>
+    private static void StripSurroundingDoubleQuotes(ref string filePath)
+    {
+        if (filePath.StartsWith('"'))
+        {
+            filePath = filePath.Replace("\"", "", StringComparison.Ordinal);
+        }
     }
 }
