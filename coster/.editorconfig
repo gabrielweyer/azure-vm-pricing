@@ -199,6 +199,10 @@ dotnet_diagnostic.CA2007.severity = none
 # This is not a library. The code is only used in a console app where there is no SynchronizationContext
 dotnet_diagnostic.MA0004.severity = none
 
+# https://github.com/meziantou/Meziantou.Analyzer/blob/main/docs/Rules/MA0007.md
+# This is a personal preference
+dotnet_diagnostic.MA0007.severity = none
+
 # CSharp code style settings:
 [*.cs]
 # Newline settings

@@ -4,13 +4,14 @@ namespace AzureVmCosterTests.Services;
 
 public class VmPricingParserTests
 {
-    private readonly VmPricingParser _parser = new("TestPricing/");
-
     [Fact]
     public async Task GivenValidPrice_ThenParseVm()
     {
+        // Arrange
+        var parser = new VmPricingParser("TestFiles/TestPricing/");
+
         // Act
-        var prices = await _parser.ParseAsync();
+        var prices = await parser.ParseAsync();
 
         // Assert
         var expectedPrices = new List<VmPricing>
@@ -37,5 +38,18 @@ public class VmPricingParserTests
             }
         };
         prices.Should().BeEquivalentTo(expectedPrices);
+    }
+
+    [Fact]
+    public async Task GivenEmptyPriceFile_ThenHandleGracefully()
+    {
+        // Arrange
+        var parser = new VmPricingParser("TestFiles/EmptyPricing/");
+
+        // Act
+        var prices = await parser.ParseAsync();
+
+        // Assert
+        prices.Should().BeEmpty();
     }
 }
