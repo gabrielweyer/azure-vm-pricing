@@ -12,8 +12,13 @@ export class AzurePortal {
 
   async waitForApplicableVirtualMachinesAnnouncement(): Promise<void> {
     await this.p.waitForFunction(
-      () => {
+      async () => {
         const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
+
+        if (applicableVmsAnnouncemnt !== null) {
+          await applicableVmsAnnouncemnt.scrollIntoView();
+        }
+
         return applicableVmsAnnouncemnt !== null;
       }
     );
