@@ -13,7 +13,7 @@ This tool is composed of two components:
 
 This approach allows to decouple pricing acquisition from its usage and open the door to automation. The `Parser` can be scheduled to retrieve the pricing at regular interval and the `Coster` can then use an always up-to-date pricing.
 
-[![Build Status][github-actions-parser-shield]][github-actions-parser]
+[![Build Status][github-actions-parser-shield]][github-actions-parser] ([tests documentation](./docs/parser-tests.md))
 
 [![Build Status][github-actions-coster-shield]][github-actions-coster]
 
@@ -21,44 +21,9 @@ This approach allows to decouple pricing acquisition from its usage and open the
 
 Retrieve VMs **hourly pricing** for a specific combination of **culture**, **currency**, **operating system** and **region**.
 
-| Culture | Culture display name | Currency                        | Currency display name  | Support            |
-| ------- | ---------------------| ------------------------------- | ---------------------- | ------------------ |
-| `en-us` | English (US)         | `usd`                           | US Dollar ($)          | :white_check_mark: |
-| `cs-cz` | Čeština              | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
-| `da-dk` | Dansk                | `dkk`                           | Danish Krone (kr)      | :white_check_mark: |
-| `de-de` | Deutsch              | `eur`                           | Euro (€)               | :white_check_mark: |
-|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
-| `en-au` | English (Australia)  | `aud`                           | Australian Dollar ($)  | :white_check_mark: |
-| `en-ca` | English (Canada)     | `cad`                           | Canadian Dollar ($)    | :white_check_mark: |
-| `en-in` | English (India)      | `inr`                           | Indian Rupee (₹)       | :white_check_mark: |
-| `en-gb` | English (UK)         | `gpb`                           | British Pound (£)      | :white_check_mark: |
-|         |                      | `nzd`[[7]](#closest-culture-7)  | New Zealand Dollar ($) | :white_check_mark: |
-| `es-es` | Español              | `eur`                           | Euro (€)               | :white_check_mark: |
-| `es-mx` | Español (MX)         | `usd`[[3]](#closest-currency-3) | US Dollar ($)          | :white_check_mark: |
-| `fr-fr` | Français             | `eur`                           | Euro (€)               | :white_check_mark: |
-|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
-| `fr-ca` | Français (Canada)    | `cad`                           | Canadian Dollar ($)    | :white_check_mark: |
-| `it-it` | Italiano             | `eur`                           | Euro (€)               | :white_check_mark: |
-|         |                      | `chf`[[9]](#closest-culture-9)  | Swiss Franc. (chf)     | :white_check_mark: |
-| `hu-hu` | Magyar               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
-| `nb-no` | Norsk                | `nk`                            | Norwegian Krone (kr)   | :white_check_mark: |
-| `nl-nl` | Nederlands           | `eur`                           | Euro (€)               | :white_check_mark: |
-| `pl-pl` | Polski               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
-| `pt-br` | Português (Brasil)   | `brl`                           | Brazilian Real (R$)    | :white_check_mark: |
-| `pt-pt` | Português            | `eur`                           | Euro (€)               | :white_check_mark: |
-| `sv-se` | Svenska              | `sek`                           | Swedish Krona (kr)     | :white_check_mark: |
-| `tr-tr` | Türkçe               | `usd`[[3]](#closest-currency-3) | US Dollar ($)          | :white_check_mark: |
-| `ru-ru` | Pусский              | `rub`                           | Russian Ruble (руб)    | :white_check_mark: |
-| `ja-jp` | 日本語                | `jpy`                           | Japanese Yen (¥)       | :white_check_mark: |
-| `ko-kr` | 한국어                | `krw`                           | Korean Won (₩)         | :white_check_mark: |
-| `zh-cn` | 中文(简体)            | `N/A`                           | N/A                    | `N/A`              |
-| `zh-tw` | 中文(繁體)            | `twd`                           | Taiwanese Dollar (NT$) | :white_check_mark: |
-
 :rotating_light: the parser is not - yet - able to retrieve pricing for the regions `east-china2`, `north-china2`, `east-china` and `north-china` as it is available on a [different website][azure-china].
 
 :rotating_light: the parser is not able to retrieve pricing for the regions `us-dod-central` and `us-dod-east` as no virtual machines are listed as publicly available.
-
-Scroll down for the list of [supported regions](#supported-regions) and [supported OS/Software](#supported-ossoftware).
 
 ### Parser pre-requisites
 
@@ -91,6 +56,8 @@ Arguments:
 - `operating-system` any of the `option` `value` in the **OS/Software** `select`
 - `region` any of the `option` `value` in the **Region** `select`
 - `output-path` where the output files will be written (defaults to `.\out\`)
+
+Scroll down for the list of [supported regions](#supported-regions) and [supported OS/Software](#supported-ossoftware).
 
 ![OS, Region and Currency select](docs/assets/os-region-currency.png)
 
@@ -148,22 +115,6 @@ You can run the `azure-vm-pricing` image:
 docker run --rm -it -v ./data:/data/ azure-vm-pricing:latest bash -c "yarn crawl --culture en-us --currency eur --operating-system linux --region europe-west -p /data/"
 ```
 
-### Parser tests
-
-The parser has unit tests focusing on edge cases of price formatting:
-
-```powershell
-> cd .\parser\
-> yarn test
-```
-
-The end-to-end tests attempt to compare known prices for the `D2 v3` instance in `us-west` using permutations of supported `culture`, `operating-system`, and `currency`:
-
-```powershell
-> cd .\parser\
-> yarn e2e-all
-```
-
 ## Coster
 
 Price VMs using the `JSON` pricing files generated by the `Parser`. The `Coster` will select the cheapest VM that has enough CPU cores and RAM.
@@ -190,7 +141,7 @@ The `culture` is optional.
 
 You can exclude VMs by providing a configuration file, see [Coster configuration](#coster-configuration).
 
-In `Debug` mode
+In `Debug` mode:
 
 ```powershell
 > cd .\coster\src\AzureVmCoster
@@ -400,22 +351,9 @@ For example, if you want to discard all burstable VMs, you can use the below con
 }
 ```
 
-## Notes and references
-
-<a id="closest-currency-1">01.</a> Euro is used for countries which don't have their currency listed, are [part of the European Union but not part of the Eurozone][european-union].
-
-<a id="closest-currency-3">03.</a> USD is used when no other currency could be matched to the country.
-
-<a id="closest-culture-7">07.</a> English (UK) has been selected due to the use of [New Zealand English][new-zealand-english] in New Zealand.
-
-<a id="closest-culture-9">09.</a> German, French and Italian are three of the [official languages][swizerland-official-languages] of Switzerland.
-
 [virtual-machines-pricing]: https://azure.microsoft.com/en-au/pricing/details/virtual-machines/windows/
 [managed-disks-pricing]: https://azure.microsoft.com/en-us/pricing/details/managed-disks/
 [bandwidth-pricing-details]: https://azure.microsoft.com/en-us/pricing/details/bandwidth/
-[new-zealand-english]: https://en.wikipedia.org/wiki/New_Zealand_English
-[european-union]: https://europa.eu/european-union/about-eu/countries_en#tab-0-0
-[swizerland-official-languages]: https://en.wikipedia.org/wiki/Switzerland#Languages
 [azure-china]: https://www.azure.cn/en-us/pricing/details/virtual-machines/
 [dotnet-sdk]: https://dotnet.microsoft.com/download/dotnet/8.0
 [github-actions-parser-shield]: https://github.com/gabrielweyer/azure-vm-pricing/actions/workflows/parser.yml/badge.svg
