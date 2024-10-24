@@ -1,0 +1,18 @@
+import puppeteer from "puppeteer";
+
+export default async function listCultures(): Promise<string[]> {
+  const browser = await puppeteer.launch({headless: true});
+
+  try
+  {
+    const page = await browser.newPage();
+    await page.goto('https://azure.microsoft.com/en-us/locale');
+    return await page.evaluate(() => (<HTMLAnchorElement[]> Array.from(document.querySelectorAll('[data-automation-test-id="mainContainer-layout-container-uida77d"] a'))).map(a => `${a.href.slice(28, 33)} (${a.textContent})`));
+  }
+  finally
+  {
+    if (browser) {
+      await browser.close();
+    }
+  }
+}
