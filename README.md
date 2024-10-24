@@ -2,8 +2,6 @@
 
 Mass-pricing of VMs on Azure based on CPU cores count and memory. This is useful when costing a lift-and-shift migration dealing with many thousands VMS of varied sizes.
 
-The pricing is retrieved from [Virtual Machines Pricing][virtual-machines-pricing].
-
 :rotating_light: This tool will only provide you with an **estimation**. Depending on your Azure spend you might be able to get a better deal from `Microsoft`. You should use the output of this tool as a coarse-grain estimation. On top of the VM price you will also need to consider [storage][managed-disks-pricing] and [egress][bandwidth-pricing-details] costs.
 
 This tool is composed of two components:
@@ -50,20 +48,11 @@ You can also use short names:
 
 Arguments:
 
-- `culture` any of the `option` `value` in the **Change language** `select`
-  - **This will impact the formatting of the pricing**
-- `currency` any of the `option` `value` in the **Currency** `select`
-- `operating-system` any of the `option` `value` in the **OS/Software** `select`
-- `region` any of the `option` `value` in the **Region** `select`
-- `output-path` where the output files will be written (defaults to `.\out\`)
-
-Scroll down for the list of [supported regions](#supported-regions) and [supported OS/Software](#supported-ossoftware).
-
-![OS, Region and Currency select](docs/assets/os-region-currency.png)
-
-In the footer:
-
-![Culture select](docs/assets/culture.png)
+- `culture`: [available cultures](#supported-cultures) (**will impact the formatting of the pricing**)
+- `currency`: [available currencies](#supported-currencies)
+- `operating-system`: [available OS/Software](#supported-ossoftware)
+- `region`: [available regions](#supported-regions)
+- `output-path`: where the output files will be written (defaults to `.\out\`)
 
 ### Parser output
 
@@ -161,7 +150,7 @@ You'll need to provide the `<input-path>` when prompted, the configuration file 
 - _RAM_ (in `GB`, a `decimal`)
 - _Operating System_
 
-The columns can be in any order and the `CSV` file can contain extra-columns. The _Region_ and _Operating System_ fields must match existing regions and supported operating systems in the Virtual Machines Pricing website.
+The columns can be in any order and the `CSV` file can contain extra-columns. The _Region_ and _Operating System_ fields must match [existing regions](#supported-regions) and [supported operating systems](#supported-ossoftware) in the Virtual Machines Pricing website.
 
 ### Coster output
 
@@ -185,6 +174,98 @@ The `Coster` will generate a `CSV` file in the `Out\` directory with the followi
 - _One Year Savings plan With Azure Hybrid Benefit_
 - _Three Year Savings plan_
 - _Three Year Savings plan With Azure Hybrid Benefit_
+
+## Supported cultures
+
+Supported cultures (newer cultures might have been added after I last updated the `README`, they're likely to be supported):
+
+- `cs-cz` (Čeština (Česká republika))
+- `da-dk` (Dansk (Danmark))
+- `de-de` (Deutsch (Deutschland))
+- `en-au` (English (Australia))
+- `en-ca` (English (Canada))
+- `en-in` (English (India))
+- `en-gb` (English (United Kingdom))
+- `en-us` (English (United States))
+- `es-es` (Español (España))
+- `es-mx` (Español (México))
+- `fr-ca` (Français (Canada))
+- `fr-fr` (Français (France))
+- `id-id` (Indonesia (Indonesia))
+- `it-it` (Italiano (Italia))
+- `hu-hu` (Magyar (Magyarország))
+- `nl-nl` (Nederlands (Nederland))
+- `nb-no` (Norsk (Norge))
+- `pl-pl` (Polski (Polska))
+- `pt-br` (Português (Brasil))
+- `pt-pt` (Português (Portugal))
+- `sv-se` (Svenska (Sverige))
+- `tr-tr` (Türkçe (Türkiye))
+- `ru-ru` (Русский (Россия))
+- `ko-kr` (한국어 (대한민국))
+- `zh-cn` (中文(中国))
+- `ja-jp` (日本語 (日本))
+- `zh-tw` (繁體中文 (台灣))
+
+## Supported currencies
+
+Supported currencies (newer currencies might have been added after I last updated the `README`, they're likely to be supported):
+
+- `usd` (United States – Dollar ($) USD)
+- `aud` (Australia – Dollar ($) AUD)
+- `brl` (Brazil – Real (R$) BRL)
+- `cad` (Canada – Dollar ($) CAD)
+- `dkk` (Denmark – Krone (kr) DKK)
+- `eur` (Euro Zone – Euro (€) EUR)
+- `inr` (India – Rupee (₹) INR)
+- `jpy` (Japan – Yen (¥) JPY)
+- `krw` (Korea – Won (₩) KRW)
+- `nzd` (New Zealand – Dollar ($) NZD)
+- `nok` (Norway – Krone (kr) NOK)
+- `rub` (Russia – Ruble (руб) RUB)
+- `sek` (Sweden – Krona (kr) SEK)
+- `chf` (Switzerland – Franc (chf) CHF)
+- `twd` (Taiwan – Dollar (NT$) TWD)
+- `gbp` (United Kingdom – Pound (£) GBP)
+
+## Supported OS/Software
+
+Supported OS/Software (newer OS/Software might have been added after I last updated the `README`, they're likely to be supported):
+
+- Linux
+  - `linux` (Ubuntu)
+  - `red-hat` (Red Hat Enterprise Linux)
+  - `rhel-ha` (Red Hat Enterprise Linux with HA)
+  - `rhel-sap-ha` (RHEL for SAP with HA)
+  - `rhel-sap-business` (RHEL for SAP Business Applications)
+  - `sles-basic` (SUSE Linux Enterprise + Patching only)
+  - `sles-standard` (SUSE Linux Enterprise + 24x7 Support)
+  - `sles-hpc-standard` (SUSE Linux Enterprise for HPC + 24x7 Support)
+  - `sles-sap` (SUSE Linux Enterprise for SAP Applications + 24x7 Support)
+  - `ubuntu-pro` (Ubuntu Pro)
+  - `ubuntu-advantage-essential` (Ubuntu Advantage Essential (Support))
+  - `ubuntu-advantage-standard` (Ubuntu Advantage Standard (Support))
+  - `ubuntu-advantage-advanced` (Ubuntu Advantage Advanced (Support))
+  - `ml-server-rhel` (Machine Learning Server on Red Hat Enterprise Linux)
+  - `ml-server-ubuntu` (Machine Learning Server on Ubuntu or Centos Linux)
+  - `sql-server-enterprise-linux` (SQL Server Enterprise Ubuntu Linux)
+  - `sql-server-standard-linux` (SQL Server Standard Ubuntu Linux)
+  - `sql-server-web-linux` (SQL Server Web Ubuntu Linux)
+  - `sql-server-enterprise-redhat` (SQL Server Enterprise Red Hat Enterprise Linux)
+  - `sql-server-standard-redhat` (SQL Server Standard Red Hat Enterprise Linux)
+  - `sql-server-web-redhat` (SQL Server Web Red Hat Enterprise Linux)
+  - `sql-server-enterprise-sles` (SQL Server Enterprise SUSE Priority)
+  - `sql-server-standard-sles` (SQL Server Standard SUSE Priority)
+  - `sql-server-web-sles` (SQL Server Web SUSE Priority)
+- Windows
+  - `windows` (Windows OS)
+  - `biztalk-enterprise` (BizTalk Enterprise)
+  - `biztalk-standard` (BizTalk Standard)
+  - `ml-server-windows` (Machine Learning Server)
+  - `sharepoint` (SharePoint)
+  - `sql-server-enterprise` (SQL Server Enterprise)
+  - `sql-server-standard` (SQL Server Standard)
+  - `sql-server-web` (SQL Server Web)
 
 ## Supported regions
 
@@ -267,45 +348,6 @@ Supported regions (newer regions might have been added after I last updated the 
 - Africa
   - `south-africa-north`
   - `south-africa-west`
-
-## Supported OS/Software
-
-Supported OS/Software:
-
-- Linux
-  - `linux` (Ubuntu)
-  - `red-hat` (Red Hat Enterprise Linux)
-  - `rhel-ha` (Red Hat Enterprise Linux with HA)
-  - `rhel-sap-ha` (RHEL for SAP with HA)
-  - `rhel-sap-business` (RHEL for SAP Business Applications)
-  - `sles-basic` (SUSE Linux Enterprise + Patching only)
-  - `sles-standard` (SUSE Linux Enterprise + 24x7 Support)
-  - `sles-hpc-standard` (SUSE Linux Enterprise for HPC + 24x7 Support)
-  - `sles-sap` (SUSE Linux Enterprise for SAP Applications + 24x7 Support)
-  - `ubuntu-pro` (Ubuntu Pro)
-  - `ubuntu-advantage-essential` (Ubuntu Advantage Essential (Support))
-  - `ubuntu-advantage-standard` (Ubuntu Advantage Standard (Support))
-  - `ubuntu-advantage-advanced` (Ubuntu Advantage Advanced (Support))
-  - `ml-server-rhel` (Machine Learning Server on Red Hat Enterprise Linux)
-  - `ml-server-ubuntu` (Machine Learning Server on Ubuntu or Centos Linux)
-  - `sql-server-enterprise-linux` (SQL Server Enterprise Ubuntu Linux)
-  - `sql-server-standard-linux` (SQL Server Standard Ubuntu Linux)
-  - `sql-server-web-linux` (SQL Server Web Ubuntu Linux)
-  - `sql-server-enterprise-redhat` (SQL Server Enterprise Red Hat Enterprise Linux)
-  - `sql-server-standard-redhat` (SQL Server Standard Red Hat Enterprise Linux)
-  - `sql-server-web-redhat` (SQL Server Web Red Hat Enterprise Linux)
-  - `sql-server-enterprise-sles` (SQL Server Enterprise SUSE Priority)
-  - `sql-server-standard-sles` (SQL Server Standard SUSE Priority)
-  - `sql-server-web-sles` (SQL Server Web SUSE Priority)
-- Windows
-  - `windows` (Windows OS)
-  - `biztalk-enterprise` (BizTalk Enterprise)
-  - `biztalk-standard` (BizTalk Standard)
-  - `ml-server-windows` (Machine Learning Server)
-  - `sharepoint` (SharePoint)
-  - `sql-server-enterprise` (SQL Server Enterprise)
-  - `sql-server-standard` (SQL Server Standard)
-  - `sql-server-web` (SQL Server Web)
 
 ## Coster configuration
 
