@@ -1,5 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`List metadata: Culture 1`] = `
+[
+  "cs-cz (Čeština (Česká republika))",
+  "da-dk (Dansk (Danmark))",
+  "de-de (Deutsch (Deutschland))",
+  "en-au (English (Australia))",
+  "en-ca (English (Canada))",
+  "en-in (English (India))",
+  "en-gb (English (United Kingdom))",
+  "en-us (English (United States))",
+  "es-es (Español (España))",
+  "es-mx (Español (México))",
+  "fr-ca (Français (Canada))",
+  "fr-fr (Français (France))",
+  "id-id (Indonesia (Indonesia))",
+  "it-it (Italiano (Italia))",
+  "hu-hu (Magyar (Magyarország))",
+  "nl-nl (Nederlands (Nederland))",
+  "nb-no (Norsk (Norge))",
+  "pl-pl (Polski (Polska))",
+  "pt-br (Português (Brasil))",
+  "pt-pt (Português (Portugal))",
+  "sv-se (Svenska (Sverige))",
+  "tr-tr (Türkçe (Türkiye))",
+  "ru-ru (Русский (Россия))",
+  "ko-kr (한국어 (대한민국))",
+  "zh-cn (中文(中国))",
+  "ja-jp (日本語 (日本))",
+  "zh-tw (繁體中文 (台灣))",
+]
+`;
+
 exports[`List metadata: Currency 1`] = `
 [
   "usd (United States – Dollar ($) USD)",
