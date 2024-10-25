@@ -8,7 +8,7 @@ public class VmPricingParserTests
     public async Task GivenValidPrice_ThenParseVm()
     {
         // Arrange
-        var parser = new VmPricingParser("TestFiles/TestPricing/");
+        var parser = new VmPricingParser("TestFiles/Pricing/");
 
         // Act
         var prices = await parser.ParseAsync();

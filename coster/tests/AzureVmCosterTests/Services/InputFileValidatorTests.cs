@@ -8,7 +8,7 @@ public class InputFileValidatorTests
     public void GivenValidFile_ThenReturnFile()
     {
         // Arrange
-        const string filePath = "TestFiles/SampleInputs/input-en-au.csv";
+        const string filePath = "TestFiles/Input/input-en-au.csv";
 
         // Act
         var actualFile = InputFileValidator.Validate(filePath);
@@ -30,7 +30,7 @@ public class InputFileValidatorTests
     public void GivenNonCsvExtension_ThenThrow()
     {
         // Arrange
-        const string filePath = "TestFiles/SamplePricing/vm-pricing_region_operating-system.json";
+        const string filePath = "TestFiles/Pricing/vm-pricing_germany-west-central_windows.json";
 
         // Act
         Assert.Throws<ArgumentOutOfRangeException>(() => InputFileValidator.Validate(filePath));
@@ -40,7 +40,7 @@ public class InputFileValidatorTests
     public void GivenNonExistingFile_ThenThrow()
     {
         // Arrange
-        const string filePath = "TestFiles/SampleInputs/missing.csv";
+        const string filePath = "TestFiles/Input/missing.csv";
 
         // Act
         Assert.Throws<InvalidOperationException>(() => InputFileValidator.Validate(filePath));
