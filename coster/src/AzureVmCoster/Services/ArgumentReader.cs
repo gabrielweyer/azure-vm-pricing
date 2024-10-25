@@ -41,9 +41,9 @@ internal static class ArgumentReader
     /// usable if a space is present.</para>
     /// </summary>
     /// <param name="filePath">The reference will be assigned to only if the path starts with ".</param>
-    private static void StripSurroundingDoubleQuotes(ref string filePath)
+    public static void StripSurroundingDoubleQuotes(ref string? filePath)
     {
-        if (filePath.StartsWith('"'))
+        if (filePath != null && filePath.StartsWith('"'))
         {
             filePath = filePath.Replace("\"", "", StringComparison.Ordinal);
         }
