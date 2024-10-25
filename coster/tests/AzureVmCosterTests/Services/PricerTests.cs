@@ -5,7 +5,7 @@ namespace AzureVmCosterTests.Services;
 
 public class PricerTests
 {
-    private readonly Pricer _target = new("TestFiles/SamplePricing/");
+    private readonly Pricer _target = new("TestFiles/Pricing/");
 
     [Fact]
     public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
@@ -29,7 +29,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "region", OperatingSystem = "operating-system"}
+            new() {Region = "germany-west-central", OperatingSystem = "windows"}
         };
 
         // Act
@@ -45,7 +45,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "region", OperatingSystem = "missing"}
+            new() {Region = "germany-west-central", OperatingSystem = "missing"}
         };
 
         // Act
@@ -61,7 +61,7 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "missing", OperatingSystem = "operating-system"}
+            new() {Region = "missing", OperatingSystem = "windows"}
         };
 
         // Act
