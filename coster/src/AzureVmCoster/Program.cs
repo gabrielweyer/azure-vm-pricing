@@ -46,9 +46,11 @@ public static class Program
 #if DEBUG
         Console.Write("Input file path: ");
         inputFilePath = Console.ReadLine();
+        ArgumentReader.StripSurroundingDoubleQuotes(ref inputFilePath);
 
         Console.Write("Configuration file path (leave blank if not used): ");
         configurationFilePath = Console.ReadLine();
+        ArgumentReader.StripSurroundingDoubleQuotes(ref configurationFilePath);
 
         Console.Write("Culture (leave blank for system default): ");
         var cultureInput = Console.ReadLine();
