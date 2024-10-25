@@ -18,8 +18,6 @@ public static class Program
             return -1;
         }
 
-        StripSurroundingDoubleQuotes(ref inputFilePath);
-
         var inputFile = new FileInfo(inputFilePath);
 
         if (!inputFile.Exists)
@@ -38,8 +36,6 @@ public static class Program
 
         if (!string.IsNullOrWhiteSpace(configurationFilePath))
         {
-            StripSurroundingDoubleQuotes(ref configurationFilePath);
-
             configuration = await JsonReader.DeserializeAsync<CosterConfiguration>(configurationFilePath) ?? new CosterConfiguration();
         }
 
@@ -78,43 +74,9 @@ public static class Program
             culture = new CultureInfo(cultureInput);
         }
 #else
-        for (var offset = 0; offset < args.Length; offset += 2)
-        {
-            switch (args[offset])
-            {
-                case "-l":
-                case "--culture":
-                    culture = new CultureInfo(args[offset + 1]);
-                    break;
-                case "-i":
-                case "--input":
-                    inputFilePath = args[offset + 1];
-                    break;
-                case "-c":
-                case "--configuration":
-                    configurationFilePath = args[offset + 1];
-                    break;
-                default:
-                    Console.WriteLine($"'{args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input', '-c', '--configuration'");
-                    break;
-            }
-        }
+        (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
 #endif
 
         return (inputFilePath, configurationFilePath, culture);
-    }
-
-    /// <summary>
-    /// <para>Strip starting and trailing double quotes if present.</para>
-    /// <para>When copying a path from the Explorer, Windows surrounds the path with double quotes so that it remains
-    /// usable if a space is present.</para>
-    /// </summary>
-    /// <param name="filePath">The reference will be assigned to only if the path starts with ".</param>
-    private static void StripSurroundingDoubleQuotes(ref string filePath)
-    {
-        if (filePath.StartsWith('"'))
-        {
-            filePath = filePath.Replace("\"", "", StringComparison.Ordinal);
-        }
     }
 }
