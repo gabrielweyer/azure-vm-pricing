@@ -27,7 +27,7 @@ public class ArgumentReaderTests
         var args = new[] { "-i", @"""C:\tmp\input.json""", "-c", @"""C:\tmp\input\config.json""" };
 
         // Act
-        var (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
+        var (inputFilePath, configurationFilePath, _) = ArgumentReader.Read(args);
 
         // Assert
         inputFilePath.Should().Be(@"C:\tmp\input.json");
