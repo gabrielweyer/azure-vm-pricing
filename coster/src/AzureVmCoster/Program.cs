@@ -30,7 +30,9 @@ public static class Program
 
             return 0;
         }
+#pragma warning disable CA1031 // This is a catch-all so that we can log the exception
         catch (Exception e)
+#pragma warning restore CA1031
         {
             Console.WriteLine(e);
             return -1;
