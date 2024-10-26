@@ -1,10 +1,19 @@
+using Microsoft.Extensions.Logging;
+
 namespace AzureVmCoster.Services;
 
-internal static class ArgumentReader
+internal class ArgumentReader
 {
-    public static (string? inputFilePath, string? configurationFilePath, CultureInfo culture) Read(string[] args)
+    private readonly ILogger<ArgumentReader> _logger;
+
+    public ArgumentReader(ILogger<ArgumentReader> logger)
     {
-        string? inputFilePath = null;
+        _logger = logger;
+    }
+
+    public (string? inputVmFilePath, string? configurationFilePath, CultureInfo culture) Read(string[] args)
+    {
+        string? inputVmFilePath = null;
         string? configurationFilePath = null;
         var culture = Thread.CurrentThread.CurrentCulture;
 
@@ -18,8 +27,8 @@ internal static class ArgumentReader
                     break;
                 case "-i":
                 case "--input":
-                    inputFilePath = args[offset + 1];
-                    StripSurroundingDoubleQuotes(ref inputFilePath);
+                    inputVmFilePath = args[offset + 1];
+                    StripSurroundingDoubleQuotes(ref inputVmFilePath);
                     break;
                 case "-c":
                 case "--configuration":
@@ -27,12 +36,12 @@ internal static class ArgumentReader
                     StripSurroundingDoubleQuotes(ref configurationFilePath);
                     break;
                 default:
-                    Console.WriteLine($"'{args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input', '-c', '--configuration'");
+                    _logger.LogWarning("'{UnsupportedArgument}' is not a known switch, supported values are: '-l', '--culture', '-i', '--input', '-c', '--configuration'", args[offset]);
                     break;
             }
         }
 
-        return (inputFilePath, configurationFilePath, culture);
+        return (inputVmFilePath, configurationFilePath, culture);
     }
 
     /// <summary>

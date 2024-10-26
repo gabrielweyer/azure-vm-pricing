@@ -39,10 +39,7 @@ public static class FileIdentifierTests
         // Arrange
         var file = new FileInfo(filePath);
 
-        // Act
-        var actualException = Assert.Throws<ArgumentOutOfRangeException>(() => FileIdentifier.From(file));
-
-        // Assert
-        Assert.NotNull(actualException);
+        // Act & Assert
+        Assert.Throws<ArgumentOutOfRangeException>(() => FileIdentifier.From(file));
     }
 }

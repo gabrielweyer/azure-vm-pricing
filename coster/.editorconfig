@@ -203,6 +203,10 @@ dotnet_diagnostic.MA0004.severity = none
 # This is a personal preference
 dotnet_diagnostic.MA0007.severity = none
 
+# https://learn.microsoft.com/en-us/dotnet/fundamentals/code-analysis/quality-rules/ca1848
+# This is not high-performance code (quite the contrary)
+dotnet_diagnostic.CA1848.severity = none
+
 # CSharp code style settings:
 [*.cs]
 # Newline settings

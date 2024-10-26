@@ -1,11 +1,13 @@
 using AzureVmCoster.Services;
 using AzureVmCosterTests.TestInfrastructure;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AzureVmCosterTests.Services;
 
 public class PricerTests
 {
-    private readonly Pricer _target = new("TestFiles/Pricing/");
+    private readonly Pricer _target = new(NullLogger<Pricer>.Instance);
+    private readonly CosterConfiguration _defaultConfiguration = new();
 
     [Fact]
     public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
@@ -13,14 +15,15 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "missing", OperatingSystem = "missing"}
+            InputVmBuilder.AsUsEastLinuxD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
         };
 
-        // Act
-        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
-
-        // Assert
-        Assert.NotNull(actualException);
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => _target.Price(vms, prices, _defaultConfiguration));
     }
 
     [Fact]
@@ -29,14 +32,18 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "germany-west-central", OperatingSystem = "windows"}
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act
-        var action = () => _target.EnsurePricingExists(vms);
+        var pricedVms = _target.Price(vms, prices, _defaultConfiguration);
 
         // Assert
-        action.Should().NotThrow();
+        pricedVms.Should().NotBeEmpty();
     }
 
     [Fact]
@@ -45,14 +52,15 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "germany-west-central", OperatingSystem = "missing"}
+            InputVmBuilder.AsUsWestLinuxD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
         };
 
-        // Act
-        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
-
-        // Assert
-        Assert.NotNull(actualException);
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => _target.Price(vms, prices, _defaultConfiguration));
     }
 
     [Fact]
@@ -61,75 +69,89 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            new() {Region = "missing", OperatingSystem = "windows"}
+            InputVmBuilder.AsUsEastWindowsD2V3Equivalent()
+        };
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
         };
 
-        // Act
-        var actualException = Assert.Throws<InvalidOperationException>(() => _target.EnsurePricingExists(vms));
-
-        // Assert
-        Assert.NotNull(actualException);
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => _target.Price(vms, prices, _defaultConfiguration));
     }
 
     [Fact]
     public void GivenEmptyExcludeList_WhenFilterPricing_ThenNoPriceRemoved()
     {
         // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
         var prices = new List<VmPricing>
         {
             VmPricingBuilder.AsUsWestWindowsD2V3()
         };
-        var exclusions = new List<string>();
+        var configuration = new CosterConfiguration { ExcludedVms = new List<string>() };
 
         // Act
-        var filteredPrices = Pricer.FilterPricing(prices, exclusions);
+        var actualPricedVms = _target.Price(vms, prices, configuration);
 
         // Assert
-        filteredPrices.Should().BeEquivalentTo(prices);
+        var expectedPricedVms = new List<PricedVm> { PricedVmBuilder.From(vms[0], prices[0]) };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
     }
 
     [Fact]
     public void GivenExcludeList_WhenFilterPricing_ThenRemoveInstanceWithSameName()
     {
         // Arrange
-        var d4V3 = VmPricingBuilder.AsUsWestWindowsD2V3();
-        d4V3.Instance = "D4 v3";
-        var d2V3Linux = VmPricingBuilder.AsUsWestWindowsD2V3();
-        d2V3Linux.OperatingSystem = "linux";
-        var d2V3EuWest = VmPricingBuilder.AsUsWestWindowsD2V3();
-        d2V3EuWest.Region = "europe-west";
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var d4V3 = VmPricingBuilder.AsUsWestWindowsD4V3();
+        var d2V3Linux = VmPricingBuilder.AsUsWestLinuxD2V3();
+        var d2V3UsEast = VmPricingBuilder.AsUsEastWindowsD2V3();
         var prices = new List<VmPricing>
         {
             VmPricingBuilder.AsUsWestWindowsD2V3(),
             d4V3,
             d2V3Linux,
-            d2V3EuWest
+            d2V3UsEast
         };
-        var exclusions = new List<string> { "D2 v3" };
+        var configuration = new CosterConfiguration { ExcludedVms = new List<string> { "D2 v3" } };
 
         // Act
-        var filteredPrices = Pricer.FilterPricing(prices, exclusions);
+        var pricedVms = _target.Price(vms, prices, configuration);
 
         // Assert
-        var expected = new List<VmPricing> { d4V3 };
-        filteredPrices.Should().BeEquivalentTo(expected);
+        var expected = new List<PricedVm> { PricedVmBuilder.From(vms[0], d4V3) };
+        pricedVms.Should().BeEquivalentTo(expected);
     }
 
     [Fact]
     public void GivenExcludeList_WhenFilterPricing_ThenRemoveInstanceWithSameNameCaseInsensitive()
     {
         // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var d4V3 = VmPricingBuilder.AsUsWestWindowsD4V3();
         var prices = new List<VmPricing>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPricingBuilder.AsUsWestWindowsD2V3(),
+            d4V3
         };
-        var exclusions = new List<string> { "d2 V3" };
+        var configuration = new CosterConfiguration { ExcludedVms = new List<string> { "d2 V3" } };
 
         // Act
-        var filteredPrices = Pricer.FilterPricing(prices, exclusions);
+        var actual = _target.Price(vms, prices, configuration);
 
         // Assert
-        filteredPrices.Should().BeEmpty();
+        var expected = new List<PricedVm> { PricedVmBuilder.From(vms[0], d4V3) };
+        actual.Should().BeEquivalentTo(expected);
     }
 
     [Fact]
@@ -146,10 +168,10 @@ public class PricerTests
         };
 
         // Act
-        var actualPricedVms = Pricer.Price(vms, prices);
+        var actualPricedVms = _target.Price(vms, prices, _defaultConfiguration);
 
         // Assert
-        var expectedPricedVms = new List<PricedVm> { new(vms[0], prices[0]) };
+        var expectedPricedVms = new List<PricedVm> { PricedVmBuilder.From(vms[0], prices[0]) };
         actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
     }
 
@@ -159,15 +181,18 @@ public class PricerTests
         // Arrange
         var vms = new List<InputVm>
         {
-            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+            InputVmBuilder.AsUsWestWindowsD4V3Equivalent()
         };
-        var prices = new List<VmPricing>();
+        var prices = new List<VmPricing>
+        {
+            VmPricingBuilder.AsUsWestWindowsD2V3()
+        };
 
         // Act
-        var actualPricedVms = Pricer.Price(vms, prices);
+        var actualPricedVms = _target.Price(vms, prices, _defaultConfiguration);
 
         // Assert
-        var expectedPricedVms = new List<PricedVm> { new(vms[0], null) };
+        var expectedPricedVms = new List<PricedVm> { PricedVmBuilder.WithoutPrice(vms[0]) };
         actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
     }
 
@@ -199,16 +224,16 @@ public class PricerTests
         };
 
         // Act
-        var actualPricedVms = Pricer.Price(vms, prices);
+        var actualPricedVms = _target.Price(vms, prices, _defaultConfiguration);
 
         // Assert
         var expectedPricedVms = new List<PricedVm>
         {
-            new(vms[0], prices[0]),
-            new(vms[1], prices[1]),
-            new(vms[2], prices[2]),
-            new(vms[3], prices[3]),
-            new(vmWithoutCpuWithoutRam, medianPrice)
+            PricedVmBuilder.From(vms[0], prices[0]),
+            PricedVmBuilder.From(vms[1], prices[1]),
+            PricedVmBuilder.From(vms[2], prices[2]),
+            PricedVmBuilder.From(vms[3], prices[3]),
+            PricedVmBuilder.From(vmWithoutCpuWithoutRam, medianPrice)
         };
         actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
     }

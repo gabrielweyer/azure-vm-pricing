@@ -8,10 +8,10 @@ public class VmPricingParserTests
     public async Task GivenValidPrice_ThenParseVm()
     {
         // Arrange
-        var parser = new VmPricingParser("TestFiles/Pricing/");
+        var parser = new VmPricingParser(new PriceDirectory("TestFiles/Pricing/"));
 
         // Act
-        var prices = await parser.ParseAsync();
+        var actualPrices = await parser.ParseAsync();
 
         // Assert
         var expectedPrices = new List<VmPricing>
@@ -37,14 +37,14 @@ public class VmPricingParserTests
                 SpotWithAzureHybridBenefit = 0.0036m
             }
         };
-        prices.Should().BeEquivalentTo(expectedPrices);
+        actualPrices.Should().BeEquivalentTo(expectedPrices);
     }
 
     [Fact]
     public async Task GivenEmptyPriceFile_ThenHandleGracefully()
     {
         // Arrange
-        var parser = new VmPricingParser("TestFiles/EmptyPricing/");
+        var parser = new VmPricingParser(new PriceDirectory("TestFiles/EmptyPricing/"));
 
         // Act
         var prices = await parser.ParseAsync();

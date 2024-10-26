@@ -1,22 +1,60 @@
 using System.Text.Json;
+using Microsoft.Extensions.Logging;
 
 namespace AzureVmCoster.Services;
 
 internal class Pricer
 {
-    private readonly string _pricingDirectory;
+    private readonly ILogger<Pricer> _logger;
 
-    public Pricer(string pricingDirectory)
+    public Pricer(ILogger<Pricer> logger)
     {
-        _pricingDirectory = pricingDirectory;
+        _logger = logger;
     }
 
-    public void EnsurePricingExists(List<InputVm> vms)
+    public List<PricedVm> Price(IList<InputVm> inputVms, IList<VmPricing> vmPrices, CosterConfiguration configuration)
+    {
+        EnsurePricingExists(inputVms, vmPrices);
+
+        var filteredVmPrices = FilterPrices(vmPrices, configuration.ExcludedVms);
+
+        var medianCpu = GetCpuMedianForNonZeroValues(inputVms);
+        var medianRam = GetRamMedianForNonZeroValues(inputVms);
+
+        var orderedVmPrices = filteredVmPrices.OrderBy(p => p.PayAsYouGo).ToList();
+
+        var pricedVms = new List<PricedVm>();
+
+        foreach (var vm in inputVms)
+        {
+            var minCpu = vm.Cpu > 0 ? vm.Cpu : medianCpu;
+            var minRam = vm.Ram > 0 ? vm.Ram : medianRam;
+
+            var pricing = orderedVmPrices.FirstOrDefault(p =>
+                p.Region.Equals(vm.Region, StringComparison.Ordinal) &&
+                p.OperatingSystem.Equals(vm.OperatingSystem, StringComparison.Ordinal) &&
+                p.Ram >= minRam &&
+                p.VCpu >= minCpu);
+
+            if (pricing == null)
+            {
+                _logger.LogWarning("Could not find a matching pricing for VM '{VmName}' ({VmCpu} CPU cores and {VmRam} GB of RAM)", vm.Name, vm.Cpu, vm.Ram);
+            }
+
+            pricedVms.Add(new PricedVm(vm, pricing));
+        }
+
+        return pricedVms;
+    }
+
+    private static void EnsurePricingExists(IList<InputVm> vms, IList<VmPricing> vmPrices)
     {
         var missingFiles = vms
             .Select(vm => new FileIdentifier(vm.Region, vm.OperatingSystem))
             .Distinct(new FileIdentifierComparer())
-            .Where(fileIdentifier => !File.Exists($"{_pricingDirectory}{fileIdentifier.PricingFilename}"))
+            .Where(fileIdentifier => !vmPrices.Any(p =>
+                string.Equals(fileIdentifier.Region, p.Region, StringComparison.Ordinal) &&
+                string.Equals(fileIdentifier.OperatingSystem, p.OperatingSystem, StringComparison.Ordinal)))
             .ToList();
 
         if (missingFiles.Count > 0)
@@ -30,61 +68,51 @@ internal class Pricer
     /// insensitive), if the same instance is present with different regions/operating systems, all occurrences will be
     /// discarded.
     /// </summary>
-    /// <param name="pricings">The list of prices to filter</param>
+    /// <param name="vmPrices">The list of prices to filter</param>
     /// <param name="excludedVms">The list of instances to remove</param>
     /// <returns>The filtered prices</returns>
-    public static IList<VmPricing> FilterPricing(IList<VmPricing> pricings, IList<string> excludedVms)
+    private static List<VmPricing> FilterPrices(IList<VmPricing> vmPrices, IList<string> excludedVms)
     {
-        return pricings.Where(p => !excludedVms.Contains(p.Instance, StringComparer.OrdinalIgnoreCase)).ToList();
+        return vmPrices.Where(p => !excludedVms.Contains(p.Instance, StringComparer.OrdinalIgnoreCase)).ToList();
     }
 
-    public static List<PricedVm> Price(List<InputVm> vms, IList<VmPricing> pricings)
+    private short GetCpuMedianForNonZeroValues(IList<InputVm> vms)
     {
-        var medianCpu = GetCpuMedianForNonZeroValues(vms);
-        var medianRam = GetRamMedianForNonZeroValues(vms);
+        var orderedCpus = vms.Where(v => v.Cpu > 0).Select(v => (decimal)v.Cpu).Order().ToList();
 
-        var orderedPricings = pricings.OrderBy(p => p.PayAsYouGo).ToList();
+        _logger.LogInformation("CPU is present for {MissingCpuCount} VMs out of {InputVmCount} VMs", orderedCpus.Count, vms.Count);
 
-        var pricedVms = new List<PricedVm>();
-
-        foreach (var vm in vms)
+        if (orderedCpus.Count == 0)
         {
-            var minCpu = vm.Cpu > 0 ? vm.Cpu : medianCpu;
-            var minRam = vm.Ram > 0 ? vm.Ram : medianRam;
-
-            var pricing = orderedPricings.FirstOrDefault(p =>
-                p.Region.Equals(vm.Region, StringComparison.Ordinal) &&
-                p.OperatingSystem.Equals(vm.OperatingSystem, StringComparison.Ordinal) &&
-                p.Ram >= minRam &&
-                p.VCpu >= minCpu);
-
-            if (pricing == null)
-            {
-                Console.WriteLine($"Could not find a matching pricing for VM '{vm.Name}' ({vm.Cpu} CPU cores and {vm.Ram} GB of RAM)");
-            }
-
-            pricedVms.Add(new PricedVm(vm, pricing));
+            throw new ArgumentException("CPU is missing for all input VMs.", nameof(vms));
         }
 
-        return pricedVms;
-    }
-
-    private static short GetCpuMedianForNonZeroValues(List<InputVm> vms)
-    {
-        var orderedCpus = vms.Where(v => v.Cpu > 0).Select(v => (decimal)v.Cpu).OrderBy(c => c).ToList();
         var medianCpu = GetMedian(orderedCpus);
 
         return (short)Math.Ceiling(medianCpu);
     }
 
-    private static decimal GetRamMedianForNonZeroValues(List<InputVm> vms)
+    private decimal GetRamMedianForNonZeroValues(IList<InputVm> vms)
     {
         var orderedRams = vms.Where(v => v.Ram > 0).Select(v => v.Ram).OrderBy(r => r).ToList();
+
+        _logger.LogInformation("RAM is present for {MissingRamCount} VMs out of {InputVmCount} VMs", orderedRams.Count, vms.Count);
+
+        if (orderedRams.Count == 0)
+        {
+            throw new ArgumentException("RAM is missing for all input VMs.", nameof(vms));
+        }
+
         return GetMedian(orderedRams);
     }
 
     private static decimal GetMedian(IReadOnlyList<decimal> orderedList)
     {
+        if (orderedList.Count == 1)
+        {
+            return orderedList[0];
+        }
+
         if (orderedList.Count % 2 != 0)
         {
             return orderedList[orderedList.Count / 2];
