@@ -2,19 +2,19 @@ using AzureVmCoster.Services;
 
 namespace AzureVmCosterTests.Services;
 
-public class VmPricingParserTests
+public class VmPriceParserTests
 {
     [Fact]
     public async Task GivenValidPrice_ThenParseVm()
     {
         // Arrange
-        var parser = new VmPricingParser(new PriceDirectory("TestFiles/Pricing/"));
+        var parser = new VmPriceParser(new PriceDirectory("TestFiles/Price/"));
 
         // Act
         var actualPrices = await parser.ParseAsync();
 
         // Assert
-        var expectedPrices = new List<VmPricing>
+        var expectedPrices = new List<VmPrice>
         {
             new()
             {
@@ -44,7 +44,7 @@ public class VmPricingParserTests
     public async Task GivenEmptyPriceFile_ThenHandleGracefully()
     {
         // Arrange
-        var parser = new VmPricingParser(new PriceDirectory("TestFiles/EmptyPricing/"));
+        var parser = new VmPriceParser(new PriceDirectory("TestFiles/EmptyPrice/"));
 
         // Act
         var prices = await parser.ParseAsync();

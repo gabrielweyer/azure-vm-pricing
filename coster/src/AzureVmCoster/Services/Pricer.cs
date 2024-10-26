@@ -12,9 +12,9 @@ internal class Pricer
         _logger = logger;
     }
 
-    public List<PricedVm> Price(IList<InputVm> inputVms, IList<VmPricing> vmPrices, CosterConfiguration configuration)
+    public List<PricedVm> Price(IList<InputVm> inputVms, IList<VmPrice> vmPrices, CosterConfiguration configuration)
     {
-        EnsurePricingExists(inputVms, vmPrices);
+        EnsurePriceExists(inputVms, vmPrices);
 
         var filteredVmPrices = FilterPrices(vmPrices, configuration.ExcludedVms);
 
@@ -30,24 +30,24 @@ internal class Pricer
             var minCpu = vm.Cpu > 0 ? vm.Cpu : medianCpu;
             var minRam = vm.Ram > 0 ? vm.Ram : medianRam;
 
-            var pricing = orderedVmPrices.FirstOrDefault(p =>
+            var price = orderedVmPrices.FirstOrDefault(p =>
                 p.Region.Equals(vm.Region, StringComparison.Ordinal) &&
                 p.OperatingSystem.Equals(vm.OperatingSystem, StringComparison.Ordinal) &&
                 p.Ram >= minRam &&
                 p.VCpu >= minCpu);
 
-            if (pricing == null)
+            if (price == null)
             {
-                _logger.LogWarning("Could not find a matching pricing for VM '{VmName}' ({VmCpu} CPU cores and {VmRam} GB of RAM)", vm.Name, vm.Cpu, vm.Ram);
+                _logger.LogWarning("Could not find a matching price for VM '{VmName}' ({VmCpu} CPU cores and {VmRam} GB of RAM)", vm.Name, vm.Cpu, vm.Ram);
             }
 
-            pricedVms.Add(new PricedVm(vm, pricing));
+            pricedVms.Add(new PricedVm(vm, price));
         }
 
         return pricedVms;
     }
 
-    private static void EnsurePricingExists(IList<InputVm> vms, IList<VmPricing> vmPrices)
+    private static void EnsurePriceExists(IList<InputVm> vms, IList<VmPrice> vmPrices)
     {
         var missingFiles = vms
             .Select(vm => new FileIdentifier(vm.Region, vm.OperatingSystem))
@@ -59,7 +59,7 @@ internal class Pricer
 
         if (missingFiles.Count > 0)
         {
-            throw new InvalidOperationException($"Pricing files are missing for {JsonSerializer.Serialize(missingFiles)}");
+            throw new InvalidOperationException($"Price files are missing for {JsonSerializer.Serialize(missingFiles)}");
         }
     }
 
@@ -71,7 +71,7 @@ internal class Pricer
     /// <param name="vmPrices">The list of prices to filter</param>
     /// <param name="excludedVms">The list of instances to remove</param>
     /// <returns>The filtered prices</returns>
-    private static List<VmPricing> FilterPrices(IList<VmPricing> vmPrices, IList<string> excludedVms)
+    private static List<VmPrice> FilterPrices(IList<VmPrice> vmPrices, IList<string> excludedVms)
     {
         return vmPrices.Where(p => !excludedVms.Contains(p.Instance, StringComparer.OrdinalIgnoreCase)).ToList();
     }

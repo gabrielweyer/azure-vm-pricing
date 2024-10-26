@@ -3,13 +3,13 @@ namespace AzureVmCoster.Services;
 internal class PriceService
 {
     private readonly Pricer _pricer;
-    private readonly VmPricingParser _vmPricingParser;
+    private readonly VmPriceParser _vmPriceParser;
     private readonly PricedVmWriter _pricedVmWriter;
 
-    public PriceService(Pricer pricer, VmPricingParser vmPricingParser, PricedVmWriter pricedVmWriter)
+    public PriceService(Pricer pricer, VmPriceParser vmPriceParser, PricedVmWriter pricedVmWriter)
     {
         _pricer = pricer;
-        _vmPricingParser = vmPricingParser;
+        _vmPriceParser = vmPriceParser;
         _pricedVmWriter = pricedVmWriter;
     }
 
@@ -18,7 +18,7 @@ internal class PriceService
         var inputFile = InputFileValidator.Validate(inputFilePath);
         var inputVms = InputVmParser.Parse(inputFile, culture);
 
-        var vmPrices = await _vmPricingParser.ParseAsync();
+        var vmPrices = await _vmPriceParser.ParseAsync();
 
         var configuration = await CosterConfiguration.FromPathAsync(configurationFilePath);
 

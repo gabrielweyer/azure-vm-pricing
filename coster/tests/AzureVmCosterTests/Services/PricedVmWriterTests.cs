@@ -16,8 +16,8 @@ public class PricedVmWriterTests
     {
         // Arrange
         var inputVm = InputVmBuilder.AsUsWestWindowsD2V3Equivalent();
-        var vmPricing = VmPricingBuilder.AsUsWestWindowsD2V3();
-        var vm = PricedVmBuilder.From(inputVm, vmPricing);
+        var vmPrice = VmPriceBuilder.AsUsWestWindowsD2V3();
+        var vm = PricedVmBuilder.From(inputVm, vmPrice);
         var fileName = $"{Guid.NewGuid():D}.csv";
 
         // Act

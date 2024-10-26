@@ -4,7 +4,7 @@ internal class FileIdentifier
 {
     public string Region { get; }
     public string OperatingSystem { get; }
-    public string PricingFilename => $"vm-pricing_{Region}_{OperatingSystem}.json";
+    public string PriceFilename => $"vm-pricing_{Region}_{OperatingSystem}.json";
 
     public FileIdentifier(string region, string operatingSystem)
     {
@@ -23,7 +23,7 @@ internal class FileIdentifier
             extensionIndex < underscoreLastIndex)
         {
             throw new ArgumentOutOfRangeException(nameof(fileInfo), fileInfo.Name,
-                "The pricing filename does not follow the pattern 'vm-pricing_<region>_<operating-system>.json'");
+                "The price filename does not follow the pattern 'vm-pricing_<region>_<operating-system>.json'");
         }
 
         var region = fileInfo.Name.Substring(underscoreFirstIndex + 1, underscoreLastIndex - underscoreFirstIndex - 1);

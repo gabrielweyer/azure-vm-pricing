@@ -30,7 +30,7 @@ public class InputFileValidatorTests
     public void GivenNonCsvExtension_ThenThrow()
     {
         // Arrange
-        const string filePath = "TestFiles/Pricing/vm-pricing_germany-west-central_windows.json";
+        const string filePath = "TestFiles/Price/vm-pricing_germany-west-central_windows.json";
 
         // Act
         Assert.Throws<ArgumentOutOfRangeException>(() => InputFileValidator.Validate(filePath));
