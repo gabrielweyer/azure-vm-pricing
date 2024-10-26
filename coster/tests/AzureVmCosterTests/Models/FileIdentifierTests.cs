@@ -3,13 +3,13 @@ namespace AzureVmCosterTests.Models;
 public static class FileIdentifierTests
 {
     [Fact]
-    public static void GivenInitialisedIdentifier_WhenGetPricingFilename_ThenExpected()
+    public static void GivenInitialisedIdentifier_WhenGetPriceFilename_ThenExpected()
     {
         // Arrange
         var identifier = new FileIdentifier("some-region", "some-operating-system");
 
         // Actual
-        var actual = identifier.PricingFilename;
+        var actual = identifier.PriceFilename;
 
         // Assert
         actual.Should().Be("vm-pricing_some-region_some-operating-system.json");

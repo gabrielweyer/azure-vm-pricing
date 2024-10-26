@@ -10,16 +10,16 @@ public class PricerTests
     private readonly CosterConfiguration _defaultConfiguration = new();
 
     [Fact]
-    public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    public void GivenMissingRegionAndMissingOperatingSystem_WhenEnsurePriceExists_ThenThrow()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsEastLinuxD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act & Assert
@@ -27,16 +27,16 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenExistingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenDoNotThrow()
+    public void GivenExistingRegionAndExistingOperatingSystem_WhenEnsurePriceExists_ThenDoNotThrow()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act
@@ -47,16 +47,16 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenExistingRegionAndMissingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    public void GivenExistingRegionAndMissingOperatingSystem_WhenEnsurePriceExists_ThenThrow()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsWestLinuxD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act & Assert
@@ -64,16 +64,16 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenMissingRegionAndExistingOperatingSystem_WhenEnsurePricingExists_ThenThrow()
+    public void GivenMissingRegionAndExistingOperatingSystem_WhenEnsurePriceExists_ThenThrow()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsEastWindowsD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act & Assert
@@ -81,16 +81,16 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenEmptyExcludeList_WhenFilterPricing_ThenNoPriceRemoved()
+    public void GivenEmptyExcludeList_WhenFilterPrices_ThenNoPriceRemoved()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
         var configuration = new CosterConfiguration { ExcludedVms = new List<string>() };
 
@@ -103,19 +103,19 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenExcludeList_WhenFilterPricing_ThenRemoveInstanceWithSameName()
+    public void GivenExcludeList_WhenFilterPrices_ThenRemoveInstanceWithSameName()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
         };
-        var d4V3 = VmPricingBuilder.AsUsWestWindowsD4V3();
-        var d2V3Linux = VmPricingBuilder.AsUsWestLinuxD2V3();
-        var d2V3UsEast = VmPricingBuilder.AsUsEastWindowsD2V3();
-        var prices = new List<VmPricing>
+        var d4V3 = VmPriceBuilder.AsUsWestWindowsD4V3();
+        var d2V3Linux = VmPriceBuilder.AsUsWestLinuxD2V3();
+        var d2V3UsEast = VmPriceBuilder.AsUsEastWindowsD2V3();
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3(),
+            VmPriceBuilder.AsUsWestWindowsD2V3(),
             d4V3,
             d2V3Linux,
             d2V3UsEast
@@ -131,17 +131,17 @@ public class PricerTests
     }
 
     [Fact]
-    public void GivenExcludeList_WhenFilterPricing_ThenRemoveInstanceWithSameNameCaseInsensitive()
+    public void GivenExcludeList_WhenFilterPrices_ThenRemoveInstanceWithSameNameCaseInsensitive()
     {
         // Arrange
         var vms = new List<InputVm>
         {
             InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
         };
-        var d4V3 = VmPricingBuilder.AsUsWestWindowsD4V3();
-        var prices = new List<VmPricing>
+        var d4V3 = VmPriceBuilder.AsUsWestWindowsD4V3();
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3(),
+            VmPriceBuilder.AsUsWestWindowsD2V3(),
             d4V3
         };
         var configuration = new CosterConfiguration { ExcludedVms = new List<string> { "d2 V3" } };
@@ -162,9 +162,9 @@ public class PricerTests
         {
             InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act
@@ -183,9 +183,9 @@ public class PricerTests
         {
             InputVmBuilder.AsUsWestWindowsD4V3Equivalent()
         };
-        var prices = new List<VmPricing>
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3()
+            VmPriceBuilder.AsUsWestWindowsD2V3()
         };
 
         // Act
@@ -214,13 +214,13 @@ public class PricerTests
             InputVmBuilder.AsUsWestWindowsD16V3Equivalent(),
             vmWithoutCpuWithoutRam
         };
-        var medianPrice = VmPricingBuilder.AsUsWestWindowsD8V3();
-        var prices = new List<VmPricing>
+        var medianPrice = VmPriceBuilder.AsUsWestWindowsD8V3();
+        var prices = new List<VmPrice>
         {
-            VmPricingBuilder.AsUsWestWindowsD2V3(),
-            VmPricingBuilder.AsUsWestWindowsD4V3(),
+            VmPriceBuilder.AsUsWestWindowsD2V3(),
+            VmPriceBuilder.AsUsWestWindowsD4V3(),
             medianPrice,
-            VmPricingBuilder.AsUsWestWindowsD16V3()
+            VmPriceBuilder.AsUsWestWindowsD16V3()
         };
 
         // Act

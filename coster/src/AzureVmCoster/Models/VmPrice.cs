@@ -1,6 +1,6 @@
 namespace AzureVmCoster.Models;
 
-public class VmPricing
+public class VmPrice
 {
     public string Region { get; set; } = default!;
     public string OperatingSystem { get; set; } = default!;

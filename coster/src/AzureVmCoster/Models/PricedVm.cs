@@ -2,29 +2,29 @@ namespace AzureVmCoster.Models;
 
 internal class PricedVm
 {
-    public PricedVm(InputVm inputVm, VmPricing? vmPricing)
+    public PricedVm(InputVm inputVm, VmPrice? vmPrice)
     {
         Name = inputVm.Name;
         Region = inputVm.Region;
         OperatingSystem = inputVm.OperatingSystem;
 
-        if (vmPricing != null)
+        if (vmPrice != null)
         {
-            Instance = vmPricing.Instance;
-            VCpu = vmPricing.VCpu;
-            Ram = vmPricing.Ram;
-            PayAsYouGo = vmPricing.PayAsYouGo;
-            PayAsYouGoWithAzureHybridBenefit = vmPricing.PayAsYouGoWithAzureHybridBenefit;
-            OneYearReserved = vmPricing.OneYearReserved;
-            OneYearReservedWithAzureHybridBenefit = vmPricing.OneYearReservedWithAzureHybridBenefit;
-            ThreeYearReserved = vmPricing.ThreeYearReserved;
-            ThreeYearReservedWithAzureHybridBenefit = vmPricing.ThreeYearReservedWithAzureHybridBenefit;
-            Spot = vmPricing.Spot;
-            SpotWithAzureHybridBenefit = vmPricing.SpotWithAzureHybridBenefit;
-            OneYearSavingsPlan = vmPricing.OneYearSavingsPlan;
-            OneYearSavingsPlanWithAzureHybridBenefit = vmPricing.OneYearSavingsPlanWithAzureHybridBenefit;
-            ThreeYearSavingsPlan = vmPricing.ThreeYearSavingsPlan;
-            ThreeYearSavingsPlanWithAzureHybridBenefit = vmPricing.ThreeYearSavingsPlanWithAzureHybridBenefit;
+            Instance = vmPrice.Instance;
+            VCpu = vmPrice.VCpu;
+            Ram = vmPrice.Ram;
+            PayAsYouGo = vmPrice.PayAsYouGo;
+            PayAsYouGoWithAzureHybridBenefit = vmPrice.PayAsYouGoWithAzureHybridBenefit;
+            OneYearReserved = vmPrice.OneYearReserved;
+            OneYearReservedWithAzureHybridBenefit = vmPrice.OneYearReservedWithAzureHybridBenefit;
+            ThreeYearReserved = vmPrice.ThreeYearReserved;
+            ThreeYearReservedWithAzureHybridBenefit = vmPrice.ThreeYearReservedWithAzureHybridBenefit;
+            Spot = vmPrice.Spot;
+            SpotWithAzureHybridBenefit = vmPrice.SpotWithAzureHybridBenefit;
+            OneYearSavingsPlan = vmPrice.OneYearSavingsPlan;
+            OneYearSavingsPlanWithAzureHybridBenefit = vmPrice.OneYearSavingsPlanWithAzureHybridBenefit;
+            ThreeYearSavingsPlan = vmPrice.ThreeYearSavingsPlan;
+            ThreeYearSavingsPlanWithAzureHybridBenefit = vmPrice.ThreeYearSavingsPlanWithAzureHybridBenefit;
         }
         else
         {

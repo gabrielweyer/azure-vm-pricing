@@ -1,10 +1,10 @@
 namespace AzureVmCosterTests.TestInfrastructure;
 
-internal static class VmPricingBuilder
+internal static class VmPriceBuilder
 {
-    public static VmPricing AsUsWestWindowsD2V3()
+    public static VmPrice AsUsWestWindowsD2V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D2 v3",
             OperatingSystem = "windows",
@@ -26,9 +26,9 @@ internal static class VmPricingBuilder
         };
     }
 
-    public static VmPricing AsUsEastWindowsD2V3()
+    public static VmPrice AsUsEastWindowsD2V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D2 v3",
             OperatingSystem = "windows",
@@ -50,9 +50,9 @@ internal static class VmPricingBuilder
         };
     }
 
-    public static VmPricing AsUsWestLinuxD2V3()
+    public static VmPrice AsUsWestLinuxD2V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D2 v3",
             OperatingSystem = "linux",
@@ -68,9 +68,9 @@ internal static class VmPricingBuilder
         };
     }
 
-    public static VmPricing AsUsWestWindowsD4V3()
+    public static VmPrice AsUsWestWindowsD4V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D4 v3",
             OperatingSystem = "windows",
@@ -92,9 +92,9 @@ internal static class VmPricingBuilder
         };
     }
 
-    public static VmPricing AsUsWestWindowsD8V3()
+    public static VmPrice AsUsWestWindowsD8V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D8 v3",
             OperatingSystem = "windows",
@@ -116,9 +116,9 @@ internal static class VmPricingBuilder
         };
     }
 
-    public static VmPricing AsUsWestWindowsD16V3()
+    public static VmPrice AsUsWestWindowsD16V3()
     {
-        return new VmPricing
+        return new VmPrice
         {
             Instance = "D16 v3",
             OperatingSystem = "windows",

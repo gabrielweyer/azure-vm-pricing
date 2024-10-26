@@ -13,10 +13,10 @@ public class Program
     {
         var builder = Host.CreateDefaultBuilder(args);
         builder.ConfigureServices(s => s
-            .AddSingleton(new PriceDirectory(@"Pricing\"))
+            .AddSingleton(new PriceDirectory(@"Prices\"))
             .AddSingleton<Pricer>()
             .AddSingleton<ArgumentReader>()
-            .AddSingleton<VmPricingParser>()
+            .AddSingleton<VmPriceParser>()
             .AddSingleton<PricedVmWriter>()
             .AddSingleton<PriceService>());
         var host = builder.Build();

@@ -6,9 +6,9 @@
 bin/
 obj/
 
-# Pricing
-src/AzureVmCoster/Pricing/*.json
-src/AzureVmCoster/Pricing/*.csv
+# Prices
+src/AzureVmCoster/Prices/*.json
+src/AzureVmCoster/Prices/*.csv
 
 # Build
 artifacts/
