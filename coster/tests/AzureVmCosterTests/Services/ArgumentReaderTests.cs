@@ -1,10 +1,13 @@
 using System.Globalization;
 using AzureVmCoster.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace AzureVmCosterTests.Services;
 
 public class ArgumentReaderTests
 {
+    private readonly ArgumentReader _target = new(NullLogger<ArgumentReader>.Instance);
+
     [Fact]
     public void GivenValidArguments_WhenShortNames_ThenReturnExpectedConfiguration()
     {
@@ -12,7 +15,7 @@ public class ArgumentReaderTests
         var args = new[] { "-l", "en-us", "-i", "/tmp/input.json", "-c", "/tmp/config.json" };
 
         // Act
-        var (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
+        var (inputFilePath, configurationFilePath, culture) = _target.Read(args);
 
         // Assert
         inputFilePath.Should().Be("/tmp/input.json");
@@ -27,7 +30,7 @@ public class ArgumentReaderTests
         var args = new[] { "-i", @"""C:\tmp\input.json""", "-c", @"""C:\tmp\input\config.json""" };
 
         // Act
-        var (inputFilePath, configurationFilePath, _) = ArgumentReader.Read(args);
+        var (inputFilePath, configurationFilePath, _) = _target.Read(args);
 
         // Assert
         inputFilePath.Should().Be(@"C:\tmp\input.json");
@@ -41,7 +44,7 @@ public class ArgumentReaderTests
         var args = new[] { "--unknown", "ignored", "-i", "/tmp/input.json" };
 
         // Act
-        var (inputFilePath, _, _) = ArgumentReader.Read(args);
+        var (inputFilePath, _, _) = _target.Read(args);
 
         // Assert
         inputFilePath.Should().Be("/tmp/input.json");
@@ -54,7 +57,7 @@ public class ArgumentReaderTests
         var args = new[] { "--culture", "en-us", "--input", "/tmp/input.json", "--configuration", "/tmp/config.json" };
 
         // Act
-        var (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
+        var (inputFilePath, configurationFilePath, culture) = _target.Read(args);
 
         // Assert
         inputFilePath.Should().Be("/tmp/input.json");
@@ -80,7 +83,7 @@ public class ArgumentReaderTests
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("pl-pl");
 
-            var (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
+            var (inputFilePath, configurationFilePath, culture) = _target.Read(args);
 
             // Assert
             inputFilePath.Should().Be("/tmp/input.json");

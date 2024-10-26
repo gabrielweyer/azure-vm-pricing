@@ -1,32 +1,37 @@
 using AzureVmCoster.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AzureVmCoster;
 
-public static class Program
+#pragma warning disable CA1052 // Used as a parameter type
+public class Program
+#pragma warning restore CA1052
 {
-    private const string PricingDirectory = @"Pricing\";
-
     public static async Task<int> Main(string[] args)
     {
+        var builder = Host.CreateDefaultBuilder(args);
+        builder.ConfigureServices(s => s
+            .AddSingleton(new PriceDirectory(@"Pricing\"))
+            .AddSingleton<Pricer>()
+            .AddSingleton<ArgumentReader>()
+            .AddSingleton<VmPricingParser>()
+            .AddSingleton<PricedVmWriter>()
+            .AddSingleton<PriceService>());
+        var host = builder.Build();
+
+        var logger = host.Services.GetRequiredService<ILogger<Program>>();
+        var priceService = host.Services.GetRequiredService<PriceService>();
+        var argumentReader = host.Services.GetRequiredService<ArgumentReader>();
+
         try
         {
             ArgumentNullException.ThrowIfNull(args);
 
-            var (inputFilePath, configurationFilePath, culture) = ParseConfiguration(args);
+            var (inputFilePath, configurationFilePath, culture) = ParseConfiguration(args, argumentReader);
 
-            var inputFile = InputFileValidator.Validate(inputFilePath);
-            var inputVms = InputVmParser.Parse(inputFile, culture);
-
-            var pricer = new Pricer(PricingDirectory);
-            pricer.EnsurePricingExists(inputVms);
-
-            var configuration = await CosterConfiguration.FromPathAsync(configurationFilePath);
-
-            var pricings = await new VmPricingParser(PricingDirectory).ParseAsync();
-            pricings = Pricer.FilterPricing(pricings, configuration.ExcludedVms);
-
-            var pricedVms = Pricer.Price(inputVms, pricings);
-            PricedVmWriter.Write(inputFile.Name, pricedVms, culture);
+            await priceService.PriceAsync(inputFilePath, configurationFilePath, culture);
 
             return 0;
         }
@@ -34,21 +39,21 @@ public static class Program
         catch (Exception e)
 #pragma warning restore CA1031
         {
-            Console.WriteLine(e);
+            logger.LogError(e, "Failed to cost VMs");
             return -1;
         }
     }
 
-    private static (string? inputFilePath, string? configurationFilePath, CultureInfo culture) ParseConfiguration(string[] args)
+    private static (string? inputVmFilePath, string? configurationFilePath, CultureInfo culture) ParseConfiguration(string[] args, ArgumentReader argumentReader)
     {
-        string? inputFilePath = null;
+        string? inputVmFilePath = null;
         string? configurationFilePath = null;
         var culture = Thread.CurrentThread.CurrentCulture;
 
 #if DEBUG
         Console.Write("Input file path: ");
-        inputFilePath = Console.ReadLine();
-        ArgumentReader.StripSurroundingDoubleQuotes(ref inputFilePath);
+        inputVmFilePath = Console.ReadLine();
+        ArgumentReader.StripSurroundingDoubleQuotes(ref inputVmFilePath);
 
         Console.Write("Configuration file path (leave blank if not used): ");
         configurationFilePath = Console.ReadLine();
@@ -62,9 +67,9 @@ public static class Program
             culture = new CultureInfo(cultureInput);
         }
 #else
-        (inputFilePath, configurationFilePath, culture) = ArgumentReader.Read(args);
+        (inputVmFilePath, configurationFilePath, culture) = argumentReader.Read(args);
 #endif
 
-        return (inputFilePath, configurationFilePath, culture);
+        return (inputVmFilePath, configurationFilePath, culture);
     }
 }

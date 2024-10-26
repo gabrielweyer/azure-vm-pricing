@@ -26,6 +26,48 @@ internal static class VmPricingBuilder
         };
     }
 
+    public static VmPricing AsUsEastWindowsD2V3()
+    {
+        return new VmPricing
+        {
+            Instance = "D2 v3",
+            OperatingSystem = "windows",
+            Ram = 8,
+            Region = "us-east",
+            VCpu = 2,
+            PayAsYouGo = 0.188m,
+            PayAsYouGoWithAzureHybridBenefit = 0.096m,
+            Spot = 0.0250m,
+            SpotWithAzureHybridBenefit = 0.0128m,
+            OneYearSavingsPlan = 0.1582m,
+            OneYearSavingsPlanWithAzureHybridBenefit = 0.0662m,
+            ThreeYearSavingsPlan = 0.1371m,
+            ThreeYearSavingsPlanWithAzureHybridBenefit = 0.0451m,
+            OneYearReserved = 0.1492m,
+            OneYearReservedWithAzureHybridBenefit = 0.0572m,
+            ThreeYearReserved = 0.1288m,
+            ThreeYearReservedWithAzureHybridBenefit = 0.0368m
+        };
+    }
+
+    public static VmPricing AsUsWestLinuxD2V3()
+    {
+        return new VmPricing
+        {
+            Instance = "D2 v3",
+            OperatingSystem = "linux",
+            Ram = 8,
+            Region = "us-west",
+            VCpu = 2,
+            PayAsYouGo = 0.096m,
+            Spot = 0.0128m,
+            OneYearSavingsPlan = 0.0662m,
+            ThreeYearSavingsPlan = 0.0451m,
+            OneYearReserved = 0.0572m,
+            ThreeYearReserved = 0.0368m,
+        };
+    }
+
     public static VmPricing AsUsWestWindowsD4V3()
     {
         return new VmPricing

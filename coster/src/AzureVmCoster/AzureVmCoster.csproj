@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
 
   <ItemGroup>

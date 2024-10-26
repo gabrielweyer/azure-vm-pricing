@@ -4,9 +4,9 @@ internal class VmPricingParser
 {
     private readonly string _pricingDirectory;
 
-    public VmPricingParser(string pricingDirectory)
+    public VmPricingParser(PriceDirectory pricingDirectory)
     {
-        _pricingDirectory = pricingDirectory;
+        _pricingDirectory = pricingDirectory.Directory;
     }
 
     public async Task<IList<VmPricing>> ParseAsync()
