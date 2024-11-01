@@ -2,4 +2,4 @@
 
 exports[`End-to-end tests for supported operating systems CentOS or Ubuntu linux (instance without savings plan) 1`] = `"S96,96,768,N/A,N/A,4.0808,N/A,2.0712,N/A,N/A,N/A,N/A,N/A,N/A,N/A"`;
 
-exports[`End-to-end tests for supported operating systems Ubuntu Advantage Essential (no hybrid benefit) 1`] = `"D2 v3,2,8,0.126,N/A,0.0883,N/A,0.0598,N/A,0.0246,N/A,0.0897,N/A,0.064,N/A"`;
+exports[`End-to-end tests for supported operating systems Ubuntu Advantage Essential (no hybrid benefit) 1`] = `"D2 v3,2,8,0.126,N/A,0.0883,N/A,0.0598,N/A,0.0254,N/A,0.0897,N/A,0.064,N/A"`;
