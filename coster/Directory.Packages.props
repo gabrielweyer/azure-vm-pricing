@@ -3,7 +3,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="Nuke.Common" Version="9.0.1" />
+    <PackageVersion Include="Nuke.Common" Version="9.0.3" />
     <PackageVersion Include="CsvHelper" Version="33.0.1" />
     <PackageVersion Include="FluentAssertions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
