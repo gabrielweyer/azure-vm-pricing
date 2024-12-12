@@ -272,82 +272,84 @@ Supported OS/Software (newer OS/Software might have been added after I last upda
 Supported regions (newer regions might have been added after I last updated the `README`, they're likely to be supported):
 
 - United States
-  - `us-central`
-  - `us-east`
-  - `us-east-2`
-  - `us-north-central`
-  - `us-south-central`
-  - `us-west-central`
-  - `us-west`
-  - `us-west-2`
-  - `us-west-3`
+  - `us-central` (Central US)
+  - `us-east` (East US)
+  - `us-east-2` (East US 2)
+  - `us-north-central` (North Central US)
+  - `us-south-central` (South Central US)
+  - `us-west-central` (West Central US)
+  - `us-west` (West US)
+  - `us-west-2` (West US 2)
+  - `us-west-3` (West US 3)
 - United Kingdom
-  - `united-kingdom-south`
-  - `united-kingdom-west`
+  - `united-kingdom-south` (UK South)
+  - `united-kingdom-west` (UK West)
 - United Arab Emirates
-  - `uae-central`
-  - `uae-north`
+  - `uae-central` (UAE Central)
+  - `uae-north` (UAE North)
 - Switzerland
-  - `switzerland-north`
-  - `switzerland-west`
+  - `switzerland-north` (Switzerland North)
+  - `switzerland-west` (Switzerland West)
 - Sweden
-  - `sweden-central`
-  - `sweden-south`
+  - `sweden-central` (Sweden Central)
+  - `sweden-south` (Sweden South)
 - Spain
-  - `spain-central`
+  - `spain-central` (Spain Central)
 - Qatar
-  - `qatar-central`
+  - `qatar-central` (Qatar Central)
 - Poland
-  - `poland-central`
+  - `poland-central` (Poland Central)
 - Norway
-  - `norway-east`
-  - `norway-west`
+  - `norway-east` (Norway East)
+  - `norway-west` (Norway West)
+- New Zealand
+  - `new-zealand-north` (New Zealand North)
 - Mexico
-  - `mexico-central`
+  - `mexico-central` (Mexico Central)
 - Korea
-  - `korea-central`
-  - `korea-south`
+  - `korea-central` (Korea Central)
+  - `korea-south` (Korea South)
 - Japan
-  - `japan-east`
-  - `japan-west`
+  - `japan-east` (Japan East)
+  - `japan-west` (Japan West)
 - Italy
-  - `italy-north`
+  - `italy-north` (Italy North)
 - Israel
-  - `israel-central`
+  - `israel-central` (Israel Central)
 - India
-  - `central-india`
-  - `south-india`
-  - `west-india`
+  - `central-india` (Central India)
+  - `south-india` (South India)
+  - `west-india` (West India)
 - Germany
-  - `germany-north`
-  - `germany-west-central`
+  - `germany-north` (Germany North)
+  - `germany-west-central` (Germany West Central)
 - France
-  - `france-central`
-  - `france-south`
+  - `france-central` (France Central)
+  - `france-south` (France South)
 - Europe
-  - `europe-north`
-  - `europe-west`
+  - `europe-north` (North Europe)
+  - `europe-west` (West Europe)
 - Canada
-  - `canada-central`
-  - `canada-east`
+  - `canada-central` (Canada Central)
+  - `canada-east` (Canada East)
 - Brazil
-  - `brazil-south`
-  - `brazil-southeast`
+  - `brazil-south` (Brazil South)
+  - `brazil-southeast` (Brazil Southeast)
 - Azure Government
-  - `usgov-arizona`
-  - `usgov-texas`
-  - `usgov-virginia`
+  - `usgov-arizona` (US Gov Arizona)
+  - `usgov-texas` (US Gov Texas)
+  - `usgov-virginia` (US Gov Virginia)
 - Australia
-  - `australia-central`
-  - `australia-central-2`
-  - `australia-east`
-  - `australia-southeast`
+  - `australia-central` (Australia Central)
+  - `australia-central-2` (Australia Central 2)
+  - `australia-east` (Australia East)
+  - `australia-southeast` (Australia Southeast)
 - Asia Pacific
-  - `asia-pacific-east`
-  - `asia-pacific-southeast`
+  - `asia-pacific-east` (East Asia)
+  - `asia-pacific-southeast` (Southeast Asia)
 - Africa
-  - `south-africa-north`
-  - `south-africa-west`
+  - `south-africa-north` (South Africa North)
+  - `south-africa-west` (South Africa West)
 
 ## Coster configuration
 
