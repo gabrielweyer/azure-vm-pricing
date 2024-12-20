@@ -1,7 +1,7 @@
 import puppeteer from "puppeteer";
 
 export default async function listCultures(): Promise<string[]> {
-  const browser = await puppeteer.launch({headless: true});
+  const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']});
 
   try
   {
