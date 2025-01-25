@@ -6,6 +6,8 @@ updates:
       interval: "weekly"
       day: "saturday"
     ignore:
+      - dependency-name: "FluentAssertions"
+        update-types: ["version-update:semver-major"]
       - dependency-name: "Microsoft.Extensions.Hosting"
         update-types: ["version-update:semver-major"]
     groups:
