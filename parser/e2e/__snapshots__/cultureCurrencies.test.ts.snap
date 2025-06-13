@@ -4,7 +4,7 @@ exports[`End-to-end tests for supported cultures and currencies cs-cz - Češtin
 
 exports[`End-to-end tests for supported cultures and currencies da-dk - Dansk DKK - Danish Krone (kr) 1`] = `"D2 v3,2,8,"1,3793","0,7722","1,1308","0,5236","0,9422","0,335","0,2948","0,165","1,14","0,5328","0,9701","0,3629""`;
 
-exports[`End-to-end tests for supported cultures and currencies de-de - Deutsch CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0656","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
+exports[`End-to-end tests for supported cultures and currencies de-de - Deutsch CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0655","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
 
 exports[`End-to-end tests for supported cultures and currencies de-de - Deutsch EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
@@ -16,7 +16,7 @@ exports[`End-to-end tests for supported cultures and currencies en-gb - English 
 
 exports[`End-to-end tests for supported cultures and currencies en-gb - English (UK) NZD - New Zealand Dollar ($) 1`] = `"D2 v3,2,8,0.3508,0.1964,0.2876,0.1332,0.2396,0.0852,0.075,0.042,0.2899,0.1355,0.2467,0.0923"`;
 
-exports[`End-to-end tests for supported cultures and currencies en-in - English (India) INR - Indian Rupee (₹) 1`] = `"D2 v3,2,8,17.8397,9.9868,14.6252,6.7723,12.1856,4.3327,3.8123,2.1342,14.7438,6.8909,12.5467,4.6938"`;
+exports[`End-to-end tests for supported cultures and currencies en-in - English (India) INR - Indian Rupee (₹) 1`] = `"D2 v3,2,8,17.8397,9.9868,14.625,6.7721,12.1857,4.3328,3.8123,2.1342,14.7438,6.8909,12.5467,4.6938"`;
 
 exports[`End-to-end tests for supported cultures and currencies en-us - English (US) USD - US Dollar ($) 1`] = `"D2 v3,2,8,0.209,0.117,0.1713,0.0793,0.1428,0.0508,0.0447,0.025,0.1727,0.0807,0.147,0.055"`;
 
@@ -26,21 +26,21 @@ exports[`End-to-end tests for supported cultures and currencies es-mx - Español
 
 exports[`End-to-end tests for supported cultures and currencies fr-ca - Français (Canada) CAD - Canadian Dollar ($) 1`] = `"D2 v3,2,8,"0,2887","0,1616","0,2367","0,1096","0,1972","0,0701","0,0617","0,0345","0,2386","0,1115","0,203","0,076""`;
 
-exports[`End-to-end tests for supported cultures and currencies fr-fr - Français CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0656","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
+exports[`End-to-end tests for supported cultures and currencies fr-fr - Français CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0655","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
 
 exports[`End-to-end tests for supported cultures and currencies fr-fr - Français EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
 exports[`End-to-end tests for supported cultures and currencies hu-hu - Magyar EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
-exports[`End-to-end tests for supported cultures and currencies it-it - Italiano CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0656","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
+exports[`End-to-end tests for supported cultures and currencies it-it - Italiano CHF - Swiss Franc. (chf) 1`] = `"D2 v3,2,8,"0,1727","0,0967","0,1416","0,0655","0,1179","0,0419","0,0369","0,0207","0,1427","0,0667","0,1214","0,0454""`;
 
 exports[`End-to-end tests for supported cultures and currencies it-it - Italiano EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
-exports[`End-to-end tests for supported cultures and currencies ja-jp - 日本語 JPY - Japanese Yen (¥) 1`] = `"D2 v3,2,8,30.2768,16.9492,24.8212,11.4936,20.6809,7.3533,6.4701,3.6221,25.0225,11.695,21.2937,7.9661"`;
+exports[`End-to-end tests for supported cultures and currencies ja-jp - 日本語 JPY - Japanese Yen (¥) 1`] = `"D2 v3,2,8,30.2768,16.9492,24.8209,11.4933,20.6811,7.3535,6.4701,3.6221,25.0225,11.695,21.2937,7.9661"`;
 
-exports[`End-to-end tests for supported cultures and currencies ko-kr - 한국어 KRW - Korean Won (₩) 1`] = `"D2 v3,2,8,287.6153,161.0095,235.7895,109.1837,196.4592,69.8534,61.463,34.4079,237.7024,111.0966,202.2803,75.6745"`;
+exports[`End-to-end tests for supported cultures and currencies ko-kr - 한국어 KRW - Korean Won (₩) 1`] = `"D2 v3,2,8,287.6153,161.0095,235.7866,109.1808,196.4606,69.8548,61.463,34.4079,237.7024,111.0966,202.2803,75.6745"`;
 
-exports[`End-to-end tests for supported cultures and currencies nb-no - Norsk NOK - Norwegian Krone (kr) 1`] = `"D2 v3,2,8,"2,1257","1,19","1,7427","0,8069","1,452","0,5163","0,4543","0,2543","1,7568","0,8211","1,495","0,5593""`;
+exports[`End-to-end tests for supported cultures and currencies nb-no - Norsk NOK - Norwegian Krone (kr) 1`] = `"D2 v3,2,8,"2,1257","1,19","1,7426","0,8069","1,452","0,5163","0,4543","0,2543","1,7568","0,8211","1,495","0,5593""`;
 
 exports[`End-to-end tests for supported cultures and currencies nl-nl - Nederlands EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
@@ -50,10 +50,10 @@ exports[`End-to-end tests for supported cultures and currencies pt-br - Portugu�
 
 exports[`End-to-end tests for supported cultures and currencies pt-pt - Português EUR - Euro (€) 1`] = `"D2 v3,2,8,"0,1849","0,1035","0,1516","0,0702","0,1263","0,0449","0,0395","0,0221","0,1528","0,0714","0,1301","0,0487""`;
 
-exports[`End-to-end tests for supported cultures and currencies ru-ru - Pусский RUB - Russian Ruble (руб) 1`] = `"D2 v3,2,8,"16,6677","9,3307","13,6644","6,3274","11,3851","4,0481","3,5619","1,994","13,7752","6,4382","11,7225","4,3855""`;
+exports[`End-to-end tests for supported cultures and currencies ru-ru - Pусский RUB - Russian Ruble (руб) 1`] = `"D2 v3,2,8,"16,6677","9,3307","13,6642","6,3272","11,3852","4,0482","3,5619","1,994","13,7752","6,4382","11,7225","4,3855""`;
 
-exports[`End-to-end tests for supported cultures and currencies sv-se - Svenska SEK - Swedish Krona (kr) 1`] = `"D2 v3,2,8,"2,0142","1,1276","1,6513","0,7646","1,3758","0,4892","0,4304","0,241","1,6647","0,778","1,4166","0,53""`;
+exports[`End-to-end tests for supported cultures and currencies sv-se - Svenska SEK - Swedish Krona (kr) 1`] = `"D2 v3,2,8,"2,0142","1,1276","1,6513","0,7646","1,3759","0,4892","0,4304","0,241","1,6647","0,778","1,4166","0,53""`;
 
 exports[`End-to-end tests for supported cultures and currencies tr-tr - Türkçe USD - US Dollar ($) 1`] = `"D2 v3,2,8,"0,209","0,117","0,1713","0,0793","0,1428","0,0508","0,0447","0,025","0,1727","0,0807","0,147","0,055""`;
 
-exports[`End-to-end tests for supported cultures and currencies zh-tw - 中文(繁體) TWD - Taiwanese Dollar (NT$) 1`] = `"D2 v3,2,8,6.2525,3.5002,5.1259,2.3736,4.2709,1.5186,1.3362,0.748,5.1675,2.4152,4.3974,1.6451"`;
+exports[`End-to-end tests for supported cultures and currencies zh-tw - 中文(繁體) TWD - Taiwanese Dollar (NT$) 1`] = `"D2 v3,2,8,6.2525,3.5002,5.1258,2.3735,4.2709,1.5186,1.3362,0.748,5.1675,2.4152,4.3974,1.6451"`;
