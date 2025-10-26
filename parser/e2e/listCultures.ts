@@ -7,7 +7,7 @@ export default async function listCultures(): Promise<string[]> {
   {
     const page = await browser.newPage();
     await page.goto('https://azure.microsoft.com/en-us/locale');
-    return await page.evaluate(() => (<HTMLAnchorElement[]> Array.from(document.querySelectorAll('[data-automation-test-id="mainContainer-layout-container-uida77d"] a'))).map(a => `${a.href.slice(28, 33)} (${a.textContent})`));
+    return await page.evaluate(() => (<HTMLAnchorElement[]> Array.from(document.querySelectorAll('[data-automation-test-id="mainContainer-layout-container-uid0be8"] a'))).map(a => `${a.href.slice(28, 33)} (${a.textContent.trim()})`));
   }
   finally
   {
