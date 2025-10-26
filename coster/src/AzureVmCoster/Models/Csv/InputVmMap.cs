@@ -3,7 +3,7 @@ using CsvHelper.TypeConversion;
 
 namespace AzureVmCoster.Models.Csv;
 
-public sealed class InputVmMap : ClassMap<InputVm>
+internal sealed class InputVmMap : ClassMap<InputVm>
 {
     public InputVmMap()
     {
