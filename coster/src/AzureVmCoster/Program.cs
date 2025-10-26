@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 namespace AzureVmCoster;
 
 #pragma warning disable CA1052 // Used as a parameter type
-public class Program
+internal class Program
 #pragma warning restore CA1052
 {
     public static async Task<int> Main(string[] args)

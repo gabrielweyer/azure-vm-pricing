@@ -1,6 +1,6 @@
 namespace AzureVmCoster.Models;
 
-public class InputVm
+internal class InputVm
 {
     public string Name { get; set; } = default!;
     public string Region { get; set; } = default!;
