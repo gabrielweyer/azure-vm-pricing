@@ -12,7 +12,7 @@
     <PackageVersion Include="xunit.analyzers" Version="1.26.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
-    <GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.272" />
+    <GlobalPackageReference Include="Meziantou.Analyzer" Version="2.0.279" />
     <GlobalPackageReference Include="AsyncFixer" Version="2.1.0" />
     <GlobalPackageReference Include="Microsoft.VisualStudio.Threading.Analyzers" Version="17.14.15" />
   </ItemGroup>
