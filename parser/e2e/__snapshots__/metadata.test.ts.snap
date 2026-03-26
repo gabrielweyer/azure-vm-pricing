@@ -134,6 +134,7 @@ exports[`List metadata: Region 1`] = `
   "france-south (France South)",
   "europe-north (North Europe)",
   "europe-west (West Europe)",
+  "denmark-east (Denmark East)",
   "chile-central (Chile Central)",
   "canada-central (Canada Central)",
   "canada-east (Canada East)",
