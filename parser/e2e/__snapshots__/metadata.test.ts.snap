@@ -56,6 +56,7 @@ exports[`List metadata: Currency 1`] = `
 exports[`List metadata: OS/Software 1`] = `
 [
   "linux (Ubuntu)",
+  "azure-linux (Azure Linux (Preview))",
   "red-hat (Red Hat Enterprise Linux)",
   "rhel-ha (Red Hat Enterprise Linux with HA)",
   "rhel-sap-ha (RHEL for SAP with HA)",
