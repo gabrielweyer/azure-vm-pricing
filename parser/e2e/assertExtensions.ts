@@ -1,6 +1,8 @@
 import { spawn } from 'node:child_process';
 import { once } from 'node:events';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import readline from 'node:readline';
 import { expect } from 'vitest';
 
@@ -12,41 +14,57 @@ export default async function assert(
 ): Promise<void> {
   const region = 'us-west';
 
-  // Run the crawler with the current Node.js binary (same as "yarn crawl") to avoid spawning a shell
-  const crawler = spawn(process.execPath, [
-    'src/app.ts',
-    '-l',
-    culture,
-    '-c',
-    currency,
-    '-o',
-    operatingSystem,
-    '-r',
-    region,
-    '--debug'
-  ]);
+  // Each run writes to its own directory: test files run in parallel and would otherwise overwrite each other's CSV
+  const outputPath = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'azure-vm-pricing-e2e-'));
+  let csvStream: fs.ReadStream | undefined;
 
-  const crawlerErrors: Buffer[] = [];
+  try {
+    // Run the crawler with the current Node.js binary (same as "yarn crawl") to avoid spawning a shell
+    const crawler = spawn(process.execPath, [
+      'src/app.ts',
+      '-l',
+      culture,
+      '-c',
+      currency,
+      '-o',
+      operatingSystem,
+      '-r',
+      region,
+      '-p',
+      outputPath,
+      '--debug'
+    ]);
 
-  crawler.stderr.on('data', (data: Buffer) => {
-    crawlerErrors.push(data);
-  });
+    const crawlerErrors: Buffer[] = [];
 
-  const [code] = await once(crawler, 'close');
+    crawler.stderr.on('data', (data: Buffer) => {
+      crawlerErrors.push(data);
+    });
 
-  expect(code, Buffer.concat(crawlerErrors).toString()).toBe(0);
+    const [code] = await once(crawler, 'close');
 
-  const rl = readline.createInterface({
-    input: fs.createReadStream(`./out/vm-pricing_${region}_${operatingSystem}.csv`),
-    crlfDelay: Infinity
-  });
+    expect(code, Buffer.concat(crawlerErrors).toString()).toBe(0);
 
-  for await (const line of rl) {
-    if (line.startsWith(`${instance},`)) {
-      expect(line).toMatchSnapshot();
-      return;
+    csvStream = fs.createReadStream(path.join(outputPath, `vm-pricing_${region}_${operatingSystem}.csv`));
+    const rl = readline.createInterface({
+      input: csvStream,
+      crlfDelay: Infinity
+    });
+
+    for await (const line of rl) {
+      if (line.startsWith(`${instance},`)) {
+        expect(line).toMatchSnapshot();
+        return;
+      }
     }
-  }
 
-  throw new Error(`Did not find "${instance}" virtual machine.`);
+    throw new Error(`Did not find "${instance}" virtual machine.`);
+  } finally {
+    // Close the file before deleting it, Windows refuses to delete open files
+    if (csvStream && !csvStream.closed) {
+      csvStream.destroy();
+      await once(csvStream, 'close');
+    }
+    await fs.promises.rm(outputPath, { recursive: true, force: true });
+  }
 }
