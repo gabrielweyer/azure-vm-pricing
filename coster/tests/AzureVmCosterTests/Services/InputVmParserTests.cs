@@ -73,6 +73,21 @@ public class InputVmParserTests
     }
 
     [Fact]
+    public void GivenRamWithThousandsSeparator_WhenParse_ThenParseRam()
+    {
+        // Arrange
+        var file = new FileInfo("TestFiles/Input/input-en-au-thousands-separator.csv");
+        var culture = new CultureInfo("en-au");
+
+        // Act
+        var actualVms = InputVmParser.Parse(file, culture);
+
+        // Assert
+        var actualVm = Assert.Single(actualVms);
+        actualVm.Ram.Should().Be(1024.5m);
+    }
+
+    [Fact]
     public void GivenRegionAndOperatingSystemWithUnexpectedCase_WhenParse_ThenLowerCase()
     {
         // Arrange

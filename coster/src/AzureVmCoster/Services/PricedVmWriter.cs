@@ -1,5 +1,4 @@
 using AzureVmCoster.Models.Csv;
-using CsvHelper;
 using Microsoft.Extensions.Logging;
 
 namespace AzureVmCoster.Services;
@@ -15,17 +14,16 @@ internal class PricedVmWriter
 
     public void Write(string filename, IList<PricedVm> pricedVms, CultureInfo culture)
     {
-        var csvConfiguration = new CsvConfiguration(culture)
+        var csvOptions = new CsvWriterOptions
         {
-            Delimiter = ","
+            FormatProvider = culture,
+            Separator = ','
         };
 
         var fileInfo = new FileInfo($@"Out\{filename}");
 
-        using var writer = new StreamWriter(fileInfo.FullName);
-        using var csv = new CsvWriter(writer, csvConfiguration);
-        csv.Context.RegisterClassMap<PricedVmMap>();
-        csv.WriteRecords(pricedVms);
+        using var csv = CsvWriter.ToFile(fileInfo.FullName, csvOptions);
+        csv.WriteRecords(pricedVms, new PricedVmRecordWriter());
 
         _logger.LogInformation("Wrote priced VM to '{OutputFile}'", fileInfo);
     }
