@@ -25,7 +25,7 @@ Retrieve VMs **hourly prices** for a specific combination of **culture**, **curr
 
 ### Parser pre-requisites
 
-- [Latest Node.js LTS][latest-node-js-lts]
+- [Node.js 24][latest-node-js-lts] (see `parser/.nvmrc`)
 - [Yarn modern][yarn-modern]
 
 ```powershell

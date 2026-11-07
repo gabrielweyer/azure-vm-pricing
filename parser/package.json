@@ -17,7 +17,7 @@
     "@babel/preset-env": "7.25.4",
     "@babel/preset-typescript": "7.24.7",
     "@types/jest": "29.5.13",
-    "@types/node": "20.16.9",
+    "@types/node": "24.19.2",
     "babel-jest": "30.5.2",
     "jest": "30.5.2",
     "jest-html-reporter": "3.10.2",
@@ -29,6 +29,9 @@
   },
   "resolutions": {
     "minimatch": "^11.0.5"
+  },
+  "engines": {
+    "node": ">=24"
   },
   "private": true,
   "packageManager": "yarn@3.5.0"

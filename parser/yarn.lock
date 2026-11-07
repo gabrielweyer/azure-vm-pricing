@@ -2800,12 +2800,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.16.9":
-  version: 20.16.9
-  resolution: "@types/node@npm:20.16.9"
+"@types/node@npm:24.19.2":
+  version: 24.19.2
+  resolution: "@types/node@npm:24.19.2"
   dependencies:
-    undici-types: ~6.19.2
-  checksum: 2f0a248cc0ad7e3cdb03c2ff50a3f6c7337c3d0b387a9c4d8a341ee3b3a3ec25846ffd22ca2670a0543d62ec098ece0f1013a441a63e3ed81de1ec8f38ec108e
+    undici-types: ">=7.24.0 <7.24.7"
+  checksum: 4afc94122d647e2c4bc794431632d07a67949d9674b73f13898e1f509de41862e841a07e16097965f18d36e93fc4b2c60ecf2304d8440694369e5282969c0481
   languageName: node
   linkType: hard
 
@@ -5540,7 +5540,7 @@ __metadata:
     "@babel/preset-env": 7.25.4
     "@babel/preset-typescript": 7.24.7
     "@types/jest": 29.5.13
-    "@types/node": 20.16.9
+    "@types/node": 24.19.2
     babel-jest: 30.5.2
     jest: 30.5.2
     jest-html-reporter: 3.10.2
@@ -5946,10 +5946,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici-types@npm:~6.19.2":
-  version: 6.19.8
-  resolution: "undici-types@npm:6.19.8"
-  checksum: de51f1b447d22571cf155dfe14ff6d12c5bdaec237c765085b439c38ca8518fc360e88c70f99469162bf2e14188a7b0bcb06e1ed2dc031042b984b0bb9544017
+"undici-types@npm:>=7.24.0 <7.24.7":
+  version: 7.24.6
+  resolution: "undici-types@npm:7.24.6"
+  checksum: e79802e37dc472c6324850d938b5df6b9e796f6a1bb5f8ccd24f3a6d17eae94a9cc125506c8b339a3293ffbad81daeba30b843e564c1d237b3c8deafd98b6267
   languageName: node
   linkType: hard
 
