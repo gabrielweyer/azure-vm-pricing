@@ -1,5 +1,5 @@
-const fs = require('fs');
-import { VmPricing } from './vmPricing';
+import fs from 'node:fs';
+import type { VmPricing } from './vmPricing.ts';
 
 export function writeJson(vmPricing: VmPricing[], region: string, operatingSystem: string, outputPath: string): void {
   const outFilename = `${outputPath}/vm-pricing_${region}_${operatingSystem}.json`;

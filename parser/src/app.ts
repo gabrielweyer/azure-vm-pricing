@@ -1,12 +1,12 @@
 import * as puppeteer from 'puppeteer';
-const fs = require('fs');
-const { performance } = require('perf_hooks');
-const util = require('util');
-import { AzureVmPricingConfig } from './azureVmPricingConfig';
-import { LogMessage } from './logMessage';
-import { isUrlBlocked } from './isUrlBlocked';
-import { writeCsv, writeJson } from './writeFile';
-import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions';
+import fs from 'node:fs';
+import { performance } from 'node:perf_hooks';
+import util from 'node:util';
+import type { AzureVmPricingConfig } from './azureVmPricingConfig.ts';
+import type { LogMessage } from './logMessage.ts';
+import { isUrlBlocked } from './isUrlBlocked.ts';
+import { writeCsv, writeJson } from './writeFile.ts';
+import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions.ts';
 
 // If outputPath is not provided, the default value is './out'
 let outputPath: string | undefined = './out';
@@ -38,11 +38,11 @@ console.error = function(...args) {
 }
 
 function logMessage(level: 'log' | 'warn' | 'error', args: any[]): void {
-  logMessages.push(<LogMessage> {
+  logMessages.push({
     loggedAt: new Date(),
     level: level,
     args: args
-  });
+  } as LogMessage);
 }
 
 function timeEvent(eventName: string): void {

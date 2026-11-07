@@ -16,6 +16,7 @@ out/*.csv
 out/**/*.json
 out/**/*.png
 
-# Jest
+# Vitest
+.vitest/
 test-results/
 coverage/

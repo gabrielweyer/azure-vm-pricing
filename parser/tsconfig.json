@@ -1,8 +1,15 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
-    "target": "ES2017",
-    "module": "commonjs"
+    // Type-check only: Node.js runs the .ts files directly by stripping types
+    "noEmit": true,
+    "target": "es2024",
+    "module": "nodenext",
+    // Node.js requires explicit file extensions in ESM imports
+    "allowImportingTsExtensions": true,
+    // Type-only imports must use "import type" as Node.js strips them without type information
+    "verbatimModuleSyntax": true,
+    // Reject TypeScript syntax Node.js cannot strip (enums, namespaces, parameter properties...)
+    "erasableSyntaxOnly": true
   },
-  "include": ["src/**/*.ts", "e2e/**/*.ts"]
+  "include": ["src/**/*.ts", "e2e/**/*.ts", "vitest.config.ts"]
 }

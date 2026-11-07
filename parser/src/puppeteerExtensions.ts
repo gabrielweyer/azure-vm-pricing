@@ -1,4 +1,4 @@
-import * as puppeteer from 'puppeteer';
+import type * as puppeteer from 'puppeteer';
 
 export async function setSelect(page: puppeteer.Page, selector: string, value: string): Promise<void> {
   const fullSelector = getSelectFullSelector(selector);
@@ -20,14 +20,14 @@ export async function isSelectedSelect(page: puppeteer.Page, selector: string, v
 }
 
 export async function isSelectedCheckbox(page: puppeteer.Page, selector: string): Promise<boolean> {
-  const value = await page.$eval(selector, node => (<HTMLButtonElement> node).value);
+  const value = await page.$eval(selector, node => (node as HTMLButtonElement).value);
   return value === 'true';
 }
 
 async function getSelectedValue(page: puppeteer.Page, selector: string): Promise<string> {
   const fullSelector = getSelectFullSelector(selector);
   await page.waitForSelector(fullSelector, { visible: true });
-  return await page.$eval(fullSelector, node => (<HTMLSelectElement> node).value);
+  return await page.$eval(fullSelector, node => (node as HTMLSelectElement).value);
 }
 
 function getSelectFullSelector(selector: string): string {

@@ -1,11 +1,12 @@
-import { addUnavailableVms, discardDuplicateVms, PartialVmPricing } from "./vmPricing";
+import { describe, expect, test } from 'vitest';
+import { addUnavailableVms, discardDuplicateVms, type PartialVmPricing } from "./vmPricing.ts";
 
 function getVm(name: string, vCpu: number, ram: number): PartialVmPricing {
-  return <PartialVmPricing>{
+  return {
     instance: name,
     vCpu: vCpu,
     ram: ram
-  };
+  } as PartialVmPricing;
 }
 
 describe('Add unavailable VMs', () => {

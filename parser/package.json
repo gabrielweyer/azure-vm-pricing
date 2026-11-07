@@ -1,34 +1,27 @@
 {
+  "type": "module",
   "scripts": {
-    "crawl": "ts-node src/app.ts",
-    "test": "jest src --reporters=default",
-    "test-ci": "jest src --ci --coverage",
-    "e2e-us": "jest e2e --reporters=default -t \"English \\(US\\) USD - US Dollar\"",
-    "e2e-us-ci": "jest e2e --ci -t \"English \\(US\\) USD - US Dollar\"",
-    "e2e-all": "jest e2e --reporters=default",
-    "e2e-all-ci": "jest e2e --ci"
+    "crawl": "node src/app.ts",
+    "typecheck": "tsc",
+    "test": "vitest run src",
+    "test-ci": "vitest run src --coverage",
+    "e2e-us": "vitest run e2e -t \"English \\(US\\) > USD - US Dollar\"",
+    "e2e-all": "vitest run e2e"
   },
   "prettier": {
     "singleQuote": true,
     "trailingComma": "none"
   },
   "devDependencies": {
-    "@babel/core": "7.29.6",
-    "@babel/preset-env": "7.25.4",
-    "@babel/preset-typescript": "7.24.7",
-    "@types/jest": "29.5.13",
     "@types/node": "24.19.2",
-    "babel-jest": "30.5.2",
-    "jest": "30.5.2",
-    "jest-html-reporter": "3.10.2",
+    "@vitest/coverage-v8": "5.1.0",
+    "@vitest/ui": "5.1.0",
     "jsdom": "25.0.1",
     "prettier": "3.3.3",
     "puppeteer": "25.16.0",
-    "ts-node": "10.9.2",
-    "typescript": "5.6.2"
-  },
-  "resolutions": {
-    "minimatch": "^11.0.5"
+    "typescript": "5.9.3",
+    "vite": "8.3.6",
+    "vitest": "5.1.0"
   },
   "engines": {
     "node": ">=24"
