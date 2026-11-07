@@ -1,8 +1,8 @@
 # Default architecture
 ARG ARCH=amd64
 
-# Use the official lightweight Node.js 22 image
-FROM $ARCH/node:22-slim
+# Use the official lightweight Node.js 24 image (keep in sync with .nvmrc)
+FROM $ARCH/node:24-slim
 
 # Do not download Chromium, will be installed manually from Debian repositories
 ENV PUPPETEER_SKIP_DOWNLOAD=true

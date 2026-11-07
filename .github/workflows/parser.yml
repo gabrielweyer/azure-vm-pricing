@@ -33,7 +33,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version-file: parser/.nvmrc
       - name: yarn install
         run: yarn install
       - name: Set test results path environment variable
