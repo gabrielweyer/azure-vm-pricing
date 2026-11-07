@@ -9,13 +9,13 @@ export default async function listSelectOptions(selectName: string): Promise<str
 
     await page.waitForFunction(
       async () => {
-        const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
+        const applicableVmsAnnouncemnt = document.querySelector('#pricing-announcement') as HTMLSpanElement;
         return applicableVmsAnnouncemnt !== null;
       }
     );
 
     const selector = `select[name=${selectName}]`;
-    return await page.$eval(selector, select => Array.from((<HTMLSelectElement> select).options).map(c => `${c.value} (${c.text})`));
+    return await page.$eval(selector, select => Array.from((select as HTMLSelectElement).options).map(c => `${c.value} (${c.text})`));
   }
   finally
   {

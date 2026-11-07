@@ -1,5 +1,6 @@
-import listCultures from "./listCultures";
-import listSelectOptions from "./listSelectOptions";
+import { describe, expect, test } from 'vitest';
+import listCultures from "./listCultures.ts";
+import listSelectOptions from "./listSelectOptions.ts";
 
 describe('List metadata:', () => {
   test('Currency', async () => {

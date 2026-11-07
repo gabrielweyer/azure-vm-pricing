@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`List metadata: Culture 1`] = `
+exports[`List metadata: > Culture 1`] = `
 [
   "cs-cz (Čeština (Česká republika))",
   "da-dk (Dansk (Danmark))",
@@ -32,7 +32,7 @@ exports[`List metadata: Culture 1`] = `
 ]
 `;
 
-exports[`List metadata: Currency 1`] = `
+exports[`List metadata: > Currency 1`] = `
 [
   "usd (United States – Dollar ($) USD)",
   "aud (Australia – Dollar ($) AUD)",
@@ -53,7 +53,7 @@ exports[`List metadata: Currency 1`] = `
 ]
 `;
 
-exports[`List metadata: OS/Software 1`] = `
+exports[`List metadata: > OS/Software 1`] = `
 [
   "linux (Ubuntu)",
   "azure-linux (Azure Linux (Preview))",
@@ -92,7 +92,7 @@ exports[`List metadata: OS/Software 1`] = `
 ]
 `;
 
-exports[`List metadata: Region 1`] = `
+exports[`List metadata: > Region 1`] = `
 [
   "us-central (Central US)",
   "us-east (East US)",

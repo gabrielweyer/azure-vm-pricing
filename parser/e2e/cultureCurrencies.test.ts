@@ -1,277 +1,278 @@
-import assert from "./assertExtensions";
+import { describe, test } from 'vitest';
+import assert from "./assertExtensions.ts";
 
 describe('End-to-end tests for supported cultures and currencies', () => {
   describe('en-us - English (US)', () => {
     const culture = 'en-us';
 
-    test('USD - US Dollar ($)', (done) => {
+    test('USD - US Dollar ($)', async () => {
       const currency = 'usd';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('cs-cz - Čeština', () => {
     const culture = 'cs-cz';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('da-dk - Dansk', () => {
     const culture = 'da-dk';
 
-    test('DKK - Danish Krone (kr)', (done) => {
+    test('DKK - Danish Krone (kr)', async () => {
       const currency = 'dkk';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('de-de - Deutsch', () => {
     const culture = 'de-de';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
 
-    test('CHF - Swiss Franc. (chf)', (done) => {
+    test('CHF - Swiss Franc. (chf)', async () => {
       const currency = 'chf';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('en-au - English (Australia)', () => {
     const culture = 'en-au';
 
-    test('AUD - Australian Dollar ($)', (done) => {
+    test('AUD - Australian Dollar ($)', async () => {
       const currency = 'aud';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('en-ca - English (Canada)', () => {
     const culture = 'en-ca';
 
-    test('CAD - Canadian Dollar ($)', (done) => {
+    test('CAD - Canadian Dollar ($)', async () => {
       const currency = 'cad';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('en-in - English (India)', () => {
     const culture = 'en-in';
 
-    test('INR - Indian Rupee (₹)', (done) => {
+    test('INR - Indian Rupee (₹)', async () => {
       const currency = 'inr';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('en-gb - English (UK)', () => {
     const culture = 'en-gb';
 
-    test('GBP - British Pound (£)', (done) => {
+    test('GBP - British Pound (£)', async () => {
       const currency = 'gbp';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
 
-    test('NZD - New Zealand Dollar ($)', (done) => {
+    test('NZD - New Zealand Dollar ($)', async () => {
       const currency = 'nzd';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('es-es - Español', () => {
     const culture = 'es-es';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('es-mx - Español (MX)', () => {
     const culture = 'es-mx';
 
-    test('USD - US Dollar ($)', (done) => {
+    test('USD - US Dollar ($)', async () => {
       const currency = 'usd';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('fr-fr - Français', () => {
     const culture = 'fr-fr';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
 
-    test('CHF - Swiss Franc. (chf)', (done) => {
+    test('CHF - Swiss Franc. (chf)', async () => {
       const currency = 'chf';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('fr-ca - Français (Canada)', () => {
     const culture = 'fr-ca';
 
-    test('CAD - Canadian Dollar ($)', (done) => {
+    test('CAD - Canadian Dollar ($)', async () => {
       const currency = 'cad';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('it-it - Italiano', () => {
     const culture = 'it-it';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
 
-    test('CHF - Swiss Franc. (chf)', (done) => {
+    test('CHF - Swiss Franc. (chf)', async () => {
       const currency = 'chf';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('hu-hu - Magyar', () => {
     const culture = 'hu-hu';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('nb-no - Norsk', () => {
     const culture = 'nb-no';
 
-    test('NOK - Norwegian Krone (kr)', (done) => {
+    test('NOK - Norwegian Krone (kr)', async () => {
       const currency = 'nok';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('nl-nl - Nederlands', () => {
     const culture = 'nl-nl';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('pl-pl - Polski', () => {
     const culture = 'pl-pl';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('pt-br - Português (Brasil)', () => {
     const culture = 'pt-br';
 
-    test('BRL - Brazilian Real (R$)', (done) => {
+    test('BRL - Brazilian Real (R$)', async () => {
       const currency = 'brl';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('pt-pt - Português', () => {
     const culture = 'pt-pt';
 
-    test('EUR - Euro (€)', (done) => {
+    test('EUR - Euro (€)', async () => {
       const currency = 'eur';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('sv-se - Svenska', () => {
     const culture = 'sv-se';
 
-    test('SEK - Swedish Krona (kr)', (done) => {
+    test('SEK - Swedish Krona (kr)', async () => {
       const currency = 'sek';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('tr-tr - Türkçe', () => {
     const culture = 'tr-tr';
 
-    test('USD - US Dollar ($)', (done) => {
+    test('USD - US Dollar ($)', async () => {
       const currency = 'usd';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('ru-ru - Pусский', () => {
     const culture = 'ru-ru';
 
-    test('RUB - Russian Ruble (руб)', (done) => {
+    test('RUB - Russian Ruble (руб)', async () => {
       const currency = 'rub';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('ja-jp - 日本語', () => {
     const culture = 'ja-jp';
 
-    test('JPY - Japanese Yen (¥)', (done) => {
+    test('JPY - Japanese Yen (¥)', async () => {
       const currency = 'jpy';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('ko-kr - 한국어', () => {
     const culture = 'ko-kr';
 
-    test('KRW - Korean Won (₩)', (done) => {
+    test('KRW - Korean Won (₩)', async () => {
       const currency = 'krw';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 
   describe('zh-tw - 中文(繁體)', () => {
     const culture = 'zh-tw';
 
-    test('TWD - Taiwanese Dollar (NT$)', (done) => {
+    test('TWD - Taiwanese Dollar (NT$)', async () => {
       const currency = 'twd';
 
-      assert(done, culture, currency);
+      await assert(culture, currency);
     });
   });
 });

@@ -1,6 +1,6 @@
-import * as puppeteer from 'puppeteer';
-import { addUnavailableVms, discardDuplicateVms, PartialVmPricing, VmPricing } from "./vmPricing";
-import { isSelectedSelect, setSelect, isSelectedCheckbox } from './puppeteerExtensions';
+import type * as puppeteer from 'puppeteer';
+import { addUnavailableVms, discardDuplicateVms, type PartialVmPricing, type VmPricing } from "./vmPricing.ts";
+import { isSelectedSelect, setSelect, isSelectedCheckbox } from './puppeteerExtensions.ts';
 
 export class AzurePortal {
   private p: puppeteer.Page;
@@ -13,7 +13,7 @@ export class AzurePortal {
   async waitForApplicableVirtualMachinesAnnouncement(): Promise<void> {
     await this.p.waitForFunction(
       async () => {
-        const applicableVmsAnnouncemnt = <HTMLSpanElement> document.querySelector('#pricing-announcement');
+        const applicableVmsAnnouncemnt = document.querySelector('#pricing-announcement') as HTMLSpanElement;
 
         if (applicableVmsAnnouncemnt !== null) {
           await applicableVmsAnnouncemnt.scrollIntoView();
@@ -131,7 +131,7 @@ export class AzurePortal {
         }
       }
 
-      return <VmPricing>{
+      return {
         instance: reservedInstanceWithoutHybridBenefit.instance,
         vCpu: reservedInstanceWithoutHybridBenefit.vCpu,
         ram: reservedInstanceWithoutHybridBenefit.ram,
@@ -147,14 +147,14 @@ export class AzurePortal {
         threeYearReservedWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.threeYear,
         spot: reservedInstanceWithoutHybridBenefit.spot,
         spotWithAzureHybridBenefit: reservedInstanceWithHybridBenefit?.spot
-      }
+      } as VmPricing
     });
   }
 
   private async waitForBusyMainApp(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
+        const busyMainAppElement = document.querySelector('.app-main[aria-busy="true"]') as HTMLElement;
         return busyMainAppElement !== null;
       },
       {
@@ -166,7 +166,7 @@ export class AzurePortal {
   private async waitForIdleMainApp(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const busyMainAppElement = <HTMLElement> document.querySelector('.app-main[aria-busy="true"]');
+        const busyMainAppElement = document.querySelector('.app-main[aria-busy="true"]') as HTMLElement;
         return busyMainAppElement === null;
       },
       {
@@ -178,7 +178,7 @@ export class AzurePortal {
   private async waitForLoadingRegionalPrices(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
+        const loadingRegionalPriceDiv = document.querySelector('.loading-animation') as HTMLDivElement;
         return loadingRegionalPriceDiv !== null;
       },
       {
@@ -190,7 +190,7 @@ export class AzurePortal {
   private async waitForLoadedRegionalPrices(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const loadingRegionalPriceDiv = <HTMLDivElement> document.querySelector('.loading-animation');
+        const loadingRegionalPriceDiv = document.querySelector('.loading-animation') as HTMLDivElement;
         return loadingRegionalPriceDiv === null;
       },
       {
@@ -220,7 +220,7 @@ export class AzurePortal {
   private async waitForPriceWithoutHybridBenefits(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
+        const headerCells = Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)')) as HTMLTableCellElement[];
         const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') !== -1);
         return ahbOffset === -1;
       },
@@ -231,7 +231,7 @@ export class AzurePortal {
   private async waitForPriceWithHybridBenefits(): Promise<void> {
     await this.p.waitForFunction(
       () => {
-        const headerCells = <HTMLTableCellElement[]> Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)'));
+        const headerCells = Array.from(document.querySelectorAll('.data-table__table:not([style="visibility: hidden;"]) thead th:nth-child(n+5):nth-child(-n+8)')) as HTMLTableCellElement[];
         const ahbOffset = headerCells.findIndex(c => c.innerText.indexOf('AHB') === -1);
         return ahbOffset !== -1;
       },
@@ -247,7 +247,7 @@ export class AzurePortal {
 }
 
 export function getPrice(tr: HTMLTableRowElement, columnSelector: string): number {
-  const span = <HTMLSpanElement> tr.querySelector(columnSelector + ' span.price-value');
+  const span = tr.querySelector(columnSelector + ' span.price-value') as HTMLSpanElement;
 
   if (span == null) {
     return undefined;
@@ -296,7 +296,7 @@ export function getPricing(): PartialVmPricing[] {
     rowCount++;
 
     const getInstance = function getInstance(tr: Element): string {
-      let instance = (<HTMLTableCellElement> tr.querySelector('td:nth-child(1)')).innerHTML;
+      let instance = (tr.querySelector('td:nth-child(1)') as HTMLTableCellElement).innerHTML;
       const indexOfSup = instance.indexOf('<sup>');
 
       if (indexOfSup > -1) {
@@ -316,7 +316,7 @@ export function getPricing(): PartialVmPricing[] {
     activeInstanceRowCount++;
 
     const getCpu = function getCpu(tr: Element): number {
-      let vCpu = (<HTMLTableCellElement> tr.querySelector('td:nth-child(2)')).innerHTML;
+      let vCpu = (tr.querySelector('td:nth-child(2)') as HTMLTableCellElement).innerHTML;
 
       const indexOfSlash = vCpu.indexOf('/');
 
@@ -330,7 +330,7 @@ export function getPricing(): PartialVmPricing[] {
     const vCpu = getCpu(tr);
 
     const getRam = function getRam(tr: Element): number {
-      let ram = (<HTMLTableCellElement> tr.querySelector('td:nth-child(3)')).innerHTML;
+      let ram = (tr.querySelector('td:nth-child(3)') as HTMLTableCellElement).innerHTML;
 
       const indexOfGib = ram.indexOf('GiB');
 
@@ -366,7 +366,7 @@ export function getPricing(): PartialVmPricing[] {
       return undefined;
     }
 
-    return <PartialVmPricing> {
+    return {
       instance: instance,
       vCpu: vCpu,
       ram: ram,
@@ -374,7 +374,7 @@ export function getPricing(): PartialVmPricing[] {
       oneYear: oneYear,
       threeYear: threeYear,
       spot: spot
-    };
+    } as PartialVmPricing;
   })
   .filter(p => p != null);
 

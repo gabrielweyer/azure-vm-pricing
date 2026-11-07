@@ -1,76 +1,52 @@
-const child_process = require('child_process');
-const fs = require('fs');
-const readline = require('readline');
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import fs from 'node:fs';
+import readline from 'node:readline';
+import { expect } from 'vitest';
 
-export default function assert(
-  done: jest.DoneCallback,
+export default async function assert(
   culture: string,
   currency: string,
   operatingSystem: string = 'windows',
   instance: string = 'D2 v3'
-): void {
+): Promise<void> {
   const region = 'us-west';
 
-  const crawler = child_process.spawn(
-    'yarn',
-    [
-      'crawl',
-      '-l',
-      culture,
-      '-c',
-      currency,
-      '-o',
-      operatingSystem,
-      '-r',
-      region,
-      '--debug'
-    ],
-    { shell: true }
-  );
+  // Run the crawler with the current Node.js binary (same as "yarn crawl") to avoid spawning a shell
+  const crawler = spawn(process.execPath, [
+    'src/app.ts',
+    '-l',
+    culture,
+    '-c',
+    currency,
+    '-o',
+    operatingSystem,
+    '-r',
+    region,
+    '--debug'
+  ]);
 
-  let crawlerErrors = [];
+  const crawlerErrors: Buffer[] = [];
 
-  crawler.stderr.on('data', (data) => {
+  crawler.stderr.on('data', (data: Buffer) => {
     crawlerErrors.push(data);
   });
 
-  crawler.on('close', (code) => {
-    try
-    {
-      expect(code).toBe(0);
+  const [code] = await once(crawler, 'close');
 
-      const fileStream = fs.createReadStream(
-        `./out/vm-pricing_${region}_${operatingSystem}.csv`
-      );
-      const rl = readline.createInterface({
-        input: fileStream,
-        crlfDelay: Infinity
-      });
+  expect(code, Buffer.concat(crawlerErrors).toString()).toBe(0);
 
-      let foundExpectedVirtualMachine = false;
-
-      rl.on('close', () => {
-        if (!foundExpectedVirtualMachine) {
-          done(new Error(`Did not find "${instance}" virtual machine.`));
-        }
-      });
-
-      rl.on('line', (line) => {
-        try {
-          if (line.startsWith(`${instance},`)) {
-            foundExpectedVirtualMachine = true;
-            rl.close();
-            expect(line).toMatchSnapshot();
-            done();
-          }
-        } catch (error) {
-          done(error);
-        }
-      });
-    }
-    catch (error)
-    {
-      done(error);
-    }
+  const rl = readline.createInterface({
+    input: fs.createReadStream(`./out/vm-pricing_${region}_${operatingSystem}.csv`),
+    crlfDelay: Infinity
   });
+
+  for await (const line of rl) {
+    if (line.startsWith(`${instance},`)) {
+      expect(line).toMatchSnapshot();
+      return;
+    }
+  }
+
+  throw new Error(`Did not find "${instance}" virtual machine.`);
 }

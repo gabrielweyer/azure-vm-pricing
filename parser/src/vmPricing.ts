@@ -29,11 +29,11 @@ export interface PartialVmPricing {
 function addUnavailable(additionalInstances: string[], additional: PartialVmPricing[], toFill: PartialVmPricing[]): void {
   additionalInstances.forEach(additionalInstance => {
     var offset = additional.findIndex(v => v.instance == additionalInstance);
-    var unavailableVm = <PartialVmPricing> {
+    var unavailableVm = {
       instance: additionalInstance,
       vCpu: additional[offset].vCpu,
       ram: additional[offset].ram
-    };
+    } as PartialVmPricing;
     toFill.splice(offset, 0, unavailableVm);
   });
 }
