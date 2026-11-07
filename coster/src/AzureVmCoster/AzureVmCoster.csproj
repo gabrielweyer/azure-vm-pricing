@@ -15,7 +15,7 @@
 
   <ItemGroup>
     <Using Include="AzureVmCoster.Models" />
-    <Using Include="CsvHelper.Configuration" />
+    <Using Include="CsvHelper" />
     <Using Include="System.Globalization" />
   </ItemGroup>
 

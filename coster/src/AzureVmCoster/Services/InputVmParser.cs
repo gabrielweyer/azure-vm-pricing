@@ -1,20 +1,18 @@
-using AzureVmCoster.Models.Csv;
-using CsvHelper;
-
 namespace AzureVmCoster.Services;
 
 internal static class InputVmParser
 {
     public static List<InputVm> Parse(FileInfo inputCsv, CultureInfo culture)
     {
-        var csvConfiguration = new CsvConfiguration(culture)
+        var csvOptions = new CsvReaderOptions
         {
-            Delimiter = ","
+            FormatProvider = culture,
+            Separator = ',',
+            MalformedData = CsvMalformedDataHandling.Throw,
+            MissingField = CsvMissingFieldHandling.Throw
         };
 
-        using var reader = new StreamReader(inputCsv.FullName);
-        using var csv = new CsvReader(reader, csvConfiguration);
-        csv.Context.RegisterClassMap<InputVmMap>();
+        using var csv = CsvReader.FromFile(inputCsv.FullName, csvOptions);
         return csv.GetRecords<InputVm>().ToList();
     }
 }

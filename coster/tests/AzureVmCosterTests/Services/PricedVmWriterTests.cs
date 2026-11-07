@@ -32,6 +32,25 @@ public class PricedVmWriterTests
     }
 
     [Fact]
+    public void GivenCultureWithCommaDecimalPoint_WhenWrite_ThenQuoteDecimals()
+    {
+        // Arrange
+        var inputVm = InputVmBuilder.AsUsWestWindowsD2V3Equivalent();
+        var vmPrice = VmPriceBuilder.AsUsWestWindowsD2V3();
+        var vm = PricedVmBuilder.From(inputVm, vmPrice);
+        var fileName = $"{Guid.NewGuid():D}.csv";
+
+        // Act
+        _target.Write(fileName, new List<PricedVm> { vm }, new CultureInfo("fr-fr"));
+
+        // Assert
+        const string expected = "us-west,map-me-to-d2-v3,windows,D2 v3,2,8,\"1,1\",\"1,05\",\"0,84\",\"0,81\",\"0,71\",\"0,68\",\"0,95\",\"0,93\",\"0,89\",\"0,86\",\"0,78\",\"0,72\"";
+        var actual = File.ReadAllLines($@"Out\{fileName}");
+        actual.Should().HaveCount(2);
+        actual[1].Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
     public void GivenPricedVmWithoutPrice_WhenWrite_ThenEmptyPriceColumns()
     {
         // Arrange
