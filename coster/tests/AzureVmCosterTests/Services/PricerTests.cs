@@ -197,6 +197,50 @@ public class PricerTests
     }
 
     [Fact]
+    public void GivenInstanceWithoutPayAsYouGoPrice_WhenPrice_ThenSelectCheapestInstanceWithPayAsYouGoPrice()
+    {
+        // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var d4V3 = VmPriceBuilder.AsUsWestWindowsD4V3();
+        var prices = new List<VmPrice>
+        {
+            VmPriceBuilder.AsUsWestWindowsS96WithoutPayAsYouGo(),
+            d4V3
+        };
+
+        // Act
+        var actualPricedVms = _target.Price(vms, prices, _defaultConfiguration);
+
+        // Assert
+        var expectedPricedVms = new List<PricedVm> { PricedVmBuilder.From(vms[0], d4V3) };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
+    }
+
+    [Fact]
+    public void GivenOnlyInstanceWithoutPayAsYouGoPrice_WhenPrice_ThenHandleVmAsNoPrice()
+    {
+        // Arrange
+        var vms = new List<InputVm>
+        {
+            InputVmBuilder.AsUsWestWindowsD2V3Equivalent()
+        };
+        var prices = new List<VmPrice>
+        {
+            VmPriceBuilder.AsUsWestWindowsS96WithoutPayAsYouGo()
+        };
+
+        // Act
+        var actualPricedVms = _target.Price(vms, prices, _defaultConfiguration);
+
+        // Assert
+        var expectedPricedVms = new List<PricedVm> { PricedVmBuilder.WithoutPrice(vms[0]) };
+        actualPricedVms.Should().BeEquivalentTo(expectedPricedVms);
+    }
+
+    [Fact]
     public void GivenVmWithoutCpuAndWithoutRam_WhenPrice_ThenUseMedianCpuAndRam()
     {
         // Arrange

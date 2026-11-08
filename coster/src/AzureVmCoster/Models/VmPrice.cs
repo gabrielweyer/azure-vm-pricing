@@ -7,8 +7,8 @@ internal class VmPrice
     public string Instance { get; set; } = default!;
     public short VCpu { get; set; }
     public decimal Ram { get; set; }
-    public decimal PayAsYouGo { get; set; }
-    public decimal PayAsYouGoWithAzureHybridBenefit { get; set; }
+    public decimal? PayAsYouGo { get; set; }
+    public decimal? PayAsYouGoWithAzureHybridBenefit { get; set; }
     public decimal? OneYearReserved { get; set; }
     public decimal? OneYearReservedWithAzureHybridBenefit { get; set; }
     public decimal? ThreeYearReserved { get; set; }

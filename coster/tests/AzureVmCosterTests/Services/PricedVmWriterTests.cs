@@ -51,6 +51,25 @@ public class PricedVmWriterTests
     }
 
     [Fact]
+    public void GivenPricedVmWithoutPayAsYouGoPrice_WhenWrite_ThenEmptyPayAsYouGoColumns()
+    {
+        // Arrange
+        var inputVm = InputVmBuilder.AsUsWestWindowsD2V3Equivalent();
+        var vmPrice = VmPriceBuilder.AsUsWestWindowsS96WithoutPayAsYouGo();
+        var vm = PricedVmBuilder.From(inputVm, vmPrice);
+        var fileName = $"{Guid.NewGuid():D}.csv";
+
+        // Act
+        _target.Write(fileName, new List<PricedVm> { vm }, new CultureInfo("en-au"));
+
+        // Assert
+        const string expected = "us-west,map-me-to-d2-v3,windows,S96,96,2048,,,50.1,45.2,30.3,25.4,,,,,,";
+        var actual = File.ReadAllLines($@"Out\{fileName}");
+        actual.Should().HaveCount(2);
+        actual[1].Should().BeEquivalentTo(expected);
+    }
+
+    [Fact]
     public void GivenPricedVmWithoutPrice_WhenWrite_ThenEmptyPriceColumns()
     {
         // Arrange

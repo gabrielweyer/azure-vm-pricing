@@ -15,5 +15,12 @@
     "threeYearReservedWithAzureHybridBenefit": 0.0041,
     "spot": 0.0063,
     "spotWithAzureHybridBenefit": 0.0036
+  },
+  {
+    "instance": "S96",
+    "vCpu": 96,
+    "ram": 2048,
+    "oneYearReserved": 50.1,
+    "threeYearReserved": 30.3
   }
 ]
