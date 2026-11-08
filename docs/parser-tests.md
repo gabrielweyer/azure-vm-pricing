@@ -7,12 +7,26 @@ The parser has unit tests focusing on edge cases of price formatting:
 > yarn test
 ```
 
-The end-to-end tests attempt to compare known prices for the `D2 v3` instance in `us-west` using permutations of supported `culture`, `operating-system`, and `currency`:
+The end-to-end tests crawl the live Virtual Machines Pricing website and compare the results with snapshots (`parser\e2e\__snapshots__\`):
+
+- The `D2 v3` instance prices in `us-west` for each supported `culture` and `currency` combination (see the table below).
+- An instance without savings plan (`S96` on `linux`) and an operating system without Azure Hybrid Benefit (`D2 v3` on `ubuntu-advantage-essential`).
+- An instance with GPUs and no reserved prices (`H16mr` on `windows`).
+- The lists of supported currencies, OS/Software, regions and cultures.
 
 ```powershell
 > cd .\parser\
 > yarn e2e-all
 ```
+
+To only run the `en-us` culture with the `usd` currency:
+
+```powershell
+> cd .\parser\
+> yarn e2e-us
+```
+
+When Azure changes its prices or lists, update the snapshots with `yarn vitest run e2e -u` and review the changes before committing them.
 
 | Culture | Culture display name | Currency                        | Currency display name  | Support            |
 | ------- | ---------------------| ------------------------------- | ---------------------- | ------------------ |
@@ -24,7 +38,7 @@ The end-to-end tests attempt to compare known prices for the `D2 v3` instance in
 | `en-au` | English (Australia)  | `aud`                           | Australian Dollar ($)  | :white_check_mark: |
 | `en-ca` | English (Canada)     | `cad`                           | Canadian Dollar ($)    | :white_check_mark: |
 | `en-in` | English (India)      | `inr`                           | Indian Rupee (₹)       | :white_check_mark: |
-| `en-gb` | English (UK)         | `gpb`                           | British Pound (£)      | :white_check_mark: |
+| `en-gb` | English (UK)         | `gbp`                           | British Pound (£)      | :white_check_mark: |
 |         |                      | `nzd`[[3]](#closest-culture-3)  | New Zealand Dollar ($) | :white_check_mark: |
 | `es-es` | Español              | `eur`                           | Euro (€)               | :white_check_mark: |
 | `es-mx` | Español (MX)         | `usd`[[4]](#closest-currency-4) | US Dollar ($)          | :white_check_mark: |
@@ -34,7 +48,7 @@ The end-to-end tests attempt to compare known prices for the `D2 v3` instance in
 | `it-it` | Italiano             | `eur`                           | Euro (€)               | :white_check_mark: |
 |         |                      | `chf`[[2]](#closest-culture-2)  | Swiss Franc. (chf)     | :white_check_mark: |
 | `hu-hu` | Magyar               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
-| `nb-no` | Norsk                | `nk`                            | Norwegian Krone (kr)   | :white_check_mark: |
+| `nb-no` | Norsk                | `nok`                           | Norwegian Krone (kr)   | :white_check_mark: |
 | `nl-nl` | Nederlands           | `eur`                           | Euro (€)               | :white_check_mark: |
 | `pl-pl` | Polski               | `eur`[[1]](#closest-currency-1) | Euro (€)               | :white_check_mark: |
 | `pt-br` | Português (Brasil)   | `brl`                           | Brazilian Real (R$)    | :white_check_mark: |
