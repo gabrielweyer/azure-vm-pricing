@@ -54,6 +54,11 @@ Arguments:
 - `region`: [available regions](#supported-regions)
 - `output-path`: where the output files will be written (defaults to `.\out\`)
 
+Optional arguments:
+
+- `debug` (short name `-d`): when the crawl fails, writes the console log (`JSON`) and a screenshot of the page (`PNG`) to the `log-path` directory
+- `log-path` (short name `-g`): where the debug log and screenshot will be written (defaults to `.\out\log\`)
+
 ### Parser output
 
 Writes `2` output files in the `out\` directory, or the directory specified by the `--output-path` argument. One is a `CSV`, the other one is `JSON`. Both files contain the same data.

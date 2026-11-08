@@ -16,6 +16,8 @@ export default async function assert(
 
   // Each run writes to its own directory: test files run in parallel and would otherwise overwrite each other's CSV
   const outputPath = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'azure-vm-pricing-e2e-'));
+  // Debug artifacts of failed crawls are kept (and uploaded by CI), one sub-directory per test so they don't overwrite each other
+  const logPath = path.join('out', 'log', `${culture}_${currency}_${operatingSystem}_${instance.replaceAll(' ', '-')}`);
   let csvStream: fs.ReadStream | undefined;
 
   try {
@@ -32,6 +34,8 @@ export default async function assert(
       region,
       '-p',
       outputPath,
+      '-g',
+      logPath,
       '--debug'
     ]);
 

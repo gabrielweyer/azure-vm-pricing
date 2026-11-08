@@ -1,5 +1,6 @@
 import * as puppeteer from 'puppeteer';
 import fs from 'node:fs';
+import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import util from 'node:util';
 import type { AzureVmPricingConfig } from './azureVmPricingConfig.ts';
@@ -10,6 +11,10 @@ import { AzurePortal, getPrice, getPricing } from './azurePortalExtensions.ts';
 
 // If outputPath is not provided, the default value is './out'
 let outputPath: string | undefined = './out';
+
+// Where the debug log and screenshot are written when a crawl fails in debug mode
+const defaultLogPath = './out/log';
+let logPath = defaultLogPath;
 
 let recordTiming = false;
 let previousPerformanceNow = 0;
@@ -104,6 +109,11 @@ function timeEvent(eventName: string): void {
           // Ensure the path exists
           fs.mkdirSync(outputPath, { recursive: true });
           break;
+        case '-g':
+        case '--log-path':
+          // Assign default if empty, the directory is only created when there is something to log
+          logPath = args[offset + 1] || defaultLogPath;
+          break;
         default:
           parsedBinaryArg = false;
           break;
@@ -117,7 +127,7 @@ function timeEvent(eventName: string): void {
           debugMode = true;
           break;
         default:
-          console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region', '-p', '--output-path . None of these switches should be provided as the last arg as they require a value.`);
+          console.log(`'${args[offset]}' is not a known switch, supported values are: '-l', '--culture', '-c', '--currency', '-o', '--operating-system', '-r', '--region', '-p', '--output-path', '-g', '--log-path'. None of these switches should be provided as the last arg as they require a value.`);
           break;
       }
     }
@@ -259,19 +269,27 @@ function timeEvent(eventName: string): void {
   {
     const fileName = `${culture}_${currency}_${region}_${operatingSystem}`;
 
-    if (!wasSuccessful && debugMode) {
-      const logFilename = `./out/log/${fileName}.json`;
+    const writeDebugArtifacts = !wasSuccessful && debugMode;
 
-      fs.writeFile(logFilename, JSON.stringify(logMessages.length > 0 ? logMessages : 'No log messages recorded'), function(err) {
-        if (err) {
-          return console.error(err);
-        }
-      });
+    // Failing to write debug artifacts must not hide the error that caused the crawl to fail
+    if (writeDebugArtifacts) {
+      try {
+        fs.mkdirSync(logPath, { recursive: true });
+        fs.writeFileSync(
+          path.join(logPath, `${fileName}.json`),
+          JSON.stringify(logMessages.length > 0 ? logMessages : 'No log messages recorded'));
+      } catch (error) {
+        console.warn(`Failed to write the debug log to "${logPath}":`, util.inspect(error));
+      }
     }
 
     if (browser) {
-      if (!wasSuccessful && debugMode && page) {
-        await page.screenshot({ path: `./out/log/${fileName}.png` });
+      if (writeDebugArtifacts && page) {
+        try {
+          await page.screenshot({ path: path.join(logPath, `${fileName}.png`) });
+        } catch (error) {
+          console.warn(`Failed to write the debug screenshot to "${logPath}":`, util.inspect(error));
+        }
       }
       await browser.close();
     }
