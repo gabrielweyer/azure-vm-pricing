@@ -73,24 +73,22 @@ sealed class Build : NukeBuild
         .DependsOn(VerifyFormat)
         .Executes(() =>
         {
-            var testProjects =
-                from testProject in Solution.AllProjects
-                where testProject.Name.EndsWith("Tests", StringComparison.Ordinal)
-                from framework in testProject.GetTargetFrameworks()
-                select new { TestProject = testProject, Framework = framework };
+            // The test projects have a single target framework. Not evaluating them with MSBuild avoids depending on the
+            // NuGet assemblies shipped with NUKE matching the ones of the installed .NET SDK.
+            var testProjects = Solution.AllProjects
+                .Where(p => p.Name.EndsWith("Tests", StringComparison.Ordinal));
 
             DotNetTest(s => s
                 .SetConfiguration(Configuration)
                 .SetDataCollector("XPlat Code Coverage")
                 .EnableNoBuild()
-                .CombineWith(testProjects, (ss, p) =>
+                .CombineWith(testProjects, (ss, testProject) =>
                 {
-                    var testResultsName = $"{p.TestProject.Path.NameWithoutExtension}-{p.Framework}";
+                    var testResultsName = testProject.Path.NameWithoutExtension;
                     var testResultsDirectory = TestResultsDirectory / testResultsName;
 
                     return ss
-                        .SetProjectFile(p.TestProject)
-                        .SetFramework(p.Framework)
+                        .SetProjectFile(testProject)
                         .SetResultsDirectory(testResultsDirectory)
                         .SetLoggers($"html;LogFileName={testResultsName}.html");
                 }), completeOnFailure: true);
@@ -101,7 +99,7 @@ sealed class Build : NukeBuild
         .Executes(() =>
         {
             ReportGeneratorTasks.ReportGenerator(s => s
-                .SetFramework("net8.0")
+                .SetFramework("net10.0")
                 .SetReports($"{TestResultsDirectory}/**/coverage.cobertura.xml")
                 .SetTargetDirectory(CodeCoverageDirectory)
                 .SetReportTypes(ReportTypes.Html));
