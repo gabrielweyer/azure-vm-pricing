@@ -21,7 +21,12 @@ internal class Pricer
         var medianCpu = GetCpuMedianForNonZeroValues(inputVms);
         var medianRam = GetRamMedianForNonZeroValues(inputVms);
 
-        var orderedVmPrices = filteredVmPrices.OrderBy(p => p.PayAsYouGo).ToList();
+        // Instances without a Pay as You Go price (e.g. reserved-only SAP HANA instances) cannot be compared on the
+        // Pay as You Go price, so they are never selected.
+        var orderedVmPrices = filteredVmPrices
+            .Where(p => p.PayAsYouGo.HasValue)
+            .OrderBy(p => p.PayAsYouGo)
+            .ToList();
 
         var pricedVms = new List<PricedVm>();
 

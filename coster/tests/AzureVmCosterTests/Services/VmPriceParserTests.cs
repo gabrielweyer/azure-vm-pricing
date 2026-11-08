@@ -35,6 +35,18 @@ public class VmPriceParserTests
                 ThreeYearReservedWithAzureHybridBenefit = 0.0041m,
                 Spot = 0.0063m,
                 SpotWithAzureHybridBenefit = 0.0036m
+            },
+            new()
+            {
+                Region = "germany-west-central",
+                OperatingSystem = "windows",
+                Instance = "S96",
+                VCpu = 96,
+                Ram = 2048,
+                PayAsYouGo = null,
+                PayAsYouGoWithAzureHybridBenefit = null,
+                OneYearReserved = 50.1m,
+                ThreeYearReserved = 30.3m
             }
         };
         actualPrices.Should().BeEquivalentTo(expectedPrices);

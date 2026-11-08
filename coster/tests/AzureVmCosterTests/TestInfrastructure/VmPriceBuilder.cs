@@ -68,6 +68,26 @@ internal static class VmPriceBuilder
         };
     }
 
+    /// <summary>
+    /// A reserved-only instance: it has more CPU cores and RAM than <see cref="AsUsWestWindowsD2V3"/> but no Pay as
+    /// You Go price.
+    /// </summary>
+    public static VmPrice AsUsWestWindowsS96WithoutPayAsYouGo()
+    {
+        return new VmPrice
+        {
+            Instance = "S96",
+            OperatingSystem = "windows",
+            Ram = 2048,
+            Region = "us-west",
+            VCpu = 96,
+            OneYearReserved = 50.1m,
+            OneYearReservedWithAzureHybridBenefit = 45.2m,
+            ThreeYearReserved = 30.3m,
+            ThreeYearReservedWithAzureHybridBenefit = 25.4m
+        };
+    }
+
     public static VmPrice AsUsWestWindowsD4V3()
     {
         return new VmPrice
