@@ -80,7 +80,10 @@ internal class Pricer
     {
         var orderedCpus = vms.Where(v => v.Cpu > 0).Select(v => (decimal)v.Cpu).Order().ToList();
 
-        _logger.LogInformation("CPU is present for {MissingCpuCount} VMs out of {InputVmCount} VMs", orderedCpus.Count, vms.Count);
+        if (_logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.LogInformation("CPU is present for {MissingCpuCount} VMs out of {InputVmCount} VMs", orderedCpus.Count, vms.Count);
+        }
 
         if (orderedCpus.Count == 0)
         {
@@ -96,7 +99,10 @@ internal class Pricer
     {
         var orderedRams = vms.Where(v => v.Ram > 0).Select(v => v.Ram).OrderBy(r => r).ToList();
 
-        _logger.LogInformation("RAM is present for {MissingRamCount} VMs out of {InputVmCount} VMs", orderedRams.Count, vms.Count);
+        if (_logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.LogInformation("RAM is present for {MissingRamCount} VMs out of {InputVmCount} VMs", orderedRams.Count, vms.Count);
+        }
 
         if (orderedRams.Count == 0)
         {
@@ -106,7 +112,7 @@ internal class Pricer
         return GetMedian(orderedRams);
     }
 
-    private static decimal GetMedian(IReadOnlyList<decimal> orderedList)
+    private static decimal GetMedian(List<decimal> orderedList)
     {
         if (orderedList.Count == 1)
         {

@@ -25,6 +25,9 @@ internal class PricedVmWriter
         using var csv = CsvWriter.ToFile(fileInfo.FullName, csvOptions);
         csv.WriteRecords(pricedVms, new PricedVmRecordWriter());
 
-        _logger.LogInformation("Wrote priced VM to '{OutputFile}'", fileInfo);
+        if (_logger.IsEnabled(LogLevel.Information))
+        {
+            _logger.LogInformation("Wrote priced VM to '{OutputFile}'", fileInfo);
+        }
     }
 }

@@ -27,9 +27,9 @@ jobs:
         with:
           fetch-depth: 0
       - uses: actions/setup-dotnet@v5
-        name: Install .NET 8
+        name: Install .NET 10
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '10.0.x'
           dotnet-quality: 'ga'
       - name: Build
         run: ./build.sh
