@@ -10,6 +10,10 @@ updates:
         update-types: ["version-update:semver-major"]
       - dependency-name: "Microsoft.Extensions.Hosting"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "NuGet.Packaging"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "System.Security.Cryptography.*"
+        update-types: ["version-update:semver-major"]
     groups:
       xunit:
         patterns:
