@@ -5,7 +5,7 @@
   <ItemGroup>
     <PackageVersion Include="Nuke.Common" Version="10.1.0" />
     <!-- Patched versions of vulnerable transitive dependencies of Nuke.Common -->
-    <PackageVersion Include="NuGet.Packaging" Version="6.12.5" />
+    <PackageVersion Include="NuGet.Packaging" Version="8.0.0" />
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.14" />
     <PackageVersion Include="System.Security.Cryptography.Xml" Version="10.0.14" />
     <PackageVersion Include="CsvHelper" Version="34.0.0" />
